@@ -32,6 +32,10 @@ public abstract interface Graph<N, E> {
 	 */
 	public abstract EdgeFactory<N, E> getEdgeFactory();
 
+	//------------------------------------------
+	// 			NODES METODS
+	//------------------------------------------
+	
 	//XXX LIST NODES METHODS
 	
 	/**
@@ -118,6 +122,18 @@ public abstract interface Graph<N, E> {
 	 * @return true if nodes are adjacents; false otherwise.
 	 */
 	public abstract boolean areAdjacents(N n1, N n2);
+	
+	/**
+	 * Returns the degree of the specified vertex. 
+	 * 
+	 * @param node - Node whose degree is to be calculated.
+	 * @return the degree of the specified vertex.
+	 */
+	public abstract int degreeOf(N node);
+	
+	//------------------------------------------
+	// 			EDGES METODS
+	//------------------------------------------
 	
 	//XXX LIST EDGES METHODS
 	
