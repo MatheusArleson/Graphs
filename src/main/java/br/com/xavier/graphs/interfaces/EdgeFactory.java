@@ -1,4 +1,4 @@
-package br.com.xavier.graphs;
+package br.com.xavier.graphs.interfaces;
 
 public abstract  interface EdgeFactory<N, E> {
 

@@ -1,4 +1,4 @@
-package br.com.xavier.graphs;
+package br.com.xavier.graphs.interfaces;
 
 import java.util.Collection;
 import java.util.Set;

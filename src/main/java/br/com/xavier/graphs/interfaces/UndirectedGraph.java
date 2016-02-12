@@ -1,4 +1,4 @@
-package br.com.xavier.graphs;
+package br.com.xavier.graphs.interfaces;
 
 /**
  * A Graph whose all Edges are undirected. </br> 
@@ -9,4 +9,7 @@ package br.com.xavier.graphs;
  */
 public abstract interface UndirectedGraph<N, E> extends Graph<N, E> {
 
+	//TODO FIXME terminar implementacao
+	 public abstract int degreeOf(N node);
+	
 }
