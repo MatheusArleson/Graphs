@@ -3,7 +3,8 @@ package br.com.xavier.graphs;
 import java.util.Collection;
 import java.util.Set;
 
-//FIXME TODO IllegalArgument Exceptions on methods that depends that a parameter exists on the Graph 
+import br.com.xavier.graphs.exception.IllegalNodeException;
+
 /**
  * 
  * The root interface in the Graph hierarchy. </br> </br>
@@ -76,7 +77,7 @@ public abstract interface Graph<N, E> {
 	
 	/**
 	 * Removes all Nodes contained in the Nodes collection passed. </br> 
-	 * This method will invoke the removeNode(N Node) method.</br>
+	 * This method will invoke the {@link #removeNode(Object)} method.</br>
 	 * 
 	 * @param nodesCollection - Nodes to be removed from this Graph.
 	 * @return true - if this Graph changed as a result of the call; false otherwise.
@@ -107,10 +108,10 @@ public abstract interface Graph<N, E> {
 	 * @param graphNode - Node of interest.
 	 * @param newNode - Node replacement.
 	 * @return {@link N} - the previous Node.
-	 * @throws IllegalArgumentException if graphNode is not part of the Graph.
+	 * @throws IllegalNodeException if graphNode is not part of the Graph.
 	 * @throws NullPointerException if any parameter is null.
 	 */
-	public abstract N replaceNode(N graphNode, N newNode) throws IllegalArgumentException, NullPointerException;
+	public abstract N replaceNode(N graphNode, N newNode) throws IllegalNodeException, NullPointerException;
 	
 	//XXX CHECK NODES METHODS
 	
@@ -120,20 +121,20 @@ public abstract interface Graph<N, E> {
 	 * @param n1 - Node of interest.
 	 * @param n2 - Node to check adjacency.
 	 * @return true if nodes are adjacents; false otherwise.
-	 * @throws IllegalArgumentException if any Node passed is not part of the Graph.
+	 * @throws IllegalNodeException if any Node passed is not part of the Graph.
 	 * @throws NullPointerException if any parameter is null.
 	 */
-	public abstract boolean areAdjacents(N n1, N n2) throws IllegalArgumentException, NullPointerException;
+	public abstract boolean areAdjacents(N n1, N n2) throws IllegalNodeException, NullPointerException;
 	
 	/**
 	 * Returns the degree of the specified Node. 
 	 * 
 	 * @param node - Node whose degree is to be calculated.
 	 * @return the degree of the specified Node.
-	 * @throws IllegalArgumentException if the Node passed is not part of the Graph.
+	 * @throws IllegalNodeException if the Node passed is not part of the Graph.
 	 * @throws NullPointerException if Node parameter is null.
 	 */
-	public abstract int degreeOf(N node) throws IllegalArgumentException, NullPointerException;
+	public abstract int degreeOf(N node) throws IllegalNodeException, NullPointerException;
 	
 	//------------------------------------------
 	// 			EDGES METODS
@@ -165,10 +166,10 @@ public abstract interface Graph<N, E> {
 	 * @param sourceNode - source Node of the Edge.
 	 * @param targetNode - target Node of the Edge.
 	 * @return {@link Set} - a set of all Edges connecting source Node to target Node.
-	 * @throws IllegalArgumentException if any Node passed is not part of the Graph.
+	 * @throws IllegalNodeException if any Node passed is not part of the Graph.
 	 * @throws NullPointerException if any Node passed is null.
 	 */
-	public abstract Set<E> getAllEdges(N sourceNode, N targetNode) throws IllegalArgumentException, NullPointerException;	
+	public abstract Set<E> getAllEdges(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException;	
 	
 	/**
 	 * Returns an Edge connecting source Node to target Node if such Nodes and such Edge exist in this Graph. Otherwise returns null. </br> 
@@ -178,10 +179,10 @@ public abstract interface Graph<N, E> {
 	 * @param sourceNode - source Node of the Edge.
 	 * @param targetNode - target Node of the Edge.
 	 * @return {@link E} - an Edge connecting source Node to target Node.
-	 * @throws IllegalArgumentException if any Node passed is not part of the Graph.
+	 * @throws IllegalNodeException if any Node passed is not part of the Graph.
 	 * @throws NullPointerException if any Node passed is null.
 	 */
-	public abstract E getEdge(N sourceNode, N targetNode) throws IllegalArgumentException, NullPointerException;
+	public abstract E getEdge(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException;
 	
 	/**
 	 * Returns a set of all Edges touching the specified Node. </br> 
@@ -189,10 +190,10 @@ public abstract interface Graph<N, E> {
 	 * 
 	 * @param node - the Node for which a set of touching Edges is to be returned.
 	 * @return {@link Set} - a set of all Edges touching the specified Node.
-	 * @throws IllegalArgumentException if Node passed is not part of the Graph.
+	 * @throws IllegalNodeException if Node passed is not part of the Graph.
 	 * @throws NullPointerException if Node passed is null.
 	 */
-	public abstract Set<E> getEdges(N node) throws IllegalArgumentException, NullPointerException;
+	public abstract Set<E> getEdges(N node) throws IllegalNodeException, NullPointerException;
 	
 	//TODO javadoc
 	public abstract Set<E> getIncidentEdges(N node);
@@ -207,10 +208,10 @@ public abstract interface Graph<N, E> {
 	 * @param sourceNode - source Node of the Edge.
 	 * @param targetNode - target Node of the Edge.
 	 * @return true if this Graph contains the specified Edge; false otherwise.
-	 * @throws IllegalArgumentException if any Node passed is not part of the Graph.
+	 * @throws IllegalNodeException if any Node passed is not part of the Graph.
 	 * @throws NullPointerException if any Node passed is null.
 	 */
-	public abstract boolean containsEdge(N sourceNode, N targetNode) throws IllegalArgumentException, NullPointerException;
+	public abstract boolean containsEdge(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException;
 	
 	/**
 	 * Returns true if this Graph contains the specified Edge. </br>
@@ -238,11 +239,11 @@ public abstract interface Graph<N, E> {
 	 * @param sourceNode - source Node of the Edge.
 	 * @param targetNode - target Node of the Edge.
 	 * @return {@link E} - the new Edge.
-	 * @throws IllegalArgumentException if source or target Nodes are not found in the graph.
+	 * @throws IllegalNodeException if source or target Nodes are not found in the graph.
 	 * @throws NullPointerException if any of the passed Nodes is null.
 	 * 
 	 */
-	public abstract E createEdge(N sourceNode, N targetNode) throws IllegalArgumentException, NullPointerException;
+	public abstract E createEdge(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException;
 	
 	/**
 	 * 
@@ -261,16 +262,16 @@ public abstract interface Graph<N, E> {
 	 * @param targetNode - target Node of the Edge.
 	 * @param {@link E} - Edge to be added to this Graph.
 	 * @return {@link E} - the new Edge.
-	 * @throws IllegalArgumentException if source or target Nodes are not found in the graph.
+	 * @throws IllegalNodeException if source or target Nodes are not found in the graph.
 	 * @throws NullPointerException if any parameter is null.
 	 */
-	public abstract boolean addEdge(N sourceNode, N targetNode, E edge) throws IllegalArgumentException, NullPointerException;
+	public abstract boolean addEdge(N sourceNode, N targetNode, E edge) throws IllegalNodeException, NullPointerException;
 	
 	//XXX REMOVE EDGES METHODS
 	
 	/**
 	 * Removes all Edges contained in the Edges collection passed. </br> 
-	 * This method will invoke the removeEdge(E edge) method.</br>
+	 * This method will invoke the {@link #removeEdge(Object)} method.</br>
 	 * 
 	 * @param edgesCollection - Edges to be removed from this Graph.
 	 * @return true - if this Graph changed as a result of the call; false otherwise.
@@ -281,15 +282,15 @@ public abstract interface Graph<N, E> {
 	/**
 	 * Removes all the Edges going from the specified source Node to the specified target Node, and returns a set of all removed Edges. </br> 
 	 * If both Nodes exist but no Edge is found, returns an empty set. </br> 
-	 * This method will either invoke the removeEdge(E edge) method, or the removeEdge(N node, N node) method. </br>
+	 * This method will either invoke the {@link #removeEdge(Object)} method, or the {@link #removeEdge(Object, Object))} method. </br>
 	 * 
 	 * @param  sourceNode - source Node of the Edge.
 	 * @param targetNode - target Node of the Edge.
 	 * @return {@link Set} containing the removed Edges.
-	 * @throws IllegalArgumentException if source or target Nodes are not found in the graph.
+	 * @throws IllegalNodeException if source or target Nodes are not found in the graph.
 	 * @throws NullPointerException if any parameter is null.
 	 */
-	public abstract Set<E> removeAllEdges(N sourceNode, N targetNode) throws IllegalArgumentException, NullPointerException;
+	public abstract Set<E> removeAllEdges(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException;
 	
 	/**
 	 * Removes an edge going from source Node to target Node, if such Nodes and such Edge exist in this graph. </br> 
@@ -324,10 +325,10 @@ public abstract interface Graph<N, E> {
 	 * @param graphEdge - Edge of interest.
 	 * @param newEdge - Edge replacement.
 	 * @return {@link E} - the previous Edge.
-	 * @throws IllegalArgumentException if graphEdge is not part of the Graph.
+	 * @throws IllegalNodeException if graphEdge is not part of the Graph.
 	 * @throws NullPointerException if any parameter is null.
 	 */
-	public abstract E replaceEdge(E graphEdge, E newEdge) throws IllegalArgumentException, NullPointerException;
+	public abstract E replaceEdge(E graphEdge, E newEdge) throws IllegalNodeException, NullPointerException;
 	
 	//XXX EDGE PROPERTIES METHODS
 	
