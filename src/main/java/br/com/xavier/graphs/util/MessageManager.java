@@ -18,7 +18,7 @@ public class MessageManager {
 	} 
 	
 	public static void main(String[] args) {
-		String message = MessageManager.getMessage("test");
+		String message = MessageManager.getMessage("parameter.null");
 		System.out.println(message);
 	}
 }
