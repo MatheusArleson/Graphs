@@ -1,7 +1,8 @@
 package br.com.xavier.graphs.events;
 
 import java.util.EventObject;
-import br.com.xavier.graphs.enums.GraphEventType;
+
+import br.com.xavier.graphs.events.enums.GraphEventType;
 
 /**
  * An event which indicates that a Graph has changed. </br>

@@ -1,6 +1,6 @@
 package br.com.xavier.graphs.events;
 
-import br.com.xavier.graphs.enums.GraphEventType;
+import br.com.xavier.graphs.events.enums.GraphEventType;
 
 /**
  * An event which indicates that a Graph Node has changed, or is about to change. </br>

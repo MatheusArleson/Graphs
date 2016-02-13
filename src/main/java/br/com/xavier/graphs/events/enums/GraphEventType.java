@@ -1,4 +1,4 @@
-package br.com.xavier.graphs.enums;
+package br.com.xavier.graphs.events.enums;
 
 public enum GraphEventType {
 	
