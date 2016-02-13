@@ -7,13 +7,17 @@ import br.com.xavier.graphs.exception.IllegalNodeException;
 
 /**
  * 
- * The root interface in the Graph hierarchy. </br> </br>
+ * The root interface in the Graph hierarchy. </br>
+ * </br>
  * 
- * A mathematical graph-theory Graph object G(N,E) contains a set N of Nodes and a set E of Edges. </br> 
+ * A mathematical graph-theory Graph object G(N,E) contains a set N of Nodes and
+ * a set E of Edges. </br>
  * Each Edge E=(n1,n2) in E connects Node n1 to Node n2. </br>
  * </br>
- * Through generics, a Graph can be typed to specific classes for Nodes N and Edges E. </br>
- * Such a Graph can contain Nodes of type N and all sub-types of N; and Edges of type E and all sub-types of E. </br>
+ * Through generics, a Graph can be typed to specific classes for Nodes N and
+ * Edges E. </br>
+ * Such a Graph can contain Nodes of type N and all sub-types of N; and Edges of
+ * type E and all sub-types of E. </br>
  * 
  * @author Matheus Xavier
  *

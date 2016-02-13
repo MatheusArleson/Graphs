@@ -8,8 +8,5 @@ package br.com.xavier.graphs.interfaces;
  *
  */
 public abstract interface UndirectedGraph<N, E> extends Graph<N, E> {
-
-	//TODO FIXME terminar implementacao
-	 public abstract int degreeOf(N node);
 	
 }
