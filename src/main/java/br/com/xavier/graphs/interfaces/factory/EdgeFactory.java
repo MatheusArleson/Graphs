@@ -1,4 +1,4 @@
-package br.com.xavier.graphs.interfaces;
+package br.com.xavier.graphs.interfaces.factory;
 
 /**
  * An Edge factory used for creating new Edges.

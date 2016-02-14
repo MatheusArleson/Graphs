@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Set;
 
 import br.com.xavier.graphs.exception.IllegalNodeException;
+import br.com.xavier.graphs.interfaces.factory.EdgeFactory;
+import br.com.xavier.graphs.interfaces.factory.NodeFactory;
 
 /**
  * 
@@ -29,11 +31,21 @@ public abstract interface Graph<N, E> {
 	//XXX FACTORY METHODS
 	
 	/**
+	 * Returns the Node factory using which this Graph creates new Nodes. </br> 
+	 * </br>
+	 * The Node factory is defined when the Graph is constructed and must not be modified.
+	 * 
+	 * @return {@link NodeFactory} - The Node factory which this Graph uses to create new Nodes.
+	 */
+	public abstract NodeFactory<N> getNodeFactory();
+	
+	
+	/**
 	 * Returns the Edge factory using which this Graph creates new Edges. </br> 
 	 * </br>
 	 * The Edge factory is defined when the Graph is constructed and must not be modified.
 	 * 
-	 * @return {@link EdgeFactory} - The Edge factory which this graph uses to create new Edges.
+	 * @return {@link EdgeFactory} - The Edge factory which this Graph uses to create new Edges.
 	 */
 	public abstract EdgeFactory<N, E> getEdgeFactory();
 

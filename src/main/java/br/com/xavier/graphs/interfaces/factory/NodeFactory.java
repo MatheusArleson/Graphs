@@ -1,4 +1,4 @@
-package br.com.xavier.graphs.interfaces;
+package br.com.xavier.graphs.interfaces.factory;
 
 /**
  * A Node factory used for creating new Nodes. 
@@ -9,6 +9,11 @@ package br.com.xavier.graphs.interfaces;
  */
 public abstract interface NodeFactory<N> {
 	
+	/**
+	 * Creates a new Node.
+	 * 
+	 * @return {@link N} - a new Node.
+	 */
 	public abstract N createNode();
 
 }
