@@ -102,7 +102,7 @@ public abstract interface Graph<N, E> {
 	public abstract boolean removeAllNodes(Collection<? extends N> nodesCollection) throws NullPointerException;
 	
 	/**
-	 * Removes the specified Node from this Graph including all its touching Edges if present. </br>
+	 * Removes the specified Node from this Graph including all its Edges if present. </br>
 	 * More formally, if the Graph contains a Node n1 such that n1.equals(n2), the call removes all Edges that touch n1 and then removes n1 itself.
 	 * If no such n1 is found, the call leaves the Graph unchanged. </br>
 	 * </br>
@@ -111,7 +111,7 @@ public abstract interface Graph<N, E> {
 	 * The Graph will not contain the specified Node once the call returns.</br>
 	 * 
 	 * @param node - Node to be removed from this Graph, if present.
-	 * @return true -  if the Graph contained the specified Node; false otherwise.
+	 * @return true - if the Graph contained the specified Node; false otherwise.
 	 * @throws NullPointerException if Node passed is null.
 	 */
 	public abstract boolean removeNode(N node) throws NullPointerException;
@@ -170,6 +170,17 @@ public abstract interface Graph<N, E> {
 	 * @return {@link Set} - a set of the Edges contained in this Graph.
 	 */
 	public abstract Set<E> getAllEdges();
+	
+	/**
+	 * Return a set of the all Edges wich references the Node passed. </br>
+	 * In undirected graphs, some of the returned Edges may have their source and target Nodes in the opposite order. </br>
+	 * 
+	 * @param node {@link N} - node of interest.
+	 * @return {@link Set} - a set of all Edges connected to the node.
+	 * @throws IllegalNodeException if the Node passed is not part of the Graph.
+	 * @throws NullPointerException if the Node passed is null.
+	 */
+	public abstract Set<E> getAllEdges(N node);
 	
 	/**
 	 * Returns a set of all Edges connecting source Node to target Node if such Nodes exist in this Graph. </br>
@@ -307,6 +318,14 @@ public abstract interface Graph<N, E> {
 	 * @throws NullPointerException if any parameter is null.
 	 */
 	public abstract Set<E> removeAllEdges(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException;
+	
+	/**
+	 * Removes all the Edges related to the Node passed.
+	 * 
+	 * @param node {@link N} - the node of interest.
+	 * @return true if node was removed; false otherwise.
+	 */
+	public abstract boolean removeAllEdges(N node);
 	
 	/**
 	 * Removes an edge going from source Node to target Node, if such Nodes and such Edge exist in this graph. </br> 
