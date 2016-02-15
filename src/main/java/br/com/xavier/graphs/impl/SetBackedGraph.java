@@ -6,11 +6,9 @@ import java.util.Set;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.factory.EdgeFactory;
 import br.com.xavier.graphs.interfaces.factory.NodeFactory;
-import br.com.xavier.graphs.util.messages.MessageManager;
 import br.com.xavier.graphs.util.messages.Util;
-import br.com.xavier.graphs.util.messages.enums.DefaultMessagesKey;
 
-public abstract class SetBackedGraph<N,E> extends AbstractGraph<N, E> {
+public abstract class SetBackedGraph<N,E> extends AbstractGraph<N,E> {
 	
 	//XXX CLASS PROPERTIES
 	private Set<N> nodesSet;
@@ -33,9 +31,7 @@ public abstract class SetBackedGraph<N,E> extends AbstractGraph<N, E> {
 		this.edgesSet = new LinkedHashSet<E>();
 	}
 	
-	//XXX OVERRIDE METHODS
-	
-	//NODES METHODS
+	//XXX OVERRIDE NODES METHODS
 	
 	@Override
 	public Set<N> getAllNodes() {
@@ -45,7 +41,6 @@ public abstract class SetBackedGraph<N,E> extends AbstractGraph<N, E> {
 	@Override
 	public boolean containsNode(N node) throws NullPointerException {
 		Util.handleNullParameter(node);
-		
 		return nodesSet.contains(node); 
 	}
 	
@@ -72,35 +67,33 @@ public abstract class SetBackedGraph<N,E> extends AbstractGraph<N, E> {
 		return nodesSet.remove(node);
 	}
 	
-	@Override
-	public N replaceNode(N graphNode, N newNode) throws IllegalNodeException, NullPointerException {
-		Util.handleNullParameter(graphNode, newNode);
-		
-		//1- create the new node
-		//2- replace the edges references to the new node
-		//3- remove the old node
-		
-		Set<E> nodeEdgesSet = getAllEdges(graphNode);
-		
-		// TODO Auto-generated method stub
-		return null;
-	}
+	//XXX OVERRIDE EDGES METHODS
 	
-	@Override
-	public boolean areAdjacents(N n1, N n2) throws IllegalNodeException, NullPointerException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	@Override
-	public int degreeOf(N node) throws IllegalNodeException, NullPointerException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	//EDGES METHODS
 	@Override
 	public Set<E> getAllEdges() {
 		return edgesSet;
+	}
+	
+	@Override
+	public boolean containsEdge(E edge) throws NullPointerException {
+		Util.handleNullParameter(edge);
+		return edgesSet.contains(edge);
+	}
+	
+	@Override
+	public boolean addEdge(N sourceNode, N targetNode, E edge) throws IllegalNodeException, NullPointerException {
+		Util.handleNullParameter(sourceNode, targetNode, edge);
+		
+		if(!containsNode(sourceNode) || !containsNode(targetNode)){
+			Util.handleIllegalNode();
+		}
+		
+		if(containsEdge(edge)){
+			return false;
+		}
+		
+		
+		
+		return false;
 	}
 }

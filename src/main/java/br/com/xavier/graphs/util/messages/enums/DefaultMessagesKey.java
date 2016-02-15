@@ -11,7 +11,8 @@ public enum DefaultMessagesKey {
 	
 	//XXX ENUM MEMBERS
 	MESSAGE_KEY_NOT_FOUND("message.notfound"),
-	PARAMETER_NULL("parameter.null");
+	PARAMETER_NULL("parameter.null"),
+	ILLEGAL_NODE("node.illegal");
 	
 	//XXX ENUM PROPERTIES
 	private final String key;
