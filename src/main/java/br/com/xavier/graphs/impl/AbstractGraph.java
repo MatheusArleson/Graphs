@@ -69,6 +69,14 @@ public abstract class AbstractGraph<N,E> implements Graph<N, E> {
 	//XXX OVERRIDE EDGES METHODS
 	
 	@Override
+	public boolean addEdge(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException {
+		Util.handleNullParameter(sourceNode, targetNode);
+		
+		E edge = fabricateEdge(sourceNode, targetNode);
+		return addEdge(sourceNode, targetNode, edge);
+	}
+	
+	@Override
 	public boolean removeAllEdges(Set<? extends E> edgesCollection) throws NullPointerException {
 		Util.handleNullParameter(edgesCollection);
 		

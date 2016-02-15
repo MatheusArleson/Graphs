@@ -3,7 +3,6 @@ package br.com.xavier.graphs.impl;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.factory.EdgeFactory;
 import br.com.xavier.graphs.interfaces.factory.NodeFactory;
 import br.com.xavier.graphs.util.messages.Util;
@@ -78,22 +77,5 @@ public abstract class SetBackedGraph<N,E> extends AbstractGraph<N,E> {
 	public boolean containsEdge(E edge) throws NullPointerException {
 		Util.handleNullParameter(edge);
 		return edgesSet.contains(edge);
-	}
-	
-	@Override
-	public boolean addEdge(N sourceNode, N targetNode, E edge) throws IllegalNodeException, NullPointerException {
-		Util.handleNullParameter(sourceNode, targetNode, edge);
-		
-		if(!containsNode(sourceNode) || !containsNode(targetNode)){
-			Util.handleIllegalNode();
-		}
-		
-		if(containsEdge(edge)){
-			return false;
-		}
-		
-		
-		
-		return false;
 	}
 }
