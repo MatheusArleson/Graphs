@@ -1,8 +1,6 @@
-package br.com.xavier.graphs.interfaces;
+package br.com.xavier.graphs.interfaces.listeners;
 
-import br.com.xavier.graphs.interfaces.listeners.EdgeListener;
-import br.com.xavier.graphs.interfaces.listeners.GraphListener;
-import br.com.xavier.graphs.interfaces.listeners.NodeListener;
+import br.com.xavier.graphs.interfaces.Graph;
 
 /**
  * A graph that supports listeners on structural change events.

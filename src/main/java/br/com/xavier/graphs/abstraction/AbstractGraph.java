@@ -1,4 +1,4 @@
-package br.com.xavier.graphs.impl;
+package br.com.xavier.graphs.abstraction;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

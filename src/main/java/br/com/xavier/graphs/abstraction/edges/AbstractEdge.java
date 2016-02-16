@@ -1,4 +1,4 @@
-package br.com.xavier.graphs.impl.edges;
+package br.com.xavier.graphs.abstraction.edges;
 
 import java.io.Serializable;
 
