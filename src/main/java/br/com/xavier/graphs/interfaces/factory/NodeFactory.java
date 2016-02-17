@@ -7,14 +7,13 @@ import br.com.xavier.graphs.interfaces.Node;
  * 
  * @author Matheus Xavier
  *
- * @param <N> Nodes type class.
  */
 public abstract interface NodeFactory {
 	
 	/**
 	 * Creates a new Node.
 	 * 
-	 * @return {@link N} - a new Node.
+	 * @return {@link Node} - a new Node.
 	 */
 	public abstract Node createNode();
 

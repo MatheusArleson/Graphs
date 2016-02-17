@@ -11,5 +11,5 @@ public abstract class SimpleGraph extends SetBackedGraph {
 	public SimpleGraph(NodeFactory nodeFactory, EdgeFactory edgeFactory) {
 		super(nodeFactory, edgeFactory, LOOPS_ALLOWED, MULTIPLE_EDGES_ALLOWED);
 	}
-
+	
 }

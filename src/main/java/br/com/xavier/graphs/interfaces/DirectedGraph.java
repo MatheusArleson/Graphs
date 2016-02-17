@@ -3,6 +3,7 @@ package br.com.xavier.graphs.interfaces;
 import java.util.Set;
 
 import br.com.xavier.graphs.exception.IllegalNodeException;
+import br.com.xavier.graphs.interfaces.edges.Edge;
 
 /**
  * A graph whose all edges are directed. </br>

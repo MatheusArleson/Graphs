@@ -1,6 +1,8 @@
 package br.com.xavier.graphs.util.messages;
 
 import br.com.xavier.graphs.exception.IllegalNodeException;
+import br.com.xavier.graphs.interfaces.Graph;
+import br.com.xavier.graphs.interfaces.Node;
 import br.com.xavier.graphs.util.messages.enums.DefaultMessagesKey;
 
 public class Util {
@@ -11,15 +13,39 @@ public class Util {
 	private Util(){}
 
 	//XXX METHODS
-	public static void handleNullParameter(Object... objects){
+	public static void checkNullParameter(Object...objects){
 		for (Object object : objects) {
 			if(object == null){
-				throw new NullPointerException(MessageManager.getDefaultMessage(DefaultMessagesKey.PARAMETER_NULL));
+				handleNullParameter();
+			}
+		}
+	}
+
+	private static void handleNullParameter() {
+		throw new NullPointerException(MessageManager.getDefaultMessage(DefaultMessagesKey.PARAMETER_NULL));
+	}
+	
+	public static void checkIllegalNode(Graph graph, Node...nodes){
+		if(graph == null){
+			handleNullParameter();
+		}
+		
+		if(nodes == null){
+			handleNullParameter();
+		}
+		
+		for (Node node : nodes) {
+			if(node == null){
+				handleNullParameter();
+			}
+			
+			if(!graph.containsNode(node)){
+				handleIllegalNode();
 			}
 		}
 	}
 	
-	public static void handleIllegalNode(){
+	private static void handleIllegalNode(){
 		throw new IllegalNodeException(MessageManager.getDefaultMessage(DefaultMessagesKey.ILLEGAL_NODE));
 	}
 }

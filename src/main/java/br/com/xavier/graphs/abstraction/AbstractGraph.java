@@ -1,12 +1,13 @@
 package br.com.xavier.graphs.abstraction;
 
+import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.com.xavier.graphs.exception.IllegalNodeException;
-import br.com.xavier.graphs.interfaces.Edge;
 import br.com.xavier.graphs.interfaces.Graph;
 import br.com.xavier.graphs.interfaces.Node;
+import br.com.xavier.graphs.interfaces.edges.Edge;
 import br.com.xavier.graphs.interfaces.factory.EdgeFactory;
 import br.com.xavier.graphs.interfaces.factory.NodeFactory;
 import br.com.xavier.graphs.util.messages.Util;
@@ -48,7 +49,7 @@ public abstract class AbstractGraph implements Graph {
 	
 	@Override
 	public boolean removeAllNodes(Set<Node> nodesSet) throws NullPointerException {
-		Util.handleNullParameter(nodesSet);
+		Util.checkNullParameter(nodesSet);
 
 		boolean modified = false;
 		Set<Node> invalidNodesSet = new LinkedHashSet<Node>();
@@ -69,16 +70,8 @@ public abstract class AbstractGraph implements Graph {
 	//XXX OVERRIDE EDGES METHODS
 	
 	@Override
-	public boolean addEdge(Node sourceNode, Node targetNode) throws IllegalNodeException, NullPointerException {
-		Util.handleNullParameter(sourceNode, targetNode);
-		
-		Edge edge = fabricateEdge(sourceNode, targetNode);
-		return addEdge(sourceNode, targetNode, edge);
-	}
-	
-	@Override
 	public boolean removeAllEdges(Set<Edge> edgesSet) throws NullPointerException {
-		Util.handleNullParameter(edgesSet);
+		Util.checkNullParameter(edgesSet);
 		
 		boolean modified = false;
 		Set<Edge> invalidEdges = new LinkedHashSet<Edge>();
@@ -98,7 +91,7 @@ public abstract class AbstractGraph implements Graph {
 	
 	@Override
 	public Set<Edge> removeAllEdges(Node sourceNode, Node targetNode) throws IllegalNodeException, NullPointerException {
-		Util.handleNullParameter(sourceNode, targetNode);
+		Util.checkNullParameter(sourceNode, targetNode);
 		
 		Set<Edge> allEdges = getAllEdges(sourceNode, targetNode);
 		if (allEdges == null || allEdges.isEmpty()) {
@@ -111,7 +104,7 @@ public abstract class AbstractGraph implements Graph {
 	
 	@Override
 	public Set<Edge> removeAllEdges(Node node) {
-		Util.handleNullParameter(node);
+		Util.checkNullParameter(node);
 		
 		Set<Edge> allEdges = getAllEdges(node);
 		if (allEdges == null || allEdges.isEmpty()) {
@@ -125,25 +118,18 @@ public abstract class AbstractGraph implements Graph {
 	//XXX ABSTRACT METHODS
 	
 	/**
-	 * Adds the specified Edge to this graph, going from the source Node to the target Node. </br>
-	 * More formally, adds the specified Edge e, to this Graph if this Graph contains no edge e2 such that e2.equals(e). </br>
-	 * If this Graph already contains such an Edge, the call leaves this Graph unchanged and returns false. </br>
-	 * </br>
-	 * Graphs may not allow edge-multiplicity. In such cases, if the Graph already contains an Edge from the specified source Node to the specified target Node, 
-	 * than this method does not change the Graph and returns false. </br>
-	 * If the Edge was added to the Graph, returns true.
-	 * </br>
-	 * The source and target Nodes must already be contained in this graph. </br>
-	 * If they are not found in graph IllegalNodeException is thrown.</br>
+	 * Adds a new Node to this Graph. </br>
 	 * 
-	 * @param sourceNode {@link Node} - source Node of the Edge.
-	 * @param targetNode {@link Node} - target Node of the Edge.
-	 * @param {@link Edge} - Edge to be added to this Graph.
-	 * @return {@link Edge} - the new Edge.
-	 * @throws IllegalNodeException if source or target Nodes are not found in the Graph.
-	 * @throws NullPointerException if any parameter is null.
+	 * @return true - if is added; false otherwise.
 	 */
-	public abstract boolean addEdge(Node sourceNode, Node targetNode, Edge edge) throws IllegalNodeException, NullPointerException;
+	protected abstract boolean addNode(); 
+	
+	/**
+	 * Adds a new Edge to this Graph. </br>
+	 * 
+	 * @return true - if is added; false otherwise.
+	 */
+	protected abstract boolean addEdge(Edge edge); 
 	
 	/**
 	 * Returns true if this Graph contains the specified Edge. </br>
@@ -184,14 +170,10 @@ public abstract class AbstractGraph implements Graph {
 	 * @throws NullPointerException if any of the passed Nodes is null.
 	 * 
 	 */
-	protected Edge fabricateEdge(Node sourceNode, Node targetNode) throws IllegalNodeException, NullPointerException {
-		Util.handleNullParameter(sourceNode, targetNode);
+	protected Edge fabricateEdge(Node sourceNode, Node targetNode, BigDecimal weight) throws IllegalNodeException, NullPointerException {
+		Util.checkIllegalNode(this, sourceNode, targetNode);
 		
-		if(!containsNode(sourceNode) || !containsNode(targetNode)){
-			Util.handleIllegalNode();
-		}
-		
-		Edge edge = edgeFactory.createEdge(sourceNode, targetNode);
+		Edge edge = edgeFactory.createEdge(sourceNode, targetNode, weight);
 		if(!containsEdge(edge)){
 			return edge;
 		} else {

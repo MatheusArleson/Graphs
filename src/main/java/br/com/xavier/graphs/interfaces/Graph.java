@@ -3,6 +3,7 @@ package br.com.xavier.graphs.interfaces;
 import java.util.Set;
 
 import br.com.xavier.graphs.exception.IllegalNodeException;
+import br.com.xavier.graphs.interfaces.edges.Edge;
 
 /**
  * 
@@ -88,19 +89,6 @@ public abstract interface Graph {
 	 * @throws NullPointerException if Node passed is null.
 	 */
 	public abstract boolean removeNode(Node node) throws NullPointerException;
-	
-	//XXX REPLACE NODES METHODS
-	
-	/**
-	 * Replace an Node with a new one.
-	 * 
-	 * @param graphNode {@link Node} - Node of interest.
-	 * @param newNode {@link Node} - Node replacement.
-	 * @return {@link N} - the previous Node.
-	 * @throws IllegalNodeException if graphNode is not part of the Graph.
-	 * @throws NullPointerException if any parameter is null.
-	 */
-	public abstract Node replaceNode(Node graphNode, Node newNode) throws IllegalNodeException, NullPointerException;
 	
 	//XXX CHECK NODES METHODS
 	
@@ -254,18 +242,5 @@ public abstract interface Graph {
 	 * @throws NullPointerException if Edge parameter is null.
 	 */
 	public abstract boolean removeEdge(Edge edge) throws NullPointerException;
-	
-	//XXX REPLACE EDGES METHODS
-	
-	/**
-	 * Replace an Edge with a new one.
-	 * 
-	 * @param graphEdge {@link Edge} - Edge of interest.
-	 * @param newEdge {@link Edge} - Edge replacement.
-	 * @return {@link Edge} - the previous Edge.
-	 * @throws IllegalNodeException if graphEdge is not part of the Graph.
-	 * @throws NullPointerException if any parameter is null.
-	 */
-	public abstract Edge replaceEdge(Edge graphEdge, Edge newEdge) throws IllegalNodeException, NullPointerException;
 	
 }
