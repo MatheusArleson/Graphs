@@ -4,7 +4,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.com.xavier.graphs.exception.IllegalNodeException;
+import br.com.xavier.graphs.interfaces.Edge;
 import br.com.xavier.graphs.interfaces.Graph;
+import br.com.xavier.graphs.interfaces.Node;
 import br.com.xavier.graphs.interfaces.factory.EdgeFactory;
 import br.com.xavier.graphs.interfaces.factory.NodeFactory;
 import br.com.xavier.graphs.util.messages.Util;
@@ -15,14 +17,12 @@ import br.com.xavier.graphs.util.messages.Util;
  * 
  * @author Matheus Xavier
  *
- * @param <N> Nodes type Class
- * @param <E> Edge type class
  */
-public abstract class AbstractGraph<N,E> implements Graph<N, E> {
+public abstract class AbstractGraph implements Graph {
 	
 	//XXX CLASS PROPERTIES
-	private final NodeFactory<N> nodeFactory;
-	private final EdgeFactory<N,E> edgeFactory;
+	private final NodeFactory nodeFactory;
+	private final EdgeFactory edgeFactory;
 	
 	private final boolean loopsAllowed;
 	private final boolean multipleEdgesAllowed;
@@ -36,7 +36,7 @@ public abstract class AbstractGraph<N,E> implements Graph<N, E> {
 	 * @param loopsAllowed - whether to allow Edges that are self-loops or not.
 	 * @param multipleEdgesAllowed - whether to allow existence of multiple - (equivalent) Edges - or not.
 	 */
-	public AbstractGraph(NodeFactory<N> nodeFactory, EdgeFactory<N, E> edgeFactory, boolean loopsAllowed, boolean multipleEdgesAllowed) {
+	public AbstractGraph(NodeFactory nodeFactory, EdgeFactory edgeFactory, boolean loopsAllowed, boolean multipleEdgesAllowed) {
 		super();
 		this.nodeFactory = nodeFactory;
 		this.edgeFactory = edgeFactory;
@@ -47,13 +47,13 @@ public abstract class AbstractGraph<N,E> implements Graph<N, E> {
 	//XXX OVERRIDE NODES METHODS
 	
 	@Override
-	public boolean removeAllNodes(Set<? extends N> nodesCollection) throws NullPointerException {
-		Util.handleNullParameter(nodesCollection);
+	public boolean removeAllNodes(Set<Node> nodesSet) throws NullPointerException {
+		Util.handleNullParameter(nodesSet);
 
 		boolean modified = false;
-		Set<N> invalidNodesSet = new LinkedHashSet<N>();
+		Set<Node> invalidNodesSet = new LinkedHashSet<Node>();
 		
-		for (N node : nodesCollection) {
+		for (Node node : nodesSet) {
 			if(!containsNode(node)){
 				invalidNodesSet.add(node);
 				continue;
@@ -62,28 +62,28 @@ public abstract class AbstractGraph<N,E> implements Graph<N, E> {
 			modified |= removeNode(node);
 		}
 
-		nodesCollection.removeAll(invalidNodesSet);
+		nodesSet.removeAll(invalidNodesSet);
 		return modified;
 	}
 
 	//XXX OVERRIDE EDGES METHODS
 	
 	@Override
-	public boolean addEdge(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException {
+	public boolean addEdge(Node sourceNode, Node targetNode) throws IllegalNodeException, NullPointerException {
 		Util.handleNullParameter(sourceNode, targetNode);
 		
-		E edge = fabricateEdge(sourceNode, targetNode);
+		Edge edge = fabricateEdge(sourceNode, targetNode);
 		return addEdge(sourceNode, targetNode, edge);
 	}
 	
 	@Override
-	public boolean removeAllEdges(Set<? extends E> edgesCollection) throws NullPointerException {
-		Util.handleNullParameter(edgesCollection);
+	public boolean removeAllEdges(Set<Edge> edgesSet) throws NullPointerException {
+		Util.handleNullParameter(edgesSet);
 		
 		boolean modified = false;
-		Set<E> invalidEdges = new LinkedHashSet<E>();
+		Set<Edge> invalidEdges = new LinkedHashSet<Edge>();
 		
-		for (E edge: edgesCollection) {
+		for (Edge edge: edgesSet) {
 			if(!containsEdge(edge)){
 				invalidEdges.add(edge);
 				continue;
@@ -92,17 +92,17 @@ public abstract class AbstractGraph<N,E> implements Graph<N, E> {
 			modified |= removeEdge(edge);
 		}
 	    
-		edgesCollection.removeAll(invalidEdges);
+		edgesSet.removeAll(invalidEdges);
 	    return modified;
 	}
 	
 	@Override
-	public Set<E> removeAllEdges(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException {
+	public Set<Edge> removeAllEdges(Node sourceNode, Node targetNode) throws IllegalNodeException, NullPointerException {
 		Util.handleNullParameter(sourceNode, targetNode);
 		
-		Set<E> allEdges = getAllEdges(sourceNode, targetNode);
+		Set<Edge> allEdges = getAllEdges(sourceNode, targetNode);
 		if (allEdges == null || allEdges.isEmpty()) {
-			return new LinkedHashSet<E>();
+			return new LinkedHashSet<Edge>();
 		}
 		
 		removeAllEdges(allEdges);
@@ -110,12 +110,12 @@ public abstract class AbstractGraph<N,E> implements Graph<N, E> {
 	}
 	
 	@Override
-	public Set<E> removeAllEdges(N node) {
+	public Set<Edge> removeAllEdges(Node node) {
 		Util.handleNullParameter(node);
 		
-		Set<E> allEdges = getAllEdges(node);
+		Set<Edge> allEdges = getAllEdges(node);
 		if (allEdges == null || allEdges.isEmpty()) {
-			return new LinkedHashSet<E>();
+			return new LinkedHashSet<Edge>();
 		}
 		
 		removeAllEdges(allEdges);
@@ -136,33 +136,33 @@ public abstract class AbstractGraph<N,E> implements Graph<N, E> {
 	 * The source and target Nodes must already be contained in this graph. </br>
 	 * If they are not found in graph IllegalNodeException is thrown.</br>
 	 * 
-	 * @param sourceNode - source Node of the Edge.
-	 * @param targetNode - target Node of the Edge.
-	 * @param {@link E} - Edge to be added to this Graph.
-	 * @return {@link E} - the new Edge.
+	 * @param sourceNode {@link Node} - source Node of the Edge.
+	 * @param targetNode {@link Node} - target Node of the Edge.
+	 * @param {@link Edge} - Edge to be added to this Graph.
+	 * @return {@link Edge} - the new Edge.
 	 * @throws IllegalNodeException if source or target Nodes are not found in the Graph.
 	 * @throws NullPointerException if any parameter is null.
 	 */
-	public abstract boolean addEdge(N sourceNode, N targetNode, E edge) throws IllegalNodeException, NullPointerException;
+	public abstract boolean addEdge(Node sourceNode, Node targetNode, Edge edge) throws IllegalNodeException, NullPointerException;
 	
 	/**
 	 * Returns true if this Graph contains the specified Edge. </br>
 	 * More formally, returns true if and only if this Graph contains an Edge e1 such that e1.equals(e2). </br> 
 	 * 
-	 * @param edge - Edge whose presence in this Graph is to be tested.
+	 * @param edge {@link Edge}- Edge whose presence in this Graph is to be tested.
 	 * @return true if this Graph contains the specified Edge; false otherwise.
 	 * @throws NullPointerException if Edge passed is null.
 	 */
-	protected abstract boolean containsEdge(E edge) throws NullPointerException;
+	protected abstract boolean containsEdge(Edge edge) throws NullPointerException;
 	
 	//XXX FACTORY METHODS
 	
 	/**
 	 * Uses the {@link NodeFactory} to generate a Node.
 	 * 
-	 * @return {@link N} - the generated Node
+	 * @return {@link Node} - the generated Node
 	 */
-	protected N fabricateNode() {
+	protected Node fabricateNode() {
 		return nodeFactory.createNode();
 	}
 	
@@ -177,21 +177,21 @@ public abstract class AbstractGraph<N,E> implements Graph<N, E> {
 	 * For the new Edge to be added e must not be equal to any other Edge the Graph. More formally, the Graph must not contain any Edge e2 such that e2.equals(e).</br> 
 	 * If such e2 is found then the newly created Edge e is abandoned, the method leaves this Graph unchanged returns null.</br>
 	 * 
-	 * @param sourceNode - source Node of the Edge.
-	 * @param targetNode - target Node of the Edge.
+	 * @param sourceNode {@link Node} - source Node of the Edge.
+	 * @param targetNode {@link Node} - target Node of the Edge.
 	 * @return {@link E} - the new Edge.
 	 * @throws IllegalNodeException if source or target Nodes are not found in the graph.
 	 * @throws NullPointerException if any of the passed Nodes is null.
 	 * 
 	 */
-	protected E fabricateEdge(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException {
+	protected Edge fabricateEdge(Node sourceNode, Node targetNode) throws IllegalNodeException, NullPointerException {
 		Util.handleNullParameter(sourceNode, targetNode);
 		
 		if(!containsNode(sourceNode) || !containsNode(targetNode)){
 			Util.handleIllegalNode();
 		}
 		
-		E edge = edgeFactory.createEdge(sourceNode, targetNode);
+		Edge edge = edgeFactory.createEdge(sourceNode, targetNode);
 		if(!containsEdge(edge)){
 			return edge;
 		} else {

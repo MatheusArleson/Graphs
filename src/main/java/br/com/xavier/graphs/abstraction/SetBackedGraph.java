@@ -3,15 +3,17 @@ package br.com.xavier.graphs.abstraction;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import br.com.xavier.graphs.interfaces.Edge;
+import br.com.xavier.graphs.interfaces.Node;
 import br.com.xavier.graphs.interfaces.factory.EdgeFactory;
 import br.com.xavier.graphs.interfaces.factory.NodeFactory;
 import br.com.xavier.graphs.util.messages.Util;
 
-public abstract class SetBackedGraph<N,E> extends AbstractGraph<N,E> {
+public abstract class SetBackedGraph extends AbstractGraph {
 	
 	//XXX CLASS PROPERTIES
-	private Set<N> nodesSet;
-	private Set<E> edgesSet;
+	private Set<Node> nodesSet;
+	private Set<Edge> edgesSet;
 	
 	//XXX CONSTRUCTOR
 	
@@ -23,28 +25,28 @@ public abstract class SetBackedGraph<N,E> extends AbstractGraph<N,E> {
 	 * @param loopsAllowed - whether to allow Edges that are self-loops or not.
 	 * @param multipleEdgesAllowed - whether to allow existence of multiple - (equivalent) Edges - or not.
 	 */
-	public SetBackedGraph(NodeFactory<N> nodeFactory, EdgeFactory<N, E> edgeFactory, boolean loopsAllowed, boolean multipleEdgesAllowed) {
+	public SetBackedGraph(NodeFactory nodeFactory, EdgeFactory edgeFactory, boolean loopsAllowed, boolean multipleEdgesAllowed) {
 		super(nodeFactory, edgeFactory, loopsAllowed, multipleEdgesAllowed);
 		
-		this.nodesSet = new LinkedHashSet<N>();
-		this.edgesSet = new LinkedHashSet<E>();
+		this.nodesSet = new LinkedHashSet<Node>();
+		this.edgesSet = new LinkedHashSet<Edge>();
 	}
 	
 	//XXX OVERRIDE NODES METHODS
 	
 	@Override
-	public Set<N> getAllNodes() {
+	public Set<Node> getAllNodes() {
 		return nodesSet;
 	}
 	
 	@Override
-	public boolean containsNode(N node) throws NullPointerException {
+	public boolean containsNode(Node node) throws NullPointerException {
 		Util.handleNullParameter(node);
 		return nodesSet.contains(node); 
 	}
 	
 	@Override
-	public boolean addNode(N node) throws NullPointerException {
+	public boolean addNode(Node node) throws NullPointerException {
 		Util.handleNullParameter(node);
 		
 		if(!containsNode(node)){
@@ -55,7 +57,7 @@ public abstract class SetBackedGraph<N,E> extends AbstractGraph<N,E> {
 	}
 	
 	@Override
-	public boolean removeNode(N node) throws NullPointerException {
+	public boolean removeNode(Node node) throws NullPointerException {
 		Util.handleNullParameter(node);
 		
 		if(!containsNode(node)){
@@ -69,12 +71,12 @@ public abstract class SetBackedGraph<N,E> extends AbstractGraph<N,E> {
 	//XXX OVERRIDE EDGES METHODS
 	
 	@Override
-	public Set<E> getAllEdges() {
+	public Set<Edge> getAllEdges() {
 		return edgesSet;
 	}
 	
 	@Override
-	public boolean containsEdge(E edge) throws NullPointerException {
+	public boolean containsEdge(Edge edge) throws NullPointerException {
 		Util.handleNullParameter(edge);
 		return edgesSet.contains(edge);
 	}

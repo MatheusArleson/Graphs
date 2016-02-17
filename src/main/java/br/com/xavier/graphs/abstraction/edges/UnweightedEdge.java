@@ -1,10 +1,12 @@
 package br.com.xavier.graphs.abstraction.edges;
 
-public abstract class UnweightedEdge<N,E> extends AbstractEdge<N, E> {
+import br.com.xavier.graphs.interfaces.Node;
+
+public abstract class UnweightedEdge extends AbstractEdge {
 
 	private static final long serialVersionUID = -217630814014608015L;
 
-	public UnweightedEdge(N source, N target) {
+	public UnweightedEdge(Node source, Node target) {
 		super(source, target, 1);
 	}
 }

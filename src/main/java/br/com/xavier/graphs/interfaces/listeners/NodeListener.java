@@ -14,29 +14,28 @@ import br.com.xavier.graphs.events.NodeChangeEvent;
  * 
  * @author Matheus Xavier
  *
- * @param <N> Nodes type Class
  */
-public abstract interface NodeListener<N> extends EventListener {
+public abstract interface NodeListener extends EventListener {
 	
 	/**
-	 * Notifies that an Node has been added to the Graph.
+	 * Notifies that an {@link Node} has been added to the Graph.
 	 * 
 	 * @param nodeChangeEvent {@link NodeChangeEvent} - the event.
 	 */
-	public abstract void nodeAdded(NodeChangeEvent<N> nodeChangeEvent);
+	public abstract void nodeAdded(NodeChangeEvent nodeChangeEvent);
 	
 	/**
-	 * Notifies that an Node has been removed from the Graph.
+	 * Notifies that an {@link Node} has been removed from the Graph.
 	 * 
 	 * @param edgeChangeEvent {@link NodeChangeEvent} - the event.
 	 */
-	public abstract void nodeRemoved(NodeChangeEvent<N> nodeChangeEvent);
+	public abstract void nodeRemoved(NodeChangeEvent nodeChangeEvent);
 	
 	/**
-	 * Notifies that an Node has been added to the Graph.
+	 * Notifies that an {@link Node} has been added to the Graph.
 	 * 
 	 * @param edgeChangeEvent {@link NodeChangeEvent} - the event.
 	 */
-	public abstract void nodeChanged(NodeChangeEvent<N> nodeChangeEvent);
+	public abstract void nodeChanged(NodeChangeEvent nodeChangeEvent);
 
 }

@@ -7,6 +7,6 @@ package br.com.xavier.graphs.interfaces;
  * @author Matheus Arleson
  *
  */
-public abstract interface UndirectedGraph<N, E> extends Graph<N, E> {
+public abstract interface UndirectedGraph extends Graph {
 	
 }

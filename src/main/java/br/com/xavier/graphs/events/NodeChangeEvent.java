@@ -1,6 +1,7 @@
 package br.com.xavier.graphs.events;
 
 import br.com.xavier.graphs.events.enums.GraphEventType;
+import br.com.xavier.graphs.interfaces.Node;
 
 /**
  * An event which indicates that a Graph Node has changed, or is about to change. </br>
@@ -10,10 +11,8 @@ import br.com.xavier.graphs.events.enums.GraphEventType;
  * 
  * @author Matheus Xavier
  *
- * @param <N> Nodes type Class
- * @param <E> Edges type Class
  */
-public class NodeChangeEvent<N> extends GraphChangeEvent {
+public class NodeChangeEvent extends GraphChangeEvent {
 
 	private static final long serialVersionUID = -5405440464011171681L;
 	
@@ -22,10 +21,10 @@ public class NodeChangeEvent<N> extends GraphChangeEvent {
 	/**
 	 * Constructor for EdgeChangeEvent.
 	 * 
-	 * @param eventSource {@link N} - the source of this event.
+	 * @param eventSource {@link Node} - the source of this event.
 	 * @param type {@link GraphEventType} - the event type of this event.
 	 */
-	public NodeChangeEvent(N eventSourceNode, GraphEventType type) {
+	public NodeChangeEvent(Node eventSourceNode, GraphEventType type) {
 		super(eventSourceNode, type);
 	}
 	
@@ -36,8 +35,7 @@ public class NodeChangeEvent<N> extends GraphChangeEvent {
 	 * 
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
-	public N getSource() {
-		return (N) super.getSource();
+	public Node getSource() {
+		return (Node) super.getSource();
 	}
 }

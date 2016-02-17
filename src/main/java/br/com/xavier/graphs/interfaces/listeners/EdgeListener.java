@@ -15,27 +15,27 @@ import br.com.xavier.graphs.events.EdgeChangeEvent;
  *
  * @param <E> Edges type Class
  */
-public abstract interface EdgeListener<N,E> extends EventListener {
+public abstract interface EdgeListener extends EventListener {
 	
 	/**
-	 * Notifies that an Edge has been added to the Graph.
+	 * Notifies that an {@link Edge} has been added to the Graph.
 	 * 
 	 * @param edgeChangeEvent {@link EdgeChangeEvent} - the event.
 	 */
-	public abstract void edgeAdded(EdgeChangeEvent<N,E> edgeChangeEvent);
+	public abstract void edgeAdded(EdgeChangeEvent edgeChangeEvent);
 	
 	/**
-	 * Notifies that an Edge has been removed from the Graph.
+	 * Notifies that an {@link Edge} has been removed from the Graph.
 	 * 
 	 * @param edgeChangeEvent {@link EdgeChangeEvent} - the event.
 	 */
-	public abstract void edgeRemoved(EdgeChangeEvent<N,E> edgeChangeEvent);
+	public abstract void edgeRemoved(EdgeChangeEvent edgeChangeEvent);
 	
 	/**
-	 * Notifies that an Edge has been added to the Graph.
+	 * Notifies that an {@link Edge} has been added to the Graph.
 	 * 
 	 * @param edgeChangeEvent {@link EdgeChangeEvent} - the event.
 	 */
-	public abstract void edgeChanged(EdgeChangeEvent<N,E> edgeChangeEvent);
+	public abstract void edgeChanged(EdgeChangeEvent edgeChangeEvent);
 
 }

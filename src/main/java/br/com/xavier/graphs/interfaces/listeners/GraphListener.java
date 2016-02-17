@@ -13,10 +13,8 @@ import javax.swing.event.EventListenerList;
  * 
  * @author Matheus Xavier
  *
- * @param <N> Nodes type Class
- * @param <E> Edges type Class
  */
-public abstract class GraphListener<N, E> extends EventListenerList implements NodeListener<N>, EdgeListener<N,E>{
+public abstract class GraphListener extends EventListenerList implements NodeListener, EdgeListener{
 
 	private static final long serialVersionUID = -1907819787435642385L;
 

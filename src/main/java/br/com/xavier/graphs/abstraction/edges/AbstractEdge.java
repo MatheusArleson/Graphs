@@ -3,18 +3,19 @@ package br.com.xavier.graphs.abstraction.edges;
 import java.io.Serializable;
 
 import br.com.xavier.graphs.interfaces.Edge;
+import br.com.xavier.graphs.interfaces.Node;
 
-public abstract class AbstractEdge<N,E> implements Edge<N, E>, Serializable {
+public abstract class AbstractEdge implements Edge, Serializable {
 	
 	private static final long serialVersionUID = -321501262100391879L;
 	
 	//XXX CLASS PROPERTIES
-	private final N source;
-	private final N target;
+	private final Node source;
+	private final Node target;
 	private final int weight;
 	
 	//XXX CONSTRUCTOR
-	public AbstractEdge(N source, N target, int weight) {
+	public AbstractEdge(Node source, Node target, int weight) {
 		super();
 		this.source = source;
 		this.target = target;
@@ -34,7 +35,6 @@ public abstract class AbstractEdge<N,E> implements Edge<N, E>, Serializable {
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
 	public boolean equals(Object obj) {
 		if (this == obj) { return true; }
 		if (obj == null) { return false; }
@@ -56,18 +56,18 @@ public abstract class AbstractEdge<N,E> implements Edge<N, E>, Serializable {
 	}
 	
 	@Override
-	public N getEdgeSource(E edge) throws NullPointerException {
+	public Node getEdgeSource(Edge edge) throws NullPointerException {
 		return source;
 	}
 	
 
 	@Override
-	public N getEdgeTarget(E edge) {
+	public Node getEdgeTarget(Edge edge) {
 		return target;
 	}
 	
 	@Override
-	public double getEdgeWeight(E edge) throws NullPointerException {
+	public double getEdgeWeight(Edge edge) throws NullPointerException {
 		return weight;
 	}
 }

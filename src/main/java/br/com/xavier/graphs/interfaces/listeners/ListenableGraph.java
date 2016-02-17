@@ -7,10 +7,8 @@ import br.com.xavier.graphs.interfaces.Graph;
  * 
  * @author Matheus Xavier
  *
- * @param <N> Nodes type Class
- * @param <E> Edges type Class
  */
-public interface ListenableGraph<N, E> extends Graph<N, E> {
+public interface ListenableGraph extends Graph {
 	
 	//XXX GRAPH LISTEN METHODS
 	
@@ -19,14 +17,14 @@ public interface ListenableGraph<N, E> extends Graph<N, E> {
 	 * 
 	 * @param graphListener - the {@link GraphListener} to be added.
 	 */
-	public abstract void addGraphListener(GraphListener<N, E> graphListener);
+	public abstract void addGraphListener(GraphListener graphListener);
 	
 	/**
 	 * Removes the specified {@link GraphListener} to this Graph, if present.
 	 * 
 	 * @param graphListener - the {@link GraphListener} to be removed.
 	 */
-	public abstract void removeGraphListener(GraphListener<N, E> graphListener);
+	public abstract void removeGraphListener(GraphListener graphListener);
 
 	//XXX GRAPH NODES LISTEN METHODS
 	
@@ -35,14 +33,14 @@ public interface ListenableGraph<N, E> extends Graph<N, E> {
 	 * 
 	 * @param nodeListener - the {@link NodeListener} to be added.
 	 */
-	public abstract void addNodesListener(NodeListener<N> nodeListener);
+	public abstract void addNodesListener(NodeListener nodeListener);
 	
 	/**
 	 * Removes the specified {@link NodeListener} to this Graph, if present.
 	 * 
 	 * @param nodeListener - the {@link NodeListener} to be removed.
 	 */
-	public abstract void removeNodesListener(NodeListener<N> nodeListener);
+	public abstract void removeNodesListener(NodeListener nodeListener);
 	
 	//XXX GRAPH EDGES LISTEN METHODS
 	
@@ -51,13 +49,13 @@ public interface ListenableGraph<N, E> extends Graph<N, E> {
 	 * 
 	 * @param edgeListener - the {@link EdgeListener} to be added.
 	 */
-	public abstract void addEdgesListener(EdgeListener<N,E> edgeListener);
+	public abstract void addEdgesListener(EdgeListener edgeListener);
 	
 	/**
 	 * Removes the specified {@link EdgeListener} to this Graph, if present.
 	 * 
 	 * @param edgeListener - the {@link EdgeListener} to be removed.
 	 */
-	public abstract void removeEdgesListener(EdgeListener<N,E> EdgeListener);
+	public abstract void removeEdgesListener(EdgeListener EdgeListener);
 	
 }

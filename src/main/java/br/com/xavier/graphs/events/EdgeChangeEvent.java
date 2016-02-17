@@ -1,6 +1,8 @@
 package br.com.xavier.graphs.events;
 
 import br.com.xavier.graphs.events.enums.GraphEventType;
+import br.com.xavier.graphs.interfaces.Edge;
+import br.com.xavier.graphs.interfaces.Node;
 
 /**
  * An event which indicates that a Graph Edge has changed, or is about to change. </br>
@@ -10,17 +12,15 @@ import br.com.xavier.graphs.events.enums.GraphEventType;
  * 
  * @author Matheus Xavier
  *
- * @param <N> Nodes type Class
- * @param <E> Edges type Class
  */
-public class EdgeChangeEvent<N,E> extends GraphChangeEvent {
+public class EdgeChangeEvent extends GraphChangeEvent {
 
 	private static final long serialVersionUID = 836223283258199774L;
 
 	//XXX CLASS PROPERTIES
-	private final E edge;
-	private final N edgeSourceNode;
-	private final N edgeTargetNode;
+	private final Edge edge;
+	private final Node edgeSourceNode;
+	private final Node edgeTargetNode;
 	
 	//XXX CONSTRUCTOR
 	
@@ -29,11 +29,11 @@ public class EdgeChangeEvent<N,E> extends GraphChangeEvent {
 	 * 
 	 * @param eventSource {@link Object} - the source of this event.
 	 * @param type {@link GraphEventType} - the event type of this event.
-	 * @param edge {@link E} - the edge that this event is related to.
-	 * @param edgeSourceNode {@link N}  - edge source Node.
-	 * @param edgeTargetNode {@link N} - edge target Node.
+	 * @param edge {@link Edge} - the edge that this event is related to.
+	 * @param edgeSourceNode {@link Node}  - edge source Node.
+	 * @param edgeTargetNode {@link Node} - edge target Node.
 	 */
-	public EdgeChangeEvent(Object eventSource, GraphEventType type, E edge, N edgeSourceNode, N edgeTargetNode) {
+	public EdgeChangeEvent(Object eventSource, GraphEventType type, Edge edge, Node edgeSourceNode, Node edgeTargetNode) {
 	    super(eventSource, type);
 	    this.edge = edge;
 	    this.edgeSourceNode = edgeSourceNode;
@@ -43,29 +43,29 @@ public class EdgeChangeEvent<N,E> extends GraphChangeEvent {
 	//XXX GETTERS/SETTERS
 	
 	/**
-	 * Returns the {@link E} Edge that this event is related to.
+	 * Returns the {@link Edge} that this event is related to.
 	 * 
-	 * @return {@link E} - edge that this event is related to.
+	 * @return {@link Edge} - edge that this event is related to.
 	 */
-	public E getEdge() {
+	public Edge getEdge() {
 		return edge;
 	}
 	
 	/**
-	 * Returns the source Node {@link N} that this Edge event is related to.
+	 * Returns the source {@link Node} that this Edge event is related to.
 	 * 
-	 * @return {@link N} - source Node that this Edge event is related to.
+	 * @return {@link Node} - source Node that this Edge event is related to.
 	 */
-	public N getEdgeSourceNode() {
+	public Node getEdgeSourceNode() {
 		return edgeSourceNode;
 	}
 	
 	/**
-	 * Returns the target Node {@link N} that this Edge event is related to.
+	 * Returns the target {@link Node} that this Edge event is related to.
 	 * 
-	 * @return {@link N} - target Node that this Edge event is related to.
+	 * @return {@link Node} - target Node that this Edge event is related to.
 	 */
-	public N getEdgeTargetNode() {
+	public Node getEdgeTargetNode() {
 		return edgeTargetNode;
 	}
 }
