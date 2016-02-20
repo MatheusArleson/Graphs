@@ -1,6 +1,8 @@
 package br.com.xavier.graphs.abstraction;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import br.com.xavier.graphs.exception.IllegalNodeException;
@@ -10,46 +12,50 @@ import br.com.xavier.graphs.interfaces.factory.EdgeFactory;
 import br.com.xavier.graphs.interfaces.factory.NodeFactory;
 import br.com.xavier.graphs.util.messages.Util;
 
-public abstract class SetBackedGraph extends AbstractGraph {
+public abstract class MapBackedGraph extends AbstractGraph {
 	
 	//XXX CLASS PROPERTIES
-	private Set<Node> nodesSet;
-	private Set<Edge> edgesSet;
+	private Map<Node, Set<Edge>> graphMap;
 	
 	//XXX CONSTRUCTOR
 	
 	/**
-	 * Construct a new Graph object that is backed by {@link Set}.
+	 * Construct a new empty Graph object.
 	 * 
 	 * @param nodeFactory {@link NodeFactory} - the Node factory of the new graph.
 	 * @param edgeFactory {@link EdgeFactory} - the Edge factory of the new graph.
+	 * @param isDirected - if the Edges of the Graph are directed; 
+	 * @param isWeighted - if the Edges of the Graph are weighted;
 	 * @param loopsAllowed - whether to allow Edges that are self-loops or not.
 	 * @param multipleEdgesAllowed - whether to allow existence of multiple - (equivalent) Edges - or not.
 	 */
-	public SetBackedGraph(NodeFactory nodeFactory, EdgeFactory edgeFactory, boolean loopsAllowed, boolean multipleEdgesAllowed) {
-		super(nodeFactory, edgeFactory, loopsAllowed, multipleEdgesAllowed);
-		
-		this.nodesSet = new LinkedHashSet<Node>();
-		this.edgesSet = new LinkedHashSet<Edge>();
+	public MapBackedGraph(
+		NodeFactory nodeFactory, EdgeFactory edgeFactory, 
+		boolean isDirected, boolean isWeighted, 
+		boolean loopsAllowed, boolean multipleEdgesAllowed
+	) {
+		super(nodeFactory, edgeFactory, isDirected, isWeighted, loopsAllowed, multipleEdgesAllowed);
+		this.graphMap = new LinkedHashMap<Node, Set<Edge>>();
 	}
 	
 	//XXX OVERRIDE NODES METHODS
 	
 	@Override
 	public Set<Node> getAllNodes() {
-		return nodesSet;
+		return graphMap.keySet();
 	}
 	
 	@Override
 	public boolean containsNode(Node node) throws NullPointerException {
 		Util.checkNullParameter(node);
-		return nodesSet.contains(node); 
+		
+		return graphMap.containsKey(node);
 	}
 	
 	@Override
-	protected boolean addNode() throws NullPointerException {
+	protected void addNode() throws NullPointerException {
 		Node node = fabricateNode();
-		return nodesSet.add(node);
+		graphMap.put(node, new LinkedHashSet<Edge>());
 	}
 	
 	@Override
@@ -60,7 +66,8 @@ public abstract class SetBackedGraph extends AbstractGraph {
 			return false;
 		}
 		
-		return nodesSet.add(node);
+		graphMap.put(node, new LinkedHashSet<Edge>());
+		return true;
 	}
 	
 	@Override
@@ -72,7 +79,8 @@ public abstract class SetBackedGraph extends AbstractGraph {
 		}
 		
 		removeAllEdges(node);
-		return nodesSet.remove(node);
+		graphMap.remove(node);
+		return true;
 	}
 
 	@Override
@@ -86,7 +94,17 @@ public abstract class SetBackedGraph extends AbstractGraph {
 	
 	@Override
 	public Set<Edge> getAllEdges() {
-		return edgesSet;
+		Set<Edge> allEdges = new LinkedHashSet<Edge>();
+		if(graphMap.isEmpty()){
+			return allEdges;
+		}
+		
+		for (Node node : getAllNodes()) {
+			Set<Edge> nodeEdgeSet = graphMap.get(node);
+			allEdges.addAll(nodeEdgeSet);
+		}
+		
+		return allEdges;
 	}
 	
 	@Override
@@ -95,7 +113,7 @@ public abstract class SetBackedGraph extends AbstractGraph {
 		
 		Set<Edge> nodeEdgesSet = new LinkedHashSet<Edge>();
 		
-		for (Edge edge : edgesSet) {
+		for (Edge edge : graphMap.get(node)) {
 			if(edge.getSource().equals(node) || edge.getTarget().equals(node)){
 				nodeEdgesSet.add(edge);
 			}
@@ -108,23 +126,40 @@ public abstract class SetBackedGraph extends AbstractGraph {
 	public Set<Edge> getAllEdges(Node sourceNode, Node targetNode) throws IllegalNodeException, NullPointerException {
 		Util.checkIllegalNode(this, sourceNode, targetNode);
 		
-		Set<Edge> nodeEdgesSet = new LinkedHashSet<Edge>();
+		if(graphMap.isEmpty()){
+			return new LinkedHashSet<Edge>();
+		}
 		
-		for (Edge edge : edgesSet) {
-			if(edge.getSource().equals(sourceNode) || edge.getTarget().equals(targetNode)){
+		if(isDirected()){
+			return getAllDirectedEdges(sourceNode, targetNode);
+		} else {
+			return getAllUndirectedEdges(sourceNode, targetNode);
+		}
+	}
+	
+	private Set<Edge> getAllUndirectedEdges(Node sourceNode, Node targetNode) {
+		Set<Edge> edges = getAllDirectedEdges(sourceNode, targetNode);
+		edges.addAll(getAllEdges(targetNode, sourceNode));
+		return edges;
+	}
+
+	private Set<Edge> getAllDirectedEdges(Node sourceNode, Node targetNode) {
+		Set<Edge> nodeEdgesSet = new LinkedHashSet<Edge>();
+		for (Edge edge : graphMap.get(sourceNode)) {
+			if(edge.isPath(sourceNode, targetNode)){
 				nodeEdgesSet.add(edge);
 			}
 		}
 		
 		return nodeEdgesSet;
 	}
-	
+
 	@Override
 	public boolean existsEdge(Node sourceNode, Node targetNode) throws IllegalNodeException, NullPointerException {
 		Util.checkIllegalNode(this, sourceNode, targetNode);
 		
-		for (Edge edge : edgesSet) {
-			if(edge.getSource().equals(sourceNode) || edge.getTarget().equals(targetNode)){
+		for (Edge edge : graphMap.get(sourceNode)) {
+			if(edge.isPath(sourceNode, targetNode)){
 				return true;
 			}
 		}
@@ -135,7 +170,7 @@ public abstract class SetBackedGraph extends AbstractGraph {
 	@Override
 	protected boolean containsEdge(Edge edge) throws NullPointerException {
 		Util.checkNullParameter(edge);
-		return edgesSet.contains(edge);
+		return graphMap.get(edge.getSource()).contains(edge);
 	}
 	
 }

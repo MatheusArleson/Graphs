@@ -9,8 +9,10 @@ import br.com.xavier.graphs.interfaces.factory.NodeFactory;
 
 public abstract class SimpleUndirectedGraph extends SimpleGraph implements UndirectedGraph {
 
-	public SimpleUndirectedGraph(NodeFactory nodeFactory, EdgeFactory edgeFactory) {
-		super(nodeFactory, edgeFactory);
+	private static final boolean IS_DIRECTED = false;
+	
+	public SimpleUndirectedGraph(NodeFactory nodeFactory, EdgeFactory edgeFactory, boolean isWeighted) {
+		super(nodeFactory, edgeFactory, IS_DIRECTED, isWeighted);
 	}
 
 	@Override

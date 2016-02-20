@@ -10,9 +10,11 @@ import br.com.xavier.graphs.interfaces.factory.EdgeFactory;
 import br.com.xavier.graphs.interfaces.factory.NodeFactory;
 
 public abstract class SimpleDirectedGraph extends SimpleGraph implements DirectedGraph {
-
-	public SimpleDirectedGraph(NodeFactory nodeFactory, EdgeFactory edgeFactory) {
-		super(nodeFactory, edgeFactory);
+	
+	private static final boolean IS_DIRECTED = true;
+	
+	public SimpleDirectedGraph(NodeFactory nodeFactory, EdgeFactory edgeFactory, boolean isWeighted) {
+		super(nodeFactory, edgeFactory, IS_DIRECTED, isWeighted);
 	}
 	
 	@Override

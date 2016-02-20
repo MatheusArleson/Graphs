@@ -21,5 +21,9 @@ public interface Edge {
 	 * 
 	 */
 	public abstract Node getTarget();
-
+	
+	public default boolean isPath(Node sourceNode, Node targetNode){
+		return getSource().equals(sourceNode) && getTarget().equals(targetNode);
+	}
+	
 }

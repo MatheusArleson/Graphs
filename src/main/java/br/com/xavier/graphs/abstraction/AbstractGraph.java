@@ -25,6 +25,8 @@ public abstract class AbstractGraph implements Graph {
 	private final NodeFactory nodeFactory;
 	private final EdgeFactory edgeFactory;
 	
+	private final boolean isDirected;
+	private final boolean isWeighted;
 	private final boolean loopsAllowed;
 	private final boolean multipleEdgesAllowed;
 	
@@ -34,13 +36,21 @@ public abstract class AbstractGraph implements Graph {
 	 * 
 	 * @param nodeFactory {@link NodeFactory} - the Node factory of the new graph.
 	 * @param edgeFactory {@link EdgeFactory} - the Edge factory of the new graph.
+	 * @param isDirected - if the Edges of the Graph are directed; 
+	 * @param isWeighted - if the Edges of the Graph are weighted;
 	 * @param loopsAllowed - whether to allow Edges that are self-loops or not.
 	 * @param multipleEdgesAllowed - whether to allow existence of multiple - (equivalent) Edges - or not.
 	 */
-	public AbstractGraph(NodeFactory nodeFactory, EdgeFactory edgeFactory, boolean loopsAllowed, boolean multipleEdgesAllowed) {
+	public AbstractGraph(
+		NodeFactory nodeFactory, EdgeFactory edgeFactory, 
+		boolean isDirected, boolean isWeighted, 
+		boolean loopsAllowed, boolean multipleEdgesAllowed
+	) {
 		super();
 		this.nodeFactory = nodeFactory;
 		this.edgeFactory = edgeFactory;
+		this.isDirected = isDirected;
+		this.isWeighted = isWeighted;
 		this.loopsAllowed = loopsAllowed;
 		this.multipleEdgesAllowed = multipleEdgesAllowed;
 	}
@@ -119,10 +129,8 @@ public abstract class AbstractGraph implements Graph {
 	
 	/**
 	 * Adds a new Node to this Graph. </br>
-	 * 
-	 * @return true - if is added; false otherwise.
 	 */
-	protected abstract boolean addNode(); 
+	protected abstract void addNode(); 
 	
 	/**
 	 * Adds a new Edge to this Graph. </br>
@@ -192,6 +200,24 @@ public abstract class AbstractGraph implements Graph {
 	}
 	
 	//XXX GETTERS
+	
+	/**
+	 * Returns true if the Edges of the Graph are directed;
+	 * 
+	 * @return true if the Edges of the Graph are directed; false otherwise;
+	 */
+	public boolean isDirected() {
+		return isDirected;
+	}
+	
+	/**
+	 * Returns true if the Edges of the Graph are weighted;
+	 * 
+	 * @return true if the Edges of the Graph are wieghted; false otherwise;
+	 */
+	public boolean isWeighted() {
+		return isWeighted;
+	}
 	
 	/**
 	 * Returns true if and only if self-loops are allowed in this Graph. </br> 
