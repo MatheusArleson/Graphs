@@ -19,9 +19,9 @@
   </build>
   <dependencies>
   	<dependency>
-  		<groupId>commons-io</groupId>
-  		<artifactId>commons-io</artifactId>
-  		<version>2.4</version>
+  		<groupId>br.com.xavier</groupId>
+		<artifactId>Matrix</artifactId>
+		<version>1.0.0</version>
   	</dependency>
   </dependencies>
 </project>

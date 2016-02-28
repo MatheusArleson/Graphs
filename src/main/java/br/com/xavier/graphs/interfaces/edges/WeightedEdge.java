@@ -2,7 +2,9 @@ package br.com.xavier.graphs.interfaces.edges;
 
 import java.math.BigDecimal;
 
-public interface WeightedEdge extends Edge {
+import br.com.xavier.graphs.interfaces.nodes.Node;
+
+public interface WeightedEdge<N extends Node> extends Edge<N> {
 	
 	/**
 	 * Returns the weight assigned to a given Edge. </br> 
@@ -18,5 +20,5 @@ public interface WeightedEdge extends Edge {
 	 * 
 	 */
 	public abstract void setWeight(BigDecimal weight);
-
+	
 }

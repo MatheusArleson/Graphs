@@ -1,27 +1,26 @@
-package br.com.xavier.graphs.abstraction.edges;
+package br.com.xavier.graphs.abstractions.edges;
 
 import java.io.Serializable;
 
-import br.com.xavier.graphs.interfaces.Node;
+import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.interfaces.edges.Edge;
 
-public abstract class AbstractEdge implements Edge, Serializable {
+public abstract class AbstractEdge<N extends AbstractNode> implements Edge<N>, Serializable {
 	
 	private static final long serialVersionUID = -321501262100391879L;
 	
 	//XXX CLASS PROPERTIES
-	private final Node source;
-	private final Node target;
+	private final N source;
+	private final N target;
 	
 	//XXX CONSTRUCTOR
-	public AbstractEdge(Node source, Node target) {
+	public AbstractEdge(N source, N target) {
 		super();
 		this.source = source;
 		this.target = target;
 	}
 	
 	//XXX OVERRIDE METHODS
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -52,12 +51,12 @@ public abstract class AbstractEdge implements Edge, Serializable {
 	//XXX GETTERS
 	
 	@Override
-	public Node getSource(){
+	public N getSource(){
 		return source;
 	}
 
 	@Override
-	public Node getTarget() {
+	public N getTarget() {
 		return target;
 	}
 	

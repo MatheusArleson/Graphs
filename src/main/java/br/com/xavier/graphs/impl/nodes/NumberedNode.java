@@ -1,6 +1,6 @@
 package br.com.xavier.graphs.impl.nodes;
 
-import br.com.xavier.graphs.interfaces.Node;
+import br.com.xavier.graphs.interfaces.nodes.Node;
 import br.com.xavier.graphs.util.messages.MessageManager;
 
 public class NumberedNode implements Node {

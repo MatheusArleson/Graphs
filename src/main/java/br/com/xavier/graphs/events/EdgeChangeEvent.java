@@ -1,8 +1,8 @@
 package br.com.xavier.graphs.events;
 
 import br.com.xavier.graphs.events.enums.GraphEventType;
-import br.com.xavier.graphs.interfaces.Node;
 import br.com.xavier.graphs.interfaces.edges.Edge;
+import br.com.xavier.graphs.interfaces.nodes.Node;
 
 /**
  * An event which indicates that a Graph Edge has changed, or is about to change. </br>
