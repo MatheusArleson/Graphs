@@ -22,7 +22,7 @@ public abstract interface DirectedGraph<N extends Node, E extends Edge<N>> exten
 	 * @param node {@link N} - Node of interest
 	 * @return the "in degree" of the specified Node.
 	 */
-	public abstract int inDegreeOf(Node node);
+	public abstract int inDegreeOf(N node);
 	
 	/**
 	 * Returns the "out degree" of the specified Node. </br> 
@@ -31,7 +31,7 @@ public abstract interface DirectedGraph<N extends Node, E extends Edge<N>> exten
 	 * @param node {@link N} - Node of interest
 	 * @return the "out degree" of the specified Node.
 	 */
-	public abstract int outDegreeOf(Node node);
+	public abstract int outDegreeOf(N node);
 	
 	//XXX EDGES METHODS
 	
@@ -41,7 +41,7 @@ public abstract interface DirectedGraph<N extends Node, E extends Edge<N>> exten
 	 * @param node {@link N} - the Node for which the list of incoming Edges to be returned.
 	 * @return {@link Set} - a set of all Edges incoming into the specified Node.
 	 */
-	public abstract Set<E> incomingEdgesOf(Node node);
+	public abstract Set<E> incomingEdgesOf(N node);
 	
 	/**
 	 * Returns a set of all Edges outgoing from the specified Node.
@@ -49,6 +49,6 @@ public abstract interface DirectedGraph<N extends Node, E extends Edge<N>> exten
 	 * @param node {@link N} - the Node for which the list of outgoing Edges to be returned.
 	 * @return {@link Set} - a set of all Edges outgoing into the specified Node.
 	 */
-	public abstract Set<E> outgoingEdgesOf(Node node);
+	public abstract Set<E> outgoingEdgesOf(N node);
 	
 }

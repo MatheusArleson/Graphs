@@ -13,4 +13,11 @@ public class DefaultWeightedEdge<N extends AbstractNode> extends AbstractWeighte
 		super(source, target, weight);
 	}
 
+	
+	@Override
+	public DefaultWeightedEdge<N> reverse() {
+		DefaultWeightedEdge<N> reverseEdge = new DefaultWeightedEdge<N>(getTarget(), getSource(), getWeight());
+		return reverseEdge;
+	}
+
 }

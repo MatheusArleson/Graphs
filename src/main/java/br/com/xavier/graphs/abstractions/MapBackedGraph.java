@@ -1,9 +1,14 @@
 package br.com.xavier.graphs.abstractions;
 
+import java.io.IOError;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.beanutils.BeanUtils;
 
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.exception.IllegalNodeException;
@@ -52,7 +57,7 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 	public boolean addNode(N node) throws NullPointerException {
 		Util.checkNullParameter(node);
 		
-		if(!containsNode(node)){
+		if(containsNode(node)){
 			return false;
 		}
 		
@@ -181,25 +186,20 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		Util.checkNullParameter(edge);
 		
 		N sourceNode = edge.getSource();
+		N targetNode = edge.getTarget();
 		
 		//checking loops
-		if(!isLoopsAllowed()){
-			N targetNode = edge.getTarget();
-			
-			if(sourceNode.equals(targetNode)){
-				return false;
-			}
+		if(!isLoopsAllowed() && sourceNode.equals(targetNode)){
+			return false;
 		}
 		
 		//checking multiple edges
-		if(!isMultipleEdgesAllowed()){
-			if(containsEdge(edge)){
-				return false;
-			}
+		if(!isMultipleEdgesAllowed() && containsEdge(edge)){
+			return false;
 		}
 		
 		//checking weight (XOR)
-		boolean isEdgeWeighted = (edge instanceof WeightedEdge);
+		boolean isEdgeWeighted = WeightedEdge.class.isAssignableFrom(edge.getClass()); //(edge instanceof WeightedEdge);
 		boolean isGraphWeighted = isWeighted();
 		boolean error = isGraphWeighted ^ isEdgeWeighted; 
 		if(error){
@@ -207,6 +207,12 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		}
 		
 		graphMap.get(sourceNode).add(edge);
+		
+		//FIXME if undirected add the edge in source\target reverse order
+		if(!isDirected()){
+			graphMap.get(targetNode).add((E) edge.reverse());
+		}
+		
 		return true;
 	}
 	
@@ -215,6 +221,15 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		Util.checkNullParameter(edge);
 		
 		N sourceNode = edge.getSource();
-		return graphMap.get(sourceNode).remove(edge);
+		N targetNode = edge.getTarget();
+		
+		boolean isRemoved = graphMap.get(sourceNode).remove(edge);
+		
+		//FIXME if undirected add the edge in source\target reverse order
+		if(!isDirected()){
+			isRemoved |= graphMap.get(targetNode).remove((E) edge.reverse());
+		}
+		
+		return isRemoved;
 	}
 }

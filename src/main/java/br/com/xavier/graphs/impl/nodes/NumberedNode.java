@@ -1,9 +1,9 @@
 package br.com.xavier.graphs.impl.nodes;
 
-import br.com.xavier.graphs.interfaces.nodes.Node;
+import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.util.messages.MessageManager;
 
-public class NumberedNode implements Node {
+public class NumberedNode extends AbstractNode {
 	
 	private static final String NODE_LABEL_BASE_STR = "node.numbered.label.base";
 	private int nodeNumber;

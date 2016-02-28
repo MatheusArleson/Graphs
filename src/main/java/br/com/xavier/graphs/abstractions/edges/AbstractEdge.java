@@ -5,13 +5,13 @@ import java.io.Serializable;
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.interfaces.edges.Edge;
 
-public abstract class AbstractEdge<N extends AbstractNode> implements Edge<N>, Serializable {
+public abstract class AbstractEdge<N extends AbstractNode> implements Edge<N>, Serializable, Cloneable {
 	
 	private static final long serialVersionUID = -321501262100391879L;
 	
 	//XXX CLASS PROPERTIES
-	private final N source;
-	private final N target;
+	private N source;
+	private N target;
 	
 	//XXX CONSTRUCTOR
 	public AbstractEdge(N source, N target) {
@@ -48,16 +48,34 @@ public abstract class AbstractEdge<N extends AbstractNode> implements Edge<N>, S
 		return true;
 	}
 	
-	//XXX GETTERS
+	@Override
+	public String toString() {
+		return "[" + source.getLabel() + "," + target.getLabel() + "]";
+	}
 	
 	@Override
 	public N getSource(){
 		return source;
+	}
+	
+	@Override
+	public void setSource(N node) {
+		this.source = node;
 	}
 
 	@Override
 	public N getTarget() {
 		return target;
 	}
+	
+	@Override
+	public void setTarget(N node) {
+		this.target = node;
+	}
+	
+	//XXX OVERRIDE METHODS
+	
+	public abstract AbstractEdge<N> reverse();
+	
 	
 }

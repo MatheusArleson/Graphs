@@ -49,6 +49,11 @@ public abstract class AbstractWeightedEdge<N extends AbstractNode> extends Abstr
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		return "[" + getSource().getLabel() + ", " + getTarget().getLabel() + " : " + weight + "]";
+	}
+	
 	//XXX GETTERS/SETTERS
 	@Override
 	public BigDecimal getWeight() {

@@ -7,45 +7,44 @@ import br.com.xavier.graphs.abstractions.simple.SimpleGraph;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.DirectedGraph;
 import br.com.xavier.graphs.interfaces.edges.Edge;
-import br.com.xavier.graphs.interfaces.nodes.Node;
+import br.com.xavier.graphs.util.messages.Util;
 
 //FIXME TERMINAR IMPLEMETACAO
-public class SimpleDirectedGraph<N extends AbstractNode, E extends Edge<N>> extends SimpleGraph<N,E> implements DirectedGraph<N,E> {
+public abstract class SimpleDirectedGraph<N extends AbstractNode, E extends Edge<N>> extends SimpleGraph<N,E> implements DirectedGraph<N,E> {
 	
 	private static final boolean IS_DIRECTED = true;
 	
-	public SimpleDirectedGraph(boolean isWeighted) {
+	protected SimpleDirectedGraph(boolean isWeighted) {
 		super(IS_DIRECTED, isWeighted);
 	}
 	
 	@Override
-	public int inDegreeOf(Node node) {
-		// TODO Auto-generated method stub
+	public int inDegreeOf(N node) {
+		Util.checkNullParameter(node);
+		Util.checkIllegalNode(this, node);
+		
+		Set<E> allEdges = getAllEdges(node);
 		return 0;
 	}
 
 	@Override
-	public int outDegreeOf(Node node) {
-		// TODO Auto-generated method stub
+	public int outDegreeOf(N node) {
 		return 0;
 	}
 
 	@Override
-	public Set<E> incomingEdgesOf(Node node) {
-		// TODO Auto-generated method stub
+	public Set<E> incomingEdgesOf(N node) {
 		return null;
 	}
 
 	@Override
-	public Set<E> outgoingEdgesOf(Node node) {
-		// TODO Auto-generated method stub
+	public Set<E> outgoingEdgesOf(N node) {
 		return null;
 	}
 
 	
 	@Override
 	public int degreeOf(N node) throws IllegalNodeException, NullPointerException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }
