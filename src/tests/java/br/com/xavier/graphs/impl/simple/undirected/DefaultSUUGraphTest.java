@@ -1,21 +1,21 @@
 package br.com.xavier.graphs.impl.simple.undirected;
 
+import br.com.xavier.graphs.abstractions.simple.undirected.SimpleUndirectedUnweightedGraphTest;
 import br.com.xavier.graphs.impl.edges.DefaultUnweightedEdge;
 import br.com.xavier.graphs.impl.nodes.NumberedNode;
 import br.com.xavier.graphs.impl.nodes.NumberedNodesFactory;
-import br.com.xavier.graphs.impl.simple.GraphInterfaceTest;
-import br.com.xavier.graphs.interfaces.Graph;
 
-public class DefaultSUUGraphTest extends GraphInterfaceTest<NumberedNode, DefaultUnweightedEdge<NumberedNode>> {
+public class DefaultSUUGraphTest extends SimpleUndirectedUnweightedGraphTest<NumberedNode, DefaultUnweightedEdge<NumberedNode>> {
 
 	private NumberedNodesFactory nodeFactory;
 	
 	public DefaultSUUGraphTest() {
+		super();
 		this.nodeFactory = new NumberedNodesFactory();
 	}
 	
 	@Override
-	protected Graph<NumberedNode, DefaultUnweightedEdge<NumberedNode>> createGraphInstance() {
+	protected DefaultSUUGraph<NumberedNode, DefaultUnweightedEdge<NumberedNode>> getGraphInterfaceInstance() {
 		return new DefaultSUUGraph<>();
 	}
 

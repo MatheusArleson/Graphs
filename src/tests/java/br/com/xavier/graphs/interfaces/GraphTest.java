@@ -1,4 +1,4 @@
-package br.com.xavier.graphs.impl.simple;
+package br.com.xavier.graphs.interfaces;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -17,22 +17,26 @@ import br.com.xavier.graphs.interfaces.Graph;
 import br.com.xavier.graphs.interfaces.edges.Edge;
 import br.com.xavier.graphs.interfaces.nodes.Node;
 
-public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
+public abstract class GraphTest<N extends Node, E extends Edge<N>> {
+	
+	//XXX TEST SUBJECT
+	protected Graph<N, E> graph;
 
-	protected Graph<N, E> graphToTest;
-
-	protected abstract Graph<N, E> createGraphInstance();
+	//XXX ABSTRACT METHODS
+	protected abstract Graph<N, E> getGraphInterfaceInstance();
 	protected abstract N createNode();
 	protected abstract E createEdge(N node1, N node2);
 
+	//XXX BEFORE METHODS
 	@Before
 	public void setup() {
-		graphToTest = createGraphInstance();
+		graph = getGraphInterfaceInstance();
 	}
 
+	//XXX AFTER METHODS
 	@After
 	public void destroy() {
-		graphToTest = createGraphInstance();
+		graph = null;
 	}
 
 	// XXX UTIL METHODS
@@ -47,15 +51,15 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 	private void buildAreAdjacentsCenario(N node1, N node2, N node3) {
 		// graph with 3 nodes.
 		// relationships: 1 -> 2; 2-> 3; (NOT 1 -> 3)
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
-		graphToTest.addNode(node3);
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
 
 		E edge12 = createEdge(node1, node2);
 		E edge23 = createEdge(node2, node3);
 
-		graphToTest.addEdge(edge12);
-		graphToTest.addEdge(edge23);
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
 	}
 
 	// XXX TEST METHODS
@@ -70,7 +74,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 	public void getAllNodesMustReturnEmptyNodeSetOnEmptyGraph() {
 		// graph is clean on start
 
-		Set<N> allNodes = graphToTest.getAllNodes();
+		Set<N> allNodes = graph.getAllNodes();
 		boolean isEmpty = allNodes.isEmpty();
 
 		assertTrue(isEmpty);
@@ -81,9 +85,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = createNode();
-		graphToTest.addNode(node);
+		graph.addNode(node);
 
-		Set<N> allNodes = graphToTest.getAllNodes();
+		Set<N> allNodes = graph.getAllNodes();
 		boolean isEmpty = allNodes.isEmpty();
 
 		assertFalse(isEmpty);
@@ -94,9 +98,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = createNode();
-		graphToTest.addNode(node);
+		graph.addNode(node);
 
-		Set<N> allNodes = graphToTest.getAllNodes();
+		Set<N> allNodes = graph.getAllNodes();
 		boolean containsAddedNode = allNodes.contains(node);
 		boolean isSizeOne = allNodes.size() == 1;
 		boolean result = containsAddedNode && isSizeOne;
@@ -111,7 +115,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = null;
-		graphToTest.containsNode(node);
+		graph.containsNode(node);
 	}
 
 	@Test
@@ -119,7 +123,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = createNode();
-		boolean isPresent = graphToTest.containsNode(node);
+		boolean isPresent = graph.containsNode(node);
 
 		assertFalse(isPresent);
 	}
@@ -129,8 +133,8 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = createNode();
-		graphToTest.addNode(node);
-		boolean isPresent = graphToTest.containsNode(node);
+		graph.addNode(node);
+		boolean isPresent = graph.containsNode(node);
 
 		assertTrue(isPresent);
 	}
@@ -140,10 +144,10 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node1 = createNode();
-		graphToTest.addNode(node1);
+		graph.addNode(node1);
 
 		N node2 = createNode();
-		boolean isPresent = graphToTest.containsNode(node2);
+		boolean isPresent = graph.containsNode(node2);
 
 		assertFalse(isPresent);
 	}
@@ -155,7 +159,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = null;
-		graphToTest.addNode(node);
+		graph.addNode(node);
 	}
 
 	@Test
@@ -163,7 +167,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = createNode();
-		boolean nodeAdded = graphToTest.addNode(node);
+		boolean nodeAdded = graph.addNode(node);
 
 		assertTrue(nodeAdded);
 	}
@@ -173,8 +177,8 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = createNode();
-		graphToTest.addNode(node);
-		boolean repeatedNodeAdded = graphToTest.addNode(node);
+		graph.addNode(node);
+		boolean repeatedNodeAdded = graph.addNode(node);
 
 		assertFalse(repeatedNodeAdded);
 	}
@@ -185,7 +189,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 	public void removeAllNodesMustReturnFalseOnEmptyGraph() {
 		// graph is clean on start
 
-		boolean isChanged = graphToTest.removeAllNodes();
+		boolean isChanged = graph.removeAllNodes();
 
 		assertFalse(isChanged);
 	}
@@ -195,9 +199,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = createNode();
-		graphToTest.addNode(node);
+		graph.addNode(node);
 
-		boolean isChanged = graphToTest.removeAllNodes();
+		boolean isChanged = graph.removeAllNodes();
 
 		assertTrue(isChanged);
 	}
@@ -207,11 +211,11 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = createNode();
-		graphToTest.addNode(node);
+		graph.addNode(node);
 
-		graphToTest.removeAllNodes();
+		graph.removeAllNodes();
 
-		Set<N> allNodes = graphToTest.getAllNodes();
+		Set<N> allNodes = graph.getAllNodes();
 		boolean isEmpty = allNodes.isEmpty();
 
 		assertTrue(isEmpty);
@@ -224,16 +228,16 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node1 = createNode();
 		N node2 = createNode();
 
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
+		graph.addNode(node1);
+		graph.addNode(node2);
 		
 		E edge = createEdge(node1, node2);
 		
-		graphToTest.addEdge(edge);
+		graph.addEdge(edge);
 
-		graphToTest.removeAllNodes();
+		graph.removeAllNodes();
 
-		Set<E> allEdges = graphToTest.getAllEdges();
+		Set<E> allEdges = graph.getAllEdges();
 		boolean isEmpty = allEdges.isEmpty();
 
 		assertTrue(isEmpty);
@@ -246,7 +250,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		Set<N> nodesSet = null;
-		graphToTest.removeAllNodes(nodesSet);
+		graph.removeAllNodes(nodesSet);
 	}
 
 	@Test
@@ -255,7 +259,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		Set<N> nodesSet = createNodesSet(1);
 
-		boolean isChanged = graphToTest.removeAllNodes(nodesSet);
+		boolean isChanged = graph.removeAllNodes(nodesSet);
 
 		assertFalse(isChanged);
 	}
@@ -265,9 +269,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		Set<N> nodesSet = createNodesSet(1);
-		graphToTest.addNode(nodesSet.iterator().next());
+		graph.addNode(nodesSet.iterator().next());
 
-		boolean isChanged = graphToTest.removeAllNodes(nodesSet);
+		boolean isChanged = graph.removeAllNodes(nodesSet);
 
 		assertTrue(isChanged);
 	}
@@ -278,11 +282,11 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		Set<N> nodesSet = createNodesSet(1);
 		Iterator<N> iterator = nodesSet.iterator();
-		graphToTest.addNode(iterator.next());
+		graph.addNode(iterator.next());
 
-		graphToTest.removeAllNodes();
+		graph.removeAllNodes();
 
-		Set<N> allNodes = graphToTest.getAllNodes();
+		Set<N> allNodes = graph.getAllNodes();
 		boolean isEmpty = allNodes.isEmpty();
 
 		assertTrue(isEmpty);
@@ -299,13 +303,13 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		E edge = createEdge(node1, node2);
 
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
-		graphToTest.addEdge(edge);
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addEdge(edge);
 
-		graphToTest.removeAllNodes(nodesSet);
+		graph.removeAllNodes(nodesSet);
 
-		Set<E> allEdges = graphToTest.getAllEdges();
+		Set<E> allEdges = graph.getAllEdges();
 		boolean isEmpty = allEdges.isEmpty();
 
 		assertTrue(isEmpty);
@@ -322,10 +326,10 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		iterator = null;
 
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
+		graph.addNode(node1);
+		graph.addNode(node2);
 
-		graphToTest.removeAllNodes(nodesSet);
+		graph.removeAllNodes(nodesSet);
 
 		boolean isInvalidNodeOnSet = nodesSet.contains(node3);
 
@@ -339,7 +343,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = null;
-		graphToTest.removeNode(node);
+		graph.removeNode(node);
 	}
 
 	@Test
@@ -348,7 +352,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		N node = createNode();
 
-		boolean isChanged = graphToTest.removeNode(node);
+		boolean isChanged = graph.removeNode(node);
 
 		assertFalse(isChanged);
 	}
@@ -359,9 +363,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		N node1 = createNode();
 		N node2 = createNode();
-		graphToTest.addNode(node1);
+		graph.addNode(node1);
 
-		boolean isChanged = graphToTest.removeNode(node2);
+		boolean isChanged = graph.removeNode(node2);
 
 		assertFalse(isChanged);
 	}
@@ -371,9 +375,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = createNode();
-		graphToTest.addNode(node);
+		graph.addNode(node);
 
-		boolean isChanged = graphToTest.removeNode(node);
+		boolean isChanged = graph.removeNode(node);
 
 		assertTrue(isChanged);
 	}
@@ -387,20 +391,20 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node1 = iterator.next();
 		N node2 = iterator.next();
 		
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
+		graph.addNode(node1);
+		graph.addNode(node2);
 
 		E startingEdge = createEdge(node1, node2);
 		E endingEdge = createEdge(node2, node1);
 
-		graphToTest.addEdge(startingEdge);
+		graph.addEdge(startingEdge);
 
-		graphToTest.removeNode(node1);
+		graph.removeNode(node1);
 
 		boolean containsEdge = false;
 		try {
-			containsEdge = containsEdge |= graphToTest.containsEdge(startingEdge);
-			containsEdge = containsEdge |= graphToTest.containsEdge(endingEdge);
+			containsEdge = containsEdge |= graph.containsEdge(startingEdge);
+			containsEdge = containsEdge |= graph.containsEdge(endingEdge);
 		} catch (IllegalNodeException e) {
 		}
 
@@ -415,7 +419,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		N nullNode = null;
 
-		graphToTest.areAdjacents(nullNode, nullNode);
+		graph.areAdjacents(nullNode, nullNode);
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -425,9 +429,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N nullNode = null;
 		N node = createNode();
 		
-		graphToTest.addNode(node);
+		graph.addNode(node);
 
-		graphToTest.areAdjacents(nullNode, node);
+		graph.areAdjacents(nullNode, node);
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -437,9 +441,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N nullNode = null;
 		N node = createNode();
 		
-		graphToTest.addNode(node);
+		graph.addNode(node);
 
-		graphToTest.areAdjacents(node, nullNode);
+		graph.areAdjacents(node, nullNode);
 	}
 
 	@Test
@@ -449,14 +453,14 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node1 = createNode();
 		N node2 = createNode();
 
-		graphToTest.addNode(node1);
+		graph.addNode(node1);
 
 		boolean allException = false;
 		try {
-			graphToTest.areAdjacents(node1, node2);
+			graph.areAdjacents(node1, node2);
 		} catch (IllegalNodeException e1) {
 			try {
-				graphToTest.areAdjacents(node2, node1);
+				graph.areAdjacents(node2, node1);
 			} catch (IllegalNodeException e2) {
 				allException = true;
 			}
@@ -474,7 +478,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node3 = createNode();
 		buildAreAdjacentsCenario(node1, node2, node3);
 
-		boolean areAdjacents = graphToTest.areAdjacents(node1, node3);
+		boolean areAdjacents = graph.areAdjacents(node1, node3);
 
 		assertFalse(areAdjacents);
 	}
@@ -488,7 +492,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node3 = createNode();
 		buildAreAdjacentsCenario(node1, node2, node3);
 
-		boolean areAdjacents = graphToTest.areAdjacents(node1, node2);
+		boolean areAdjacents = graph.areAdjacents(node1, node2);
 
 		assertTrue(areAdjacents);
 	}
@@ -501,7 +505,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		N node = null;
 
-		graphToTest.degreeOf(node);
+		graph.degreeOf(node);
 	}
 
 	@Test(expected = IllegalNodeException.class)
@@ -510,7 +514,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		N node = createNode();
 
-		graphToTest.degreeOf(node);
+		graph.degreeOf(node);
 	}
 
 	@Test
@@ -518,9 +522,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node = createNode();
-		graphToTest.addNode(node);
+		graph.addNode(node);
 
-		int nodeDegree = graphToTest.degreeOf(node);
+		int nodeDegree = graph.degreeOf(node);
 
 		assertEquals(0, nodeDegree);
 	}
@@ -533,21 +537,21 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node2 = createNode();
 		N node3 = createNode();
 
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
-		graphToTest.addNode(node3);
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
 
 		E edge12 = createEdge(node1, node2);
 		E edge13 = createEdge(node1, node2);
 		E edge23 = createEdge(node2, node3);
 
-		graphToTest.addEdge(edge12);
-		graphToTest.addEdge(edge13);
-		graphToTest.addEdge(edge23);
+		graph.addEdge(edge12);
+		graph.addEdge(edge13);
+		graph.addEdge(edge23);
 
-		int node1Degree = graphToTest.degreeOf(node1);
-		int node2Degree = graphToTest.degreeOf(node2);
-		int node3Degree = graphToTest.degreeOf(node3);
+		int node1Degree = graph.degreeOf(node1);
+		int node2Degree = graph.degreeOf(node2);
+		int node3Degree = graph.degreeOf(node3);
 
 		assertEquals(2, node1Degree);
 		assertEquals(1, node2Degree);
@@ -564,7 +568,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 	public void getAllEdgesMustReturnEmptyEdgeSetOnEmptyGraph() {
 		// graph is clean on start
 
-		Set<E> allEdges = graphToTest.getAllEdges();
+		Set<E> allEdges = graph.getAllEdges();
 
 		boolean isEmpty = allEdges.isEmpty();
 
@@ -576,9 +580,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		// graph is clean on start
 
 		N node1 = createNode();
-		graphToTest.addNode(node1);
+		graph.addNode(node1);
 
-		Set<E> allEdges = graphToTest.getAllEdges();
+		Set<E> allEdges = graph.getAllEdges();
 
 		boolean isEmpty = allEdges.isEmpty();
 
@@ -592,20 +596,21 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node1 = createNode();
 		N node2 = createNode();
 
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
+		graph.addNode(node1);
+		graph.addNode(node2);
 
 		E edge = createEdge(node1, node2);
 
-		graphToTest.addEdge(edge);
+		graph.addEdge(edge);
 
-		Set<E> allEdges = graphToTest.getAllEdges();
+		Set<E> allEdges = graph.getAllEdges();
 
 		boolean isEmpty = allEdges.isEmpty();
 
 		assertFalse(isEmpty);
 	}
 
+	//XXX FIXME BROKEN TEST
 	@Test
 	public void getAllEdgesMustReturnEdgeSetWithSameSizeAndReferences() {
 		// graph is clean on start
@@ -614,18 +619,21 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node2 = createNode();
 		N node3 = createNode();
 
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
-		graphToTest.addNode(node3);
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
 
 		E edge12 = createEdge(node1, node2);
 		E edge23 = createEdge(node2, node3);
 
-		graphToTest.addEdge(edge12);
-		graphToTest.addEdge(edge23);
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
 
-		Set<E> allEdges = graphToTest.getAllEdges();
+		Set<E> allEdges = graph.getAllEdges();
 
+		//FIXME BUG WITH UN/DIRECTED GRAPHS
+		//WORKING WITH THE INTERFACE... CANT KNOW IF IS DIRECTED OR NOT
+		//SO THE RESULT HERE IS OR NOT CORRECT DEPENDING ON THE GRAPH
 		boolean containsEdge12 = allEdges.contains(edge12);
 		boolean containsEdge23 = allEdges.contains(edge23);
 		boolean isSizeTwo = allEdges.size() == 2;
@@ -642,7 +650,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		N node = null;
 
-		graphToTest.getAllEdges(node);
+		graph.getAllEdges(node);
 	}
 
 	@Test(expected = IllegalNodeException.class)
@@ -651,7 +659,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		N node = createNode();
 
-		graphToTest.getAllEdges(node);
+		graph.getAllEdges(node);
 	}
 
 	@Test
@@ -660,9 +668,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 		N node = createNode();
 
-		graphToTest.addNode(node);
+		graph.addNode(node);
 
-		Set<E> allEdges = graphToTest.getAllEdges(node);
+		Set<E> allEdges = graph.getAllEdges(node);
 
 		boolean isEmpty = allEdges.isEmpty();
 
@@ -676,14 +684,14 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node1 = createNode();
 		N node2 = createNode();
 
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
+		graph.addNode(node1);
+		graph.addNode(node2);
 
 		E edge12 = createEdge(node1, node2);
 
-		graphToTest.addEdge(edge12);
+		graph.addEdge(edge12);
 
-		Set<E> allEdges = graphToTest.getAllEdges(node1);
+		Set<E> allEdges = graph.getAllEdges(node1);
 
 		boolean isEmpty = allEdges.isEmpty();
 
@@ -698,17 +706,17 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node2 = createNode();
 		N node3 = createNode();
 
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
-		graphToTest.addNode(node3);
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
 
 		E edge12 = createEdge(node1, node2);
 		E edge23 = createEdge(node2, node3);
 
-		graphToTest.addEdge(edge12);
-		graphToTest.addEdge(edge23);
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
 
-		Set<E> allEdges = graphToTest.getAllEdges(node1);
+		Set<E> allEdges = graph.getAllEdges(node1);
 
 		boolean containsEdge12 = allEdges.contains(edge12);
 		boolean containsEdge23 = allEdges.contains(edge23);
@@ -726,7 +734,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		
 		N nullNode = null;
 		
-		graphToTest.getAllEdges(nullNode, nullNode);
+		graph.getAllEdges(nullNode, nullNode);
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -736,9 +744,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N nullNode = null;
 		N realNode = createNode();
 		
-		graphToTest.addNode(realNode);
+		graph.addNode(realNode);
 		
-		graphToTest.getAllEdges(nullNode, realNode);
+		graph.getAllEdges(nullNode, realNode);
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -748,9 +756,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N nullNode = null;
 		N realNode = createNode();
 		
-		graphToTest.addNode(realNode);
+		graph.addNode(realNode);
 		
-		graphToTest.getAllEdges(realNode, nullNode);
+		graph.getAllEdges(realNode, nullNode);
 	}
 	
 	@Test(expected=IllegalNodeException.class)
@@ -761,10 +769,10 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node2 = createNode();
 		N node3 = createNode();
 		
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
+		graph.addNode(node1);
+		graph.addNode(node2);
 		
-		graphToTest.getAllEdges(node1, node3);
+		graph.getAllEdges(node1, node3);
 	}
 	
 	@Test
@@ -777,7 +785,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		
 		buildAreAdjacentsCenario(node1, node2, node3);
 		
-		Set<E> allEdges = graphToTest.getAllEdges(node1, node3);
+		Set<E> allEdges = graph.getAllEdges(node1, node3);
 		
 		boolean isEmpty = allEdges.isEmpty();
 		
@@ -794,13 +802,14 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		
 		buildAreAdjacentsCenario(node1, node2, node3);
 		
-		Set<E> allEdges = graphToTest.getAllEdges(node1, node2);
+		Set<E> allEdges = graph.getAllEdges(node1, node2);
 		
 		boolean isEmpty = allEdges.isEmpty();
 		
 		assertFalse(isEmpty);
 	}
 	
+	//XXX FIXME BROKEN TEST
 	@Test
 	public void getAllEdgesSourceTargetMustReturnEdgeSetWithSameSizeAndReferences(){
 		// graph is clean on start
@@ -809,19 +818,17 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node2 = createNode();
 		N node3 = createNode();
 		
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
-		graphToTest.addNode(node3);
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
 
 		E edge12 = createEdge(node1, node2);
 		E edge23 = createEdge(node2, node3);
 
-		graphToTest.addEdge(edge12);
-		graphToTest.addEdge(edge23);
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
 		
-		Set<E> allEdges = graphToTest.getAllEdges(node1, node2);
-		
-		
+		Set<E> allEdges = graph.getAllEdges(node1, node2);
 		
 		//FIXME BUG WITH UN/DIRECTED GRAPHS
 		//WORKING WITH THE INTERFACE... CANT KNOW IF IS DIRECTED OR NOT
@@ -842,7 +849,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		
 		E nullEdge = null;
 		
-		graphToTest.containsEdge(nullEdge);
+		graph.containsEdge(nullEdge);
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -851,11 +858,11 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		
 		N targetNode = createNode();
 		
-		graphToTest.addNode(targetNode);
+		graph.addNode(targetNode);
 		
 		E nullSourceEdge = createEdge(null, targetNode);
 		
-		graphToTest.containsEdge(nullSourceEdge);
+		graph.containsEdge(nullSourceEdge);
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -864,11 +871,11 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		
 		N sourceNode = createNode();
 		
-		graphToTest.addNode(sourceNode);
+		graph.addNode(sourceNode);
 		
 		E nullTargetEdge = createEdge(sourceNode, null);
 		
-		graphToTest.containsEdge(nullTargetEdge);
+		graph.containsEdge(nullTargetEdge);
 	}
 	
 	@Test
@@ -878,17 +885,17 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node1 = createNode();
 		N node2 = createNode();
 
-		graphToTest.addNode(node1);
+		graph.addNode(node1);
 		
 		E edge12 = createEdge(node1, node2);
 		E edge21 = createEdge(node2, node1);
 
 		boolean allException = false;
 		try {
-			graphToTest.containsEdge(edge12);
+			graph.containsEdge(edge12);
 		} catch (IllegalNodeException e1) {
 			try {
-				graphToTest.containsEdge(edge21);
+				graph.containsEdge(edge21);
 			} catch (IllegalNodeException e2) {
 				allException = true;
 			}
@@ -906,19 +913,19 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node2 = createNode();
 		N node3 = createNode();
 		
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
-		graphToTest.addNode(node3);
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
 		
 		E edge12 = createEdge(node1, node2);
 		E edge23 = createEdge(node2, node3);
 		
-		graphToTest.addEdge(edge12);
-		graphToTest.addEdge(edge23);
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
 		
 		E edge13 = createEdge(node1, node3);
 		
-		boolean containsEdge = graphToTest.containsEdge(edge13);
+		boolean containsEdge = graph.containsEdge(edge13);
 		
 		assertFalse(containsEdge);
 	}
@@ -931,19 +938,19 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node2 = createNode();
 		N node3 = createNode();
 		
-		graphToTest.addNode(node1);
-		graphToTest.addNode(node2);
-		graphToTest.addNode(node3);
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
 		
 		E edge12 = createEdge(node1, node2);
 		E edge23 = createEdge(node2, node3);
 		
-		graphToTest.addEdge(edge12);
-		graphToTest.addEdge(edge23);
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
 		
 		E edge13 = createEdge(node1, node2);
 		
-		boolean containsEdge = graphToTest.containsEdge(edge13);
+		boolean containsEdge = graph.containsEdge(edge13);
 		
 		assertTrue(containsEdge);
 	}
@@ -956,7 +963,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		
 		N nullNode = null;
 		
-		graphToTest.existsEdge(nullNode, nullNode);
+		graph.existsEdge(nullNode, nullNode);
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -966,9 +973,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N nullNode = null;
 		N realNode = createNode();
 		
-		graphToTest.addNode(realNode);
+		graph.addNode(realNode);
 		
-		graphToTest.existsEdge(nullNode, realNode);
+		graph.existsEdge(nullNode, realNode);
 	}
 	
 	@Test(expected=NullPointerException.class)
@@ -978,9 +985,9 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N nullNode = null;
 		N realNode = createNode();
 		
-		graphToTest.addNode(realNode);
+		graph.addNode(realNode);
 		
-		graphToTest.existsEdge(realNode, nullNode);;
+		graph.existsEdge(realNode, nullNode);;
 	}
 	
 	@Test
@@ -990,11 +997,11 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		N node1 = createNode();
 		N node2 = createNode();
 		
-		graphToTest.addNode(node1);
+		graph.addNode(node1);
 		
 		boolean allExceptions = false;
-		try { graphToTest.existsEdge(node1, node2); } catch(IllegalNodeException e1){
-			try { graphToTest.existsEdge(node2, node1); } catch(IllegalNodeException e2){
+		try { graph.existsEdge(node1, node2); } catch(IllegalNodeException e1){
+			try { graph.existsEdge(node2, node1); } catch(IllegalNodeException e2){
 				allExceptions = true;
 			}
 		}
@@ -1012,7 +1019,7 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		
 		buildAreAdjacentsCenario(node1, node2, node3);
 		
-		boolean existsEdge = graphToTest.existsEdge(node1, node3);
+		boolean existsEdge = graph.existsEdge(node1, node3);
 		
 		assertFalse(existsEdge);
 	}
@@ -1027,14 +1034,76 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		
 		buildAreAdjacentsCenario(node1, node2, node3);
 		
-		boolean existsEdge = graphToTest.existsEdge(node1, node2);
+		boolean existsEdge = graph.existsEdge(node1, node2);
 		
 		assertTrue(existsEdge);
 	}
 
 	// ADD EDGE
-
+	
+	@Test(expected=NullPointerException.class)
+	public void addEdgeMustThrowNullPointerExceptionOnNullEdge(){
+		// graph is clean on start
+		
+		E edge = null;
+		
+		graph.addEdge(edge);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void addEdgeMustThrowNullPointerExceptionOnNullEdgeSource(){
+		// graph is clean on start
+		
+		N sourceNode = null;
+		N targetNode = createNode();
+		
+		graph.addNode(targetNode);
+		
+		E edge = createEdge(sourceNode, targetNode);
+		
+		graph.addEdge(edge);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void addEdgeMustThrowNullPointerExceptionOnNullEdgeTarget(){
+		// graph is clean on start
+		
+		N sourceNode = createNode();
+		N targetNode = null;
+		
+		graph.addNode(sourceNode);
+		
+		E edge = createEdge(sourceNode, targetNode);
+		
+		graph.addEdge(edge);
+	}
+	
+	@Test
+	public void addEdgeMustThrowIllegalNodeExceptionOnAnyNotPresentNode(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		
+		E edge12 = createEdge(node1, node2);
+		E edge21 = createEdge(node2, node1);
+		
+		boolean allExceptions = false;
+		try { graph.addEdge(edge12); } catch(IllegalNodeException e1){
+			try { graph.addEdge(edge21); } catch(IllegalNodeException e2){
+				allExceptions = true;
+			}
+		}
+		
+		assertTrue(allExceptions);
+		
+	}
+	
 	// REMOVE ALL EDGES SET
+	
+	
 
 	// REMOVE ALL EDGES SOURCE TARGET
 

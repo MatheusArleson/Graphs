@@ -173,16 +173,15 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		}
 		
 		//checking weight (XOR)
-		boolean isEdgeWeighted = WeightedEdge.class.isAssignableFrom(edge.getClass()); //(edge instanceof WeightedEdge);
-		boolean isGraphWeighted = isWeighted();
-		boolean error = isGraphWeighted ^ isEdgeWeighted; 
-		if(error){
-			Util.handleIllegalEdge();
+		if(isWeighted()){
+			boolean isEdgeWeighted = WeightedEdge.class.isAssignableFrom(edge.getClass());
+			if(!isEdgeWeighted){
+				Util.handleIllegalEdge();
+			}
 		}
 		
 		graphMap.get(sourceNode).add(edge);
 		
-		//FIXME if undirected add the edge in source\target reverse order
 		if(!isDirected()){
 			graphMap.get(targetNode).add((E) edge.reverse());
 		}
@@ -199,7 +198,6 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		
 		boolean isRemoved = graphMap.get(sourceNode).remove(edge);
 		
-		//FIXME if undirected add the edge in source\target reverse order
 		if(!isDirected()){
 			isRemoved |= graphMap.get(targetNode).remove((E) edge.reverse());
 		}
