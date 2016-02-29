@@ -16,7 +16,7 @@ public class NumberedNode extends AbstractNode {
 	//XXX OVERRIDE METHODS
 	@Override
 	public String getLabel() {
-		return toString();
+		return String.valueOf(nodeNumber);
 	}
 
 	@Override

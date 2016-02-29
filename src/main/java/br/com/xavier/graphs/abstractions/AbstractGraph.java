@@ -10,6 +10,7 @@ import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.Graph;
 import br.com.xavier.graphs.interfaces.edges.Edge;
+import br.com.xavier.graphs.interfaces.edges.WeightedEdge;
 import br.com.xavier.graphs.util.messages.Util;
 
 /**
@@ -64,13 +65,14 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 		
 		while(listIterator.hasNext()){
 			N node = listIterator.next();
+			
 			if(!containsNode(node)){
 				listIterator.remove();
 				continue;
 			}
 			
 			boolean isChanged = removeNode(node);
-			if(modified != true){
+			if(modified == false){
 				modified |= isChanged;
 			} 
 		}
@@ -86,18 +88,25 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 		Util.checkNullParameter(edgesSet);
 		
 		boolean modified = false;
-		Set<E> invalidEdges = new LinkedHashSet<E>();
+		List<E> edgesList = new ArrayList<E>(edgesSet);
+		ListIterator<E> listIterator = edgesList.listIterator();
 		
-		for (E edge: edgesSet) {
+		while(listIterator.hasNext()){
+			E edge = listIterator.next();
+			
 			if(!containsEdge(edge)){
-				invalidEdges.add(edge);
+				listIterator.remove();
 				continue;
 			}
 			
-			modified |= removeEdge(edge);
+			boolean isChanged = removeEdge(edge);
+			if(modified == false){
+				modified |= isChanged;
+			}
 		}
 	    
-		edgesSet.removeAll(invalidEdges);
+		edgesSet.clear();
+		edgesSet.addAll(edgesList);
 	    return modified;
 	}
 	
@@ -151,6 +160,35 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 		}
 		
 		return false;
+	}
+	
+	//XXX PROTECTED METHODS
+	protected boolean isEdgeAllowed(E edge){
+		Util.checkNullParameter(edge);
+		
+		N sourceNode = edge.getSource();
+		N targetNode = edge.getTarget();
+		
+		//checking loops
+		if(!isLoopsAllowed() && sourceNode.equals(targetNode)){
+			return false;
+		}
+		
+		//checking multiple edges
+		if(!isMultipleEdgesAllowed() && containsEdge(edge)){
+			return false;
+		}
+		
+		//checking weight (XOR)
+		boolean weighted = isWeighted();
+		boolean isEdgeWeighted = WeightedEdge.class.isAssignableFrom(edge.getClass());
+		
+		boolean error = weighted ^ isEdgeWeighted;
+		if(error){
+			Util.handleIllegalEdge();
+		} 
+		
+		return true;
 	}
 	
 	//XXX GETTERS

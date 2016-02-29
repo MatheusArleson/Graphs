@@ -315,7 +315,7 @@ public abstract class GraphTest<N extends Node, E extends Edge<N>> {
 		assertTrue(isEmpty);
 	}
 
-	public void removeAllNodesCollectionMustRemoveNodesNotPresentInTheGraph() {
+	public void removeAllNodesCollectionMustRemoveNodesNotPresentInTheGraphFromCollection() {
 		// graph is clean on start
 
 		Set<N> nodesSet = createNodesSet(3);
@@ -1039,12 +1039,387 @@ public abstract class GraphTest<N extends Node, E extends Edge<N>> {
 	
 	// REMOVE ALL EDGES SET
 	
+	@Test(expected=NullPointerException.class)
+	public void removeAllEdgesMustThrowNullPointerExceptionOnNullSet(){
+		// graph is clean on start
+		
+		Set<E> edgesSet = null;
+		
+		graph.removeAllEdges(edgesSet);
+	}
 	
+	@Test
+	public void removeAllEdgesMustReturnFalseOnEmptyGraph(){
+		// graph is clean on start
+		
+		Set<E> edgesSet = new LinkedHashSet<E>();
+		
+		boolean isChanged = graph.removeAllEdges(edgesSet);
+		
+		assertFalse(isChanged);
+	}
+	
+	@Test
+	public void removeAllEdgesMustReturnTrueOnNotEmptyGraph(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
+		
+		E edge12 = createEdge(node1, node2);
+		E edge23 = createEdge(node2, node3);
+		E edge13 = createEdge(node1, node3);
+		
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
+		graph.addEdge(edge13);
+		
+		Set<E> edgesSet = new LinkedHashSet<E>();
+		edgesSet.add(edge13);
+		
+		boolean isChanged = graph.removeAllEdges(edgesSet);;
+		
+		assertTrue(isChanged);
+	}
+	
+	@Test
+	public void removeAllEdgesMustRemoveGraphEdges(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
+		
+		E edge12 = createEdge(node1, node2);
+		E edge23 = createEdge(node2, node3);
+		E edge13 = createEdge(node1, node3);
+		
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
+		graph.addEdge(edge13);
+		
+		Set<E> edgesSet = new LinkedHashSet<E>();
+		edgesSet.add(edge13);
+		
+		boolean isChanged = graph.removeAllEdges(edgesSet);;
+		
+		boolean containsEdge12 = graph.getAllEdges(node1, node2).contains(edge12);
+		boolean containsEdge23 = graph.getAllEdges(node2, node3).contains(edge23);
+		boolean containsEdge13 = graph.getAllEdges(node1, node3).contains(edge13);
+		
+		boolean result = (isChanged && containsEdge12 && containsEdge23 && !containsEdge13);
+		
+		assertTrue(result);
+	}
+	
+	@Test
+	public void removeAllEdgesMustRemoveEdgesNotPresentInTheGraphFromCollection(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
+		
+		E edge12 = createEdge(node1, node2);
+		E edge23 = createEdge(node2, node3);
+		E edge13 = createEdge(node1, node3);
+		
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
+		
+		Set<E> edgesSet = new LinkedHashSet<E>();
+		edgesSet.add(edge12);
+		edgesSet.add(edge13);
+		
+		graph.removeAllEdges(edgesSet);
+		
+		boolean containsEdge12 = edgesSet.contains(edge12);
+		boolean containsEdge13 = edgesSet.contains(edge13);
+		
+		boolean result = (containsEdge12 && !containsEdge13);
+		
+		assertTrue(result);
+	}
 
 	// REMOVE ALL EDGES SOURCE TARGET
-
+	
+	@Test(expected=NullPointerException.class)
+	public void removeAllEdgesSourceTargetMustThrowNullPointerExceptionOnBothNullNodes(){
+		// graph is clean on start
+		
+		N nullNode = null;
+		
+		graph.removeAllEdges(nullNode, nullNode);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void removeAllEdgesSourceTargetMustThrowNullPointerExceptionOnLeftNullNode(){
+		// graph is clean on start
+		
+		N nullNode = null;
+		N realNode = createNode();
+		
+		graph.addNode(realNode);
+		
+		graph.removeAllEdges(nullNode, realNode);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void removeAllEdgesSourceTargetMustThrowNullPointerExceptionOnRightNullNode(){
+		// graph is clean on start
+		
+		N nullNode = null;
+		N realNode = createNode();
+		
+		graph.addNode(realNode);
+		
+		graph.removeAllEdges(realNode, nullNode);
+	}
+	
+	@Test
+	public void removeAllEdgesSourceTargetMustThrowIllegalNodeExceptionOnAnyNotPresentNode(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		
+		boolean allExceptions = false;
+		try{ graph.removeAllEdges(node1, node2); }catch(IllegalNodeException e1){
+			try{ graph.removeAllEdges(node2, node1); } catch(IllegalNodeException e2){
+				allExceptions = true;
+			}
+		}
+		
+		assertTrue(allExceptions);
+	}
+	
+	@Test
+	public void removeAllEdgesSourceTargetMustReturnEmptyEdgesSetToNotRelatedNodes(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		buildAreAdjacentsCenario(node1, node2, node3);
+		
+		Set<E> removedEdges = graph.removeAllEdges(node1, node3);
+		
+		boolean isEmpty = removedEdges.isEmpty();
+		
+		assertTrue(isEmpty);
+	}
+	
+	@Test
+	public void removeAllEdgesSourceTargetMustNotReturnEmptyEdgesSetToRelatedNodes(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		buildAreAdjacentsCenario(node1, node2, node3);
+		
+		Set<E> removedEdges = graph.removeAllEdges(node1, node2);
+		
+		boolean isEmpty = removedEdges.isEmpty();
+		
+		assertFalse(isEmpty);
+	}
+	
 	// REMOVE ALL EDGES NODE
+	
+	@Test(expected=NullPointerException.class)
+	public void removeAllEdgesNodeMustThrowNullPointerExceptionOnNullNode(){
+		// graph is clean on start
+		
+		N node = null;
+		
+		graph.removeAllEdges(node);
+	}
+	
+	@Test(expected=IllegalNodeException.class)
+	public void removeAllEdgesNodeMustThrowIllegalNodeExceptionOnNotPresentNode(){
+		// graph is clean on start
+		
+		N node = createNode();
+		
+		graph.removeAllEdges(node);
+	}
+	
+	@Test
+	public void removeAllEdgesNodeMustReturnEmptyEdgesSetToNotRelatedNodes(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
+		
+		E edge23 = createEdge(node2, node3);;
+		
+		graph.addEdge(edge23);
+		
+		Set<E> removedEdges = graph.removeAllEdges(node1);
+		
+		boolean isEmpty = removedEdges.isEmpty();
+		
+		assertTrue(isEmpty);
+	}
+	
+	@Test
+	public void removeAllEdgesNodeMustReturnNotEmptyEdgesSetToRelatedNodes(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
+		
+		E edge23 = createEdge(node2, node3);;
+		
+		graph.addEdge(edge23);
+		
+		Set<E> removedEdges = graph.removeAllEdges(node2);
+		
+		boolean isEmpty = removedEdges.isEmpty();
+		
+		assertFalse(isEmpty);
+	}
 
 	// REMOVE EDGE
-
+	
+	@Test(expected=NullPointerException.class)
+	public void removeEdgeMustThrowNullPointerExceptionOnNullEdge(){
+		// graph is clean on start
+		
+		E nullEdge = null;
+		
+		graph.removeEdge(nullEdge);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void removeEdgeMustThrowNullPointerExceptionOnNullEdgeSource(){
+		// graph is clean on start
+		
+		N sourceNode = null;
+		N targetNode = createNode();
+		
+		graph.addNode(targetNode);
+		
+		E edge = createEdge(sourceNode, targetNode);
+		
+		graph.removeEdge(edge);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void removeEdgeMustThrowNullPointerExceptionOnNullEdgeTarget(){
+		// graph is clean on start
+		
+		N sourceNode = createNode();
+		N targetNode = null;
+		
+		graph.addNode(targetNode);
+		
+		E edge = createEdge(sourceNode, targetNode);
+		
+		graph.removeEdge(edge);
+	}
+	
+	@Test
+	public void removeEdgeMustThrowIllegalNodeExceptionOnAnyNotPresentNode(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		
+		E edge12 = createEdge(node1, node2);
+		E edge21 = createEdge(node2, node1);
+		
+		boolean allExceptions = false;
+		try{ graph.removeEdge(edge12); }catch(IllegalNodeException e1){
+			try{ graph.removeEdge(edge21); } catch(IllegalNodeException e2){
+				allExceptions = true;
+			}
+		}
+		
+		assertTrue(allExceptions);
+	}
+	
+	@Test
+	public void removeEdgeMustReturnFalseOnNotPresentEdge(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
+		
+		E edge12 = createEdge(node1, node2);
+		E edge23 = createEdge(node2, node3);
+		
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
+		
+		E edge13 = createEdge(node1, node3);
+		
+		boolean isRemoved = graph.removeEdge(edge13);
+		boolean exists = graph.containsEdge(edge13);
+		
+		boolean result = isRemoved && !exists;
+		
+		assertFalse(result);
+	}
+	
+	@Test
+	public void removeEdgeMustReturnTrueOnPresentEdge(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
+		
+		E edge12 = createEdge(node1, node2);
+		E edge23 = createEdge(node2, node3);
+		
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
+		
+		boolean isRemoved = graph.removeEdge(edge12);
+		boolean exists = graph.containsEdge(edge12);
+		
+		boolean result = isRemoved && !exists;
+		
+		assertTrue(result);
+	}
 }

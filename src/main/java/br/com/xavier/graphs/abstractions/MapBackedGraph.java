@@ -157,33 +157,14 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 	
 	@Override
 	public boolean addEdge(E edge) throws IllegalNodeException, NullPointerException {
-		Util.checkNullParameter(edge);
-		
-		N sourceNode = edge.getSource();
-		N targetNode = edge.getTarget();
-		
-		//checking loops
-		if(!isLoopsAllowed() && sourceNode.equals(targetNode)){
+		if(!isEdgeAllowed(edge)){
 			return false;
 		}
 		
-		//checking multiple edges
-		if(!isMultipleEdgesAllowed() && containsEdge(edge)){
-			return false;
-		}
-		
-		//checking weight (XOR)
-		if(isWeighted()){
-			boolean isEdgeWeighted = WeightedEdge.class.isAssignableFrom(edge.getClass());
-			if(!isEdgeWeighted){
-				Util.handleIllegalEdge();
-			}
-		}
-		
-		graphMap.get(sourceNode).add(edge);
+		graphMap.get(edge.getSource()).add(edge);
 		
 		if(!isDirected()){
-			graphMap.get(targetNode).add((E) edge.reverse());
+			graphMap.get(edge.getTarget()).add((E) edge.reverse());
 		}
 		
 		return true;
@@ -195,6 +176,8 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		
 		N sourceNode = edge.getSource();
 		N targetNode = edge.getTarget();
+		
+		Util.checkIllegalNode(this, sourceNode, targetNode);
 		
 		boolean isRemoved = graphMap.get(sourceNode).remove(edge);
 		
