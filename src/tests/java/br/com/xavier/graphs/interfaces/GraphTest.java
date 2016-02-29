@@ -610,38 +610,6 @@ public abstract class GraphTest<N extends Node, E extends Edge<N>> {
 		assertFalse(isEmpty);
 	}
 
-	//XXX FIXME BROKEN TEST
-	@Test
-	public void getAllEdgesMustReturnEdgeSetWithSameSizeAndReferences() {
-		// graph is clean on start
-
-		N node1 = createNode();
-		N node2 = createNode();
-		N node3 = createNode();
-
-		graph.addNode(node1);
-		graph.addNode(node2);
-		graph.addNode(node3);
-
-		E edge12 = createEdge(node1, node2);
-		E edge23 = createEdge(node2, node3);
-
-		graph.addEdge(edge12);
-		graph.addEdge(edge23);
-
-		Set<E> allEdges = graph.getAllEdges();
-
-		//FIXME BUG WITH UN/DIRECTED GRAPHS
-		//WORKING WITH THE INTERFACE... CANT KNOW IF IS DIRECTED OR NOT
-		//SO THE RESULT HERE IS OR NOT CORRECT DEPENDING ON THE GRAPH
-		boolean containsEdge12 = allEdges.contains(edge12);
-		boolean containsEdge23 = allEdges.contains(edge23);
-		boolean isSizeTwo = allEdges.size() == 2;
-		boolean result = containsEdge12 && containsEdge23 && isSizeTwo;
-
-		assertTrue(result);
-	}
-
 	// GET ALL EDGES NODE
 
 	@Test(expected = NullPointerException.class)
@@ -807,38 +775,6 @@ public abstract class GraphTest<N extends Node, E extends Edge<N>> {
 		boolean isEmpty = allEdges.isEmpty();
 		
 		assertFalse(isEmpty);
-	}
-	
-	//XXX FIXME BROKEN TEST
-	@Test
-	public void getAllEdgesSourceTargetMustReturnEdgeSetWithSameSizeAndReferences(){
-		// graph is clean on start
-		
-		N node1 = createNode();
-		N node2 = createNode();
-		N node3 = createNode();
-		
-		graph.addNode(node1);
-		graph.addNode(node2);
-		graph.addNode(node3);
-
-		E edge12 = createEdge(node1, node2);
-		E edge23 = createEdge(node2, node3);
-
-		graph.addEdge(edge12);
-		graph.addEdge(edge23);
-		
-		Set<E> allEdges = graph.getAllEdges(node1, node2);
-		
-		//FIXME BUG WITH UN/DIRECTED GRAPHS
-		//WORKING WITH THE INTERFACE... CANT KNOW IF IS DIRECTED OR NOT
-		//SO THE RESULT HERE IS OR NOT CORRECT DEPENDING ON THE GRAPH
-		boolean isSizeOne = allEdges.size() == 1;
-		boolean containsEdge12 = allEdges.contains(edge12);
-		boolean containsEdge23 = allEdges.contains(edge23);
-		boolean result = isSizeOne && containsEdge12 && !containsEdge23;
-		
-		assertTrue(result);
 	}
 
 	// CONTAINS EDGE
