@@ -47,6 +47,11 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 	//XXX OVERRIDE NODES METHODS
 	
 	@Override
+	public boolean removeAllNodes() {
+		return removeAllNodes(getAllNodes());
+	}
+	
+	@Override
 	public boolean removeAllNodes(Set<N> nodesSet) throws NullPointerException {
 		Util.checkNullParameter(nodesSet);
 
@@ -59,7 +64,10 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 				continue;
 			}
 			
-			modified |= removeNode(node);
+			boolean isChanged = removeNode(node);
+			if(modified != true){
+				modified |= isChanged;
+			} 
 		}
 
 		nodesSet.removeAll(invalidNodesSet);
@@ -112,6 +120,31 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 		
 		removeAllEdges(allEdges);
 		return allEdges;
+	}
+	
+	@Override
+	public boolean areAdjacents(N node1, N node2) throws IllegalNodeException, NullPointerException {
+		Util.checkIllegalNode(this, node1, node2);
+		
+		return existsEdge(node1, node2);
+	}
+	
+	@Override
+	public boolean existsEdge(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException {
+		Util.checkIllegalNode(this, sourceNode, targetNode);
+		
+		if(!loopsAllowed && sourceNode.equals(targetNode)){
+			return false;
+		}
+		
+		Set<E> allEdges = getAllEdges(sourceNode, targetNode);
+		for (E edge : allEdges) {
+			if(edge.isPath(sourceNode, targetNode)){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	//XXX GETTERS

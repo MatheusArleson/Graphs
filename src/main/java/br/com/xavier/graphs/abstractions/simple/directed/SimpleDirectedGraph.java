@@ -29,22 +29,34 @@ public abstract class SimpleDirectedGraph<N extends AbstractNode, E extends Edge
 
 	@Override
 	public int outDegreeOf(N node) {
+		Util.checkNullParameter(node);
+		Util.checkIllegalNode(this, node);
+		
 		return 0;
 	}
 
 	@Override
 	public Set<E> incomingEdgesOf(N node) {
+		Util.checkNullParameter(node);
+		Util.checkIllegalNode(this, node);
+		
 		return null;
 	}
 
 	@Override
 	public Set<E> outgoingEdgesOf(N node) {
+		Util.checkNullParameter(node);
+		Util.checkIllegalNode(this, node);
+		
 		return null;
 	}
 
 	
 	@Override
 	public int degreeOf(N node) throws IllegalNodeException, NullPointerException {
+		Util.checkNullParameter(node);
+		Util.checkIllegalNode(this, node);
+		
 		return 0;
 	}
 }

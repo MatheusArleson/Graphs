@@ -65,9 +65,12 @@ public abstract interface Graph<N extends Node, E extends Edge<N>> {
 			
 	//XXX REMOVE NODES METHODS
 	
+	//FIXME TODO DOCUMENT ME!
+	public abstract boolean removeAllNodes();
+	
 	/**
 	 * Removes all Nodes contained in the Nodes collection passed that are present in the Graph. </br>
-	 * If a passed Node is not present it will be removed from the collection passed. </br> 
+	 * If a passed Node is not present in the Graph it will be removed from the collection passed. </br> 
 	 * This method will invoke the {@link #removeNode(N)} method.</br>
 	 * 
 	 * @param nodesSet - Nodes to be removed from this Graph.
@@ -94,7 +97,8 @@ public abstract interface Graph<N extends Node, E extends Edge<N>> {
 	//XXX CHECK NODES METHODS
 	
 	/**
-	 * Check whether nodes n1 and n2 are adjacent.
+	 * Check whether nodes n1 and n2 are adjacent. </br>
+	 * A Node will be adjacent to another if there is a Edge starting from n1 targeting n2. </br>
 	 * 
 	 * @param n1 {@link N} - Node of interest.
 	 * @param n2 {@link N} - Node to check adjacency.

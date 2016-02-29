@@ -78,13 +78,6 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		return true;
 	}
 
-	@Override
-	public boolean areAdjacents(N node1, N node2) throws IllegalNodeException, NullPointerException {
-		Util.checkIllegalNode(this, node1, node2);
-		
-		return existsEdge(node1, node2);
-	}
-	
 	//XXX OVERRIDE EDGES METHODS
 	
 	@Override
@@ -149,20 +142,6 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		return nodeEdgesSet;
 	}
 
-	@Override
-	public boolean existsEdge(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException {
-		Util.checkIllegalNode(this, sourceNode, targetNode);
-		
-		Set<E> allEdges = getAllEdges(sourceNode, targetNode);
-		for (E edge : allEdges) {
-			if(edge.isPath(sourceNode, targetNode)){
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
 	@Override
 	public boolean containsEdge(E edge) throws NullPointerException {
 		Util.checkNullParameter(edge);
