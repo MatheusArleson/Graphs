@@ -1,6 +1,9 @@
 package br.com.xavier.graphs.abstractions;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
@@ -56,11 +59,13 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 		Util.checkNullParameter(nodesSet);
 
 		boolean modified = false;
-		Set<N> invalidNodesSet = new LinkedHashSet<N>();
+		List<N> nodesList = new ArrayList<N>(nodesSet);
+		ListIterator<N> listIterator = nodesList.listIterator();
 		
-		for (N node : nodesSet) {
+		while(listIterator.hasNext()){
+			N node = listIterator.next();
 			if(!containsNode(node)){
-				invalidNodesSet.add(node);
+				listIterator.remove();
 				continue;
 			}
 			
@@ -69,8 +74,8 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 				modified |= isChanged;
 			} 
 		}
-
-		nodesSet.removeAll(invalidNodesSet);
+		
+		nodesSet = new LinkedHashSet<N>(nodesList);
 		return modified;
 	}
 
@@ -99,6 +104,7 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 	@Override
 	public Set<E> removeAllEdges(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException {
 		Util.checkNullParameter(sourceNode, targetNode);
+		Util.checkIllegalNode(this, sourceNode, targetNode);
 		
 		Set<E> allEdges = getAllEdges(sourceNode, targetNode);
 		if (allEdges == null || allEdges.isEmpty()) {

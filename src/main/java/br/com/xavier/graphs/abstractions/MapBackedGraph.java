@@ -1,14 +1,9 @@
 package br.com.xavier.graphs.abstractions;
 
-import java.io.IOError;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.beanutils.BeanUtils;
 
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.exception.IllegalNodeException;
@@ -127,7 +122,7 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 	
 	private Set<E> getAllUndirectedEdges(N sourceNode, N targetNode) {
 		Set<E> edges = getAllDirectedEdges(sourceNode, targetNode);
-		edges.addAll(getAllEdges(targetNode, sourceNode));
+		edges.addAll(getAllDirectedEdges(targetNode, sourceNode));
 		return edges;
 	}
 

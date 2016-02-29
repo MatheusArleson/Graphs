@@ -409,29 +409,37 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 
 	// ARE ADJACENTS
 
-	@Test
-	public void areAdjacentsMustThrowNullPointerExceptionOnAnyNullNode() {
+	@Test(expected=NullPointerException.class)
+	public void areAdjacentsMustThrowNullPointerExceptionOnBothNullNode() {
 		// graph is clean on start
 
-		N realNode = createNode();
 		N nullNode = null;
 
-		boolean allException = false;
-		try {
-			graphToTest.areAdjacents(nullNode, nullNode);
-		} catch (NullPointerException e1) {
-			try {
-				graphToTest.areAdjacents(realNode, nullNode);
-			} catch (NullPointerException e2) {
-				try {
-					graphToTest.areAdjacents(nullNode, realNode);
-				} catch (NullPointerException e3) {
-					allException = true;
-				}
-			}
-		}
+		graphToTest.areAdjacents(nullNode, nullNode);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void areAdjacentsMustThrowNullPointerExceptionOnLeftNullNode() {
+		// graph is clean on start
 
-		assertTrue(allException);
+		N nullNode = null;
+		N node = createNode();
+		
+		graphToTest.addNode(node);
+
+		graphToTest.areAdjacents(nullNode, node);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void areAdjacentsMustThrowNullPointerExceptionOnRightNullNode() {
+		// graph is clean on start
+
+		N nullNode = null;
+		N node = createNode();
+		
+		graphToTest.addNode(node);
+
+		graphToTest.areAdjacents(node, nullNode);
 	}
 
 	@Test
@@ -705,16 +713,324 @@ public abstract class GraphInterfaceTest<N extends Node, E extends Edge<N>> {
 		boolean containsEdge12 = allEdges.contains(edge12);
 		boolean containsEdge23 = allEdges.contains(edge23);
 		boolean isSizeOne = allEdges.size() == 1;
-		boolean result = containsEdge12 && containsEdge23 && isSizeOne && !containsEdge23;
+		boolean result = containsEdge12 && isSizeOne && !containsEdge23;
 
 		assertTrue(result);
 	}
 
 	// GET ALL EDGES SOURCE TARGET
+	
+	@Test(expected=NullPointerException.class)
+	public void getAllEdgesSourceTargetMustThrowNullPointerExceptionOnBothNullNode(){
+		// graph is clean on start
+		
+		N nullNode = null;
+		
+		graphToTest.getAllEdges(nullNode, nullNode);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void getAllEdgesSourceTargetMustThrowNullPointerExceptionOnLeftNullNode(){
+		// graph is clean on start
+		
+		N nullNode = null;
+		N realNode = createNode();
+		
+		graphToTest.addNode(realNode);
+		
+		graphToTest.getAllEdges(nullNode, realNode);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void getAllEdgesSourceTargetMustThrowNullPointerExceptionOnRightNullNode(){
+		// graph is clean on start
+		
+		N nullNode = null;
+		N realNode = createNode();
+		
+		graphToTest.addNode(realNode);
+		
+		graphToTest.getAllEdges(realNode, nullNode);
+	}
+	
+	@Test(expected=IllegalNodeException.class)
+	public void getAllEdgesSourceTargetMustIllegalNodeExceptionOnNotPresentNode(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graphToTest.addNode(node1);
+		graphToTest.addNode(node2);
+		
+		graphToTest.getAllEdges(node1, node3);
+	}
+	
+	@Test
+	public void getAllEdgesSourceTargetMustReturnEmptySetOnNotRelatedNodes(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		buildAreAdjacentsCenario(node1, node2, node3);
+		
+		Set<E> allEdges = graphToTest.getAllEdges(node1, node3);
+		
+		boolean isEmpty = allEdges.isEmpty();
+		
+		assertTrue(isEmpty);
+	}
+	
+	@Test
+	public void getAllEdgesMustReturnNotEmptyEdgeSetOnRelatedNodes(){
+		// graph is clean on start
+
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		buildAreAdjacentsCenario(node1, node2, node3);
+		
+		Set<E> allEdges = graphToTest.getAllEdges(node1, node2);
+		
+		boolean isEmpty = allEdges.isEmpty();
+		
+		assertFalse(isEmpty);
+	}
+	
+	@Test
+	public void getAllEdgesSourceTargetMustReturnEdgeSetWithSameSizeAndReferences(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graphToTest.addNode(node1);
+		graphToTest.addNode(node2);
+		graphToTest.addNode(node3);
+
+		E edge12 = createEdge(node1, node2);
+		E edge23 = createEdge(node2, node3);
+
+		graphToTest.addEdge(edge12);
+		graphToTest.addEdge(edge23);
+		
+		Set<E> allEdges = graphToTest.getAllEdges(node1, node2);
+		
+		
+		
+		//FIXME BUG WITH UN/DIRECTED GRAPHS
+		//WORKING WITH THE INTERFACE... CANT KNOW IF IS DIRECTED OR NOT
+		//SO THE RESULT HERE IS OR NOT CORRECT DEPENDING ON THE GRAPH
+		boolean isSizeOne = allEdges.size() == 1;
+		boolean containsEdge12 = allEdges.contains(edge12);
+		boolean containsEdge23 = allEdges.contains(edge23);
+		boolean result = isSizeOne && containsEdge12 && !containsEdge23;
+		
+		assertTrue(result);
+	}
 
 	// CONTAINS EDGE
+	
+	@Test(expected=NullPointerException.class)
+	public void containsEdgeMustThrowNullPointerExceptionOnNullEdge(){
+		// graph is clean on start
+		
+		E nullEdge = null;
+		
+		graphToTest.containsEdge(nullEdge);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void containsEdgeMustThrowNullPointerExceptionOnNullEdgeSource(){
+		// graph is clean on start
+		
+		N targetNode = createNode();
+		
+		graphToTest.addNode(targetNode);
+		
+		E nullSourceEdge = createEdge(null, targetNode);
+		
+		graphToTest.containsEdge(nullSourceEdge);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void containsEdgeMustThrowNullPointerExceptionOnNullEdgeTarget(){
+		// graph is clean on start
+		
+		N sourceNode = createNode();
+		
+		graphToTest.addNode(sourceNode);
+		
+		E nullTargetEdge = createEdge(sourceNode, null);
+		
+		graphToTest.containsEdge(nullTargetEdge);
+	}
+	
+	@Test
+	public void containsEdgeMustThrowIllegalNodeExceptionOnAnyNotPresentNode(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+
+		graphToTest.addNode(node1);
+		
+		E edge12 = createEdge(node1, node2);
+		E edge21 = createEdge(node2, node1);
+
+		boolean allException = false;
+		try {
+			graphToTest.containsEdge(edge12);
+		} catch (IllegalNodeException e1) {
+			try {
+				graphToTest.containsEdge(edge21);
+			} catch (IllegalNodeException e2) {
+				allException = true;
+			}
+		}
+
+		assertTrue(allException);
+		
+	}
+	
+	@Test
+	public void containsEdgeMustReturnFalseToNotRelatedNodes(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graphToTest.addNode(node1);
+		graphToTest.addNode(node2);
+		graphToTest.addNode(node3);
+		
+		E edge12 = createEdge(node1, node2);
+		E edge23 = createEdge(node2, node3);
+		
+		graphToTest.addEdge(edge12);
+		graphToTest.addEdge(edge23);
+		
+		E edge13 = createEdge(node1, node3);
+		
+		boolean containsEdge = graphToTest.containsEdge(edge13);
+		
+		assertFalse(containsEdge);
+	}
+	
+	@Test
+	public void containsEdgeMustReturnTrueToRelatedNodes(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graphToTest.addNode(node1);
+		graphToTest.addNode(node2);
+		graphToTest.addNode(node3);
+		
+		E edge12 = createEdge(node1, node2);
+		E edge23 = createEdge(node2, node3);
+		
+		graphToTest.addEdge(edge12);
+		graphToTest.addEdge(edge23);
+		
+		E edge13 = createEdge(node1, node2);
+		
+		boolean containsEdge = graphToTest.containsEdge(edge13);
+		
+		assertTrue(containsEdge);
+	}
 
 	// EXISTS EDGE
+	
+	@Test(expected=NullPointerException.class)
+	public void existsEdgeMustThrowNullPointerExceptionOnBothNullNodes(){
+		// graph is clean on start
+		
+		N nullNode = null;
+		
+		graphToTest.existsEdge(nullNode, nullNode);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void existsEdgeMustThrowNullPointerExceptionOnLeftNullNode(){
+		// graph is clean on start
+		
+		N nullNode = null;
+		N realNode = createNode();
+		
+		graphToTest.addNode(realNode);
+		
+		graphToTest.existsEdge(nullNode, realNode);
+	}
+	
+	@Test(expected=NullPointerException.class)
+	public void existsEdgeMustThrowNullPointerExceptionOnRightNullNode(){
+		// graph is clean on start
+		
+		N nullNode = null;
+		N realNode = createNode();
+		
+		graphToTest.addNode(realNode);
+		
+		graphToTest.existsEdge(realNode, nullNode);;
+	}
+	
+	@Test
+	public void existsEdgeMustThrowIllegalNodeExceptionOnAnyNotPresentNode(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graphToTest.addNode(node1);
+		
+		boolean allExceptions = false;
+		try { graphToTest.existsEdge(node1, node2); } catch(IllegalNodeException e1){
+			try { graphToTest.existsEdge(node2, node1); } catch(IllegalNodeException e2){
+				allExceptions = true;
+			}
+		}
+		
+		assertTrue(allExceptions);
+	}
+	
+	@Test
+	public void existsEdgeMustReturnFalseToNotRelatedNodes(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		buildAreAdjacentsCenario(node1, node2, node3);
+		
+		boolean existsEdge = graphToTest.existsEdge(node1, node3);
+		
+		assertFalse(existsEdge);
+	}
+	
+	@Test
+	public void existsEdgeMustReturnTrueToRelatedNodes(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		buildAreAdjacentsCenario(node1, node2, node3);
+		
+		boolean existsEdge = graphToTest.existsEdge(node1, node2);
+		
+		assertTrue(existsEdge);
+	}
 
 	// ADD EDGE
 
