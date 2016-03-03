@@ -3,6 +3,7 @@ package br.com.xavier.graphs.interfaces.listeners;
 import java.util.EventListener;
 
 import br.com.xavier.graphs.events.EdgeChangeEvent;
+import br.com.xavier.graphs.interfaces.edges.Edge;
 
 /**
  * An event which indicates that a Graph Edge has changed, or is about to change. </br>

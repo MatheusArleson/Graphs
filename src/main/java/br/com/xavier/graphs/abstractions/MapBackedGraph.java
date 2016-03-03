@@ -8,7 +8,6 @@ import java.util.Set;
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.edges.Edge;
-import br.com.xavier.graphs.interfaces.edges.WeightedEdge;
 import br.com.xavier.graphs.util.messages.Util;
 
 public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> extends AbstractGraph<N,E> {

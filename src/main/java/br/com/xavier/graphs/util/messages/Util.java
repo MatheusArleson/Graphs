@@ -3,7 +3,6 @@ package br.com.xavier.graphs.util.messages;
 import br.com.xavier.graphs.exception.IllegalEdgeException;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.Graph;
-import br.com.xavier.graphs.interfaces.edges.Edge;
 import br.com.xavier.graphs.interfaces.nodes.Node;
 import br.com.xavier.graphs.util.messages.enums.DefaultMessagesKey;
 
@@ -26,27 +25,6 @@ public class Util {
 	private static void handleNullParameter() {
 		throw new NullPointerException(MessageManager.getDefaultMessage(DefaultMessagesKey.PARAMETER_NULL));
 	}
-	
-//	@SafeVarargs
-//	public static <N extends Node, E extends Edge<N>> void  checkIllegalNode(Graph<N,E> graph, N... nodes){
-//		if(graph == null){
-//			handleNullParameter();
-//		}
-//		
-//		if(nodes == null){
-//			handleNullParameter();
-//		}
-//		
-//		for (N node : nodes) {
-//			if(node == null){
-//				handleNullParameter();
-//			}
-//			
-//			if(!graph.containsNode(node)){
-//				handleIllegalNode();
-//			}
-//		}
-//	}
 	
 	@SafeVarargs
 	public static void  checkIllegalNode(Graph graph, Node... nodes){

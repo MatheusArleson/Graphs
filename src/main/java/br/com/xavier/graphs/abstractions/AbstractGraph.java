@@ -163,7 +163,7 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 	}
 	
 	//XXX PROTECTED METHODS
-	protected boolean isEdgeAllowed(E edge){
+	public boolean isEdgeAllowed(E edge){
 		Util.checkNullParameter(edge);
 		
 		N sourceNode = edge.getSource();
@@ -193,40 +193,22 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 	
 	//XXX GETTERS
 	
-	/**
-	 * Returns true if the Edges of the Graph are directed;
-	 * 
-	 * @return true if the Edges of the Graph are directed; false otherwise;
-	 */
+	@Override
 	public boolean isDirected() {
 		return isDirected;
 	}
 	
-	/**
-	 * Returns true if the Edges of the Graph are weighted;
-	 * 
-	 * @return true if the Edges of the Graph are wieghted; false otherwise;
-	 */
+	@Override
 	public boolean isWeighted() {
 		return isWeighted;
 	}
 	
-	/**
-	 * Returns true if and only if self-loops are allowed in this Graph. </br> 
-	 * A self loop is an Edge that its source and target Nodes are the same. </br>
-	 * 
-	 * @return true if loops are allowed in this Graph.
-	 */
+	@Override
 	public boolean isLoopsAllowed() {
 		return loopsAllowed;
 	}
 	
-	/**
-	 * Returns true if and only if multiple equivalent Edges are allowed in this Graph. </br>
-	 * The meaning of multiple edges is that there can be many Edges going from vertex v1 to vertex v2. </br>
-	 * 
-	 * @return
-	 */
+	@Override
 	public boolean isMultipleEdgesAllowed() {
 		return multipleEdgesAllowed;
 	}

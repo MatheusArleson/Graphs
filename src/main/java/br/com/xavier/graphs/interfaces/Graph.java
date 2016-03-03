@@ -2,6 +2,7 @@ package br.com.xavier.graphs.interfaces;
 
 import java.util.Set;
 
+import br.com.xavier.graphs.exception.IllegalEdgeException;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.edges.Edge;
 import br.com.xavier.graphs.interfaces.nodes.Node;
@@ -22,6 +23,41 @@ import br.com.xavier.graphs.interfaces.nodes.Node;
  * @param <E> Edges type Class
  */
 public abstract interface Graph<N extends Node, E extends Edge<N>> {
+	
+	//------------------------------------------
+	// 			GRAPH PROPERTIES METODS
+	//------------------------------------------
+	
+	/**
+	 * Returns true if the Edges of the Graph are directed;
+	 * 
+	 * @return true if the Edges of the Graph are directed; false otherwise;
+	 */
+	public boolean isDirected();
+	
+	/**
+	 * Returns true if the Edges of the Graph are weighted;
+	 * 
+	 * @return true if the Edges of the Graph are wieghted; false otherwise;
+	 */
+	public boolean isWeighted();
+	
+	/**
+	 * Returns true if and only if self-loops are allowed in this Graph. </br> 
+	 * A self loop is an Edge that its source and target Nodes are the same. </br>
+	 * 
+	 * @return true if loops are allowed in this Graph.
+	 */
+	public boolean isLoopsAllowed();
+	
+	/**
+	 * Returns true if and only if multiple equivalent Edges are allowed in this Graph. </br>
+	 * The meaning of multiple edges is that there can be many Edges going from vertex v1 to vertex v2. </br>
+	 * 
+	 * @return
+	 */
+	public boolean isMultipleEdgesAllowed();
+	
 	
 	//------------------------------------------
 	// 			NODES METODS
@@ -65,7 +101,12 @@ public abstract interface Graph<N extends Node, E extends Edge<N>> {
 			
 	//XXX REMOVE NODES METHODS
 	
-	//FIXME TODO DOCUMENT ME!
+	/**
+	 * Removes all Nodes contained in the Graph. </br>
+	 * This method will invoke the {@link #removeNode(N)} method.</br>
+	 * 
+	 * @return true - if this Graph changed as a result of the call; false otherwise.
+	 */
 	public abstract boolean removeAllNodes();
 	
 	/**
@@ -190,6 +231,17 @@ public abstract interface Graph<N extends Node, E extends Edge<N>> {
 	 */
 	public abstract boolean existsEdge(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException;
 	
+	//XXX IS EDGE ALLOWED
+	/**
+	 * Return true if this Edge is allowed in this Graph.  </br>
+	 * The method check loop weight directed/undirected multiple edge conditions to determine 
+	 * if it is allowed or not. </br>   
+	 * 
+	 * @param edge
+	 * @return
+	 */
+	public abstract boolean isEdgeAllowed(E edge);
+	
 	//XXX ADD EDGES METHODS
 	
 	/**
@@ -207,10 +259,11 @@ public abstract interface Graph<N extends Node, E extends Edge<N>> {
 	 * @param sourceNode {@link N} - source Node of the Edge.
 	 * @param targetNode {@link N} - target Node of the Edge.
 	 * @return {@link E} - the new Edge.
+	 * @throws IllegalEdgeException if Edge type is not allowed in this Graph. 
 	 * @throws IllegalNodeException if source or target Nodes are not found in the graph.
 	 * @throws NullPointerException if any parameter is null.
 	 */
-	public abstract boolean addEdge(E edge) throws IllegalNodeException, NullPointerException;
+	public abstract boolean addEdge(E edge) throws IllegalEdgeException, IllegalNodeException, NullPointerException;
 	
 	//XXX REMOVE EDGES METHODS
 	

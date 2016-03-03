@@ -50,7 +50,6 @@ public abstract class SimpleDirectedGraph<N extends AbstractNode, E extends Edge
 		
 		return null;
 	}
-
 	
 	@Override
 	public int degreeOf(N node) throws IllegalNodeException, NullPointerException {

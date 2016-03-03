@@ -12,8 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.xavier.graphs.exception.IllegalEdgeException;
 import br.com.xavier.graphs.exception.IllegalNodeException;
-import br.com.xavier.graphs.interfaces.Graph;
 import br.com.xavier.graphs.interfaces.edges.Edge;
 import br.com.xavier.graphs.interfaces.nodes.Node;
 
@@ -610,6 +610,54 @@ public abstract class GraphTest<N extends Node, E extends Edge<N>> {
 		assertFalse(isEmpty);
 	}
 
+	@Test
+	public void getAllEdgesMustReturnEdgeSetWithSameSizeAndReferences() {
+		// graph is clean on start
+
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
+
+		E edge12 = createEdge(node1, node2);
+		E edge23 = createEdge(node2, node3);
+
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
+
+		Set<E> allEdges = graph.getAllEdges();
+		int edgesSetSize = allEdges.size();
+		
+		boolean isDirected = graph.isDirected();
+		boolean containsEdge12 = allEdges.contains(edge12);
+		boolean containsEdge23 = allEdges.contains(edge23);
+		
+		boolean result = false;
+		
+		if(isDirected){
+			boolean isSizeTwo = (edgesSetSize == 2);
+			result = isSizeTwo && containsEdge12 && containsEdge23;
+			
+			assertTrue(result);
+			
+		} else {
+			boolean isSizeFour = (edgesSetSize == 4);
+			boolean containsEdge12Reversed = allEdges.contains(edge12.reverse());
+			boolean containsEdge23Reversed = allEdges.contains(edge23.reverse());
+			
+			result = ( 
+				isSizeFour && 
+				containsEdge12 && containsEdge12Reversed && 
+				containsEdge23 && containsEdge23Reversed
+			);
+			
+			assertTrue(result);
+		}
+	}
+	
 	// GET ALL EDGES NODE
 
 	@Test(expected = NullPointerException.class)
@@ -777,6 +825,49 @@ public abstract class GraphTest<N extends Node, E extends Edge<N>> {
 		assertFalse(isEmpty);
 	}
 
+	@Test
+	public void getAllEdgesSourceTargetMustReturnEdgeSetWithSameSizeAndReferences(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		N node3 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		graph.addNode(node3);
+
+		E edge12 = createEdge(node1, node2);
+		E edge23 = createEdge(node2, node3);
+
+		graph.addEdge(edge12);
+		graph.addEdge(edge23);
+		
+		Set<E> allEdges = graph.getAllEdges(node1, node2);
+		int edgesSetSize = allEdges.size();
+		
+		boolean isDirected = graph.isDirected();
+		boolean containsEdge12 = allEdges.contains(edge12);
+		boolean containsEdge23 = allEdges.contains(edge23);
+		boolean result = false;
+		
+		if(isDirected){
+			boolean isSizeOne = (edgesSetSize == 1);
+			result = isSizeOne && containsEdge12 && !containsEdge23;
+			
+			assertTrue(result);
+			
+		} else {
+			
+			boolean isSizeFour = (edgesSetSize == 2);
+			boolean containsEdge12Reversed = allEdges.contains(edge12.reverse());
+			
+			result = (isSizeFour && containsEdge12 && containsEdge12Reversed);
+			
+			assertTrue(result);
+		}
+	}
+	
 	// CONTAINS EDGE
 	
 	@Test(expected=NullPointerException.class)
@@ -975,6 +1066,104 @@ public abstract class GraphTest<N extends Node, E extends Edge<N>> {
 		assertTrue(existsEdge);
 	}
 
+	//IS EDGE ALLOWED
+	
+		@Test
+	public void isEdgeAllowedMustReturnFalseToLoopEdgeWhenLoopIsNotAllowed(){
+		// graph is clean on start
+		
+		N node = createNode();
+		
+		graph.addNode(node);
+		
+		E loopEdge = createEdge(node, node);
+		
+		boolean isAdded = graph.isEdgeAllowed(loopEdge);
+		
+		boolean loopsAllowed = graph.isLoopsAllowed();
+		if(!loopsAllowed){
+			assertFalse(isAdded);
+		}
+	}
+	
+	@Test
+	public void isEdgeAllowedMustReturnTrueToLoopEdgeWhenLoopIsAllowed(){
+		// graph is clean on start
+		
+		N node = createNode();
+		
+		graph.addNode(node);
+		
+		E loopEdge = createEdge(node, node);
+		
+		boolean isAdded = graph.isEdgeAllowed(loopEdge);
+		
+		boolean loopsAllowed = graph.isLoopsAllowed();
+		if(loopsAllowed){
+			assertTrue(isAdded);
+		}
+	}
+	
+	@Test
+	public void isEdgeAllowedMustReturnFalseToMultipleEdgeWhenMultipleEdgesAreNotAllowed(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		
+		E edge12 = createEdge(node1, node2);
+		
+		graph.addEdge(edge12);
+		
+		E edge12Duplicate = createEdge(node1, node2);
+		
+		boolean isAdded = graph.isEdgeAllowed(edge12Duplicate);
+		
+		boolean multipleEdgesAllowed = graph.isMultipleEdgesAllowed();
+		if(!multipleEdgesAllowed){
+			assertFalse(isAdded);
+		}
+	}
+	
+	@Test
+	public void isEdgeAllowedMustReturnTrueToMultipleEdgeWhenMultipleEdgesAreAllowed(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		
+		E edge12 = createEdge(node1, node2);
+		
+		graph.addEdge(edge12);
+		
+		E edge12Duplicate = createEdge(node1, node2);
+		
+		boolean isAdded = graph.isEdgeAllowed(edge12Duplicate);
+		
+		boolean multipleEdgesAllowed = graph.isMultipleEdgesAllowed();
+		if(multipleEdgesAllowed){
+			assertTrue(isAdded);
+		}
+	}
+
+	@Test(expected=IllegalEdgeException.class)
+	public abstract void isEdgeAllowedMustThrowIllegalEdgeExceptionToUnweightedEdgeWhenGraphIsWeighted();
+	
+	@Test(expected=IllegalEdgeException.class)
+	public abstract void isEdgeAllowedMustThrowIllegalEdgeExceptionToWeightedEdgeWhenGraphIsUnweighted();
+	
+	@Test
+	public abstract void isEdgeAllowedMustNotThrowIllegalEdgeExceptionToWeightedEdgeWhenGraphIsWeighted();
+	
+	@Test
+	public abstract void isEdgeAllowedMustNotThrowIllegalEdgeExceptionToUnweightedEdgeWhenGraphIsUnweighted();
+	
 	// ADD EDGE
 	
 	@Test(expected=NullPointerException.class)
@@ -1035,6 +1224,155 @@ public abstract class GraphTest<N extends Node, E extends Edge<N>> {
 		
 		assertTrue(allExceptions);
 		
+	}
+	
+	@Test
+	public void addEdgeMustReturnTrueOnAddRepeatedEdgeWhenMultiplesEdgesAreAllowed(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		
+		E edge12 = createEdge(node1, node2);
+		
+		boolean isAddedFirstTime = graph.addEdge(edge12);
+		boolean isMultipleEdgesAllowed = graph.isMultipleEdgesAllowed();
+		
+		if(isMultipleEdgesAllowed){
+			assertTrue(isAddedFirstTime);
+			
+			boolean isAddedSecondTime = graph.addEdge(edge12);
+			boolean result = isAddedFirstTime && isAddedSecondTime;
+			
+			assertTrue(result);
+		}
+	}
+	
+	@Test
+	public void addEdgeMustReturnFalseOnAddRepeatedEdgeWhenMultiplesEdgesAreNotAllowed(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		
+		E edge12 = createEdge(node1, node2);
+		
+		boolean isAddedFirstTime = graph.addEdge(edge12);
+		boolean isMultipleEdgesAllowed = graph.isMultipleEdgesAllowed();
+		
+		if(!isMultipleEdgesAllowed){
+			assertTrue(isAddedFirstTime);
+			
+			boolean isAddedSecondTime = graph.addEdge(edge12);
+			boolean result = isAddedFirstTime && isAddedSecondTime;
+			
+			assertFalse(result);
+		}
+	}
+	
+	@Test
+	public void addEdgeMustReturnTrueOnAddLoopEdgeWhenLoopsAreAllowed(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		
+		graph.addNode(node1);
+		
+		E loopEdge = createEdge(node1, node1);
+		
+		boolean isAddedFirstTime = graph.addEdge(loopEdge);
+		boolean isLoopsAllowed = graph.isLoopsAllowed();
+		
+		if(isLoopsAllowed){
+			assertTrue(isAddedFirstTime);
+			
+			boolean isAddedSecondTime = graph.addEdge(loopEdge);
+			boolean result = isAddedFirstTime && isAddedSecondTime;
+			
+			assertTrue(result);
+		}
+	}
+	
+	@Test
+	public void addEdgeMustReturnFalseOnAddLoopEdgeWhenLoopsAreNotAllowed(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		
+		graph.addNode(node1);
+		
+		E loopEdge = createEdge(node1, node1);
+		
+		boolean isLoopsAllowed = graph.isLoopsAllowed();
+		if(!isLoopsAllowed){
+			boolean isAddedFirstTime = graph.addEdge(loopEdge);
+		
+			assertFalse(isAddedFirstTime);
+		}
+	}
+	
+	@Test(expected=IllegalEdgeException.class)
+	public abstract void addEdgeMustThrowExceptionOnAddWeightedEdgeOnUnweightedGraph();
+	
+	@Test
+	public abstract void addEdgeMustNotThrowExceptionOnAddWeightedEdgeOnWeightedGraph();
+	
+	@Test(expected=IllegalEdgeException.class)
+	public abstract void addEdgeMustThrowExceptionOnAddUnweightedEdgeOnWeightedGraph();
+	
+	@Test
+	public abstract void addEdgeMustNotThrowExceptionOnAddUnweightedEdgeOnUnweightedGraph();
+	
+	@Test
+	public void addEdgeMustAddReverseEdgeOnUndirectedGraph(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		
+		E edge12 = createEdge(node1, node2);
+		
+		boolean isAdded = graph.addEdge(edge12);
+		
+		boolean isDirected = graph.isDirected();
+		if(!isDirected){
+			boolean containsEdgeReverse = graph.containsEdge(edge12.reverse());
+			boolean result = isAdded && containsEdgeReverse;
+			
+			assertTrue(result);
+		}
+	}
+	
+	@Test
+	public void addEdgeMustNotAddReverseEdgeOnDirectedGraph(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		
+		E edge12 = createEdge(node1, node2);
+		
+		boolean isAdded = graph.addEdge(edge12);
+		
+		boolean isDirected = graph.isDirected();
+		if(isDirected){
+			boolean containsEdgeReverse = graph.containsEdge(edge12.reverse());
+			boolean result = isAdded && !containsEdgeReverse;
+			
+			assertTrue(result);
+		}
 	}
 	
 	// REMOVE ALL EDGES SET
@@ -1421,5 +1759,67 @@ public abstract class GraphTest<N extends Node, E extends Edge<N>> {
 		boolean result = isRemoved && !exists;
 		
 		assertTrue(result);
+	}
+	
+	@Test
+	public void removeEdgesMustRemoveReverseEdgeOnUndirectedGraph(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		
+		E edge12 = createEdge(node1, node2);
+		
+		boolean isAdded = graph.addEdge(edge12);
+		
+		E edge12Reversed = edge12.reverse();
+		boolean containsEdgeReversedPostAdd = graph.containsEdge(edge12Reversed);
+		
+		boolean isRemoved = graph.removeEdge(edge12);
+		
+		boolean containsEdgeReversedPostRemove = graph.containsEdge(edge12Reversed);
+		boolean isDirected = graph.isDirected();
+		if(!isDirected){
+			boolean result = (
+				isAdded && containsEdgeReversedPostAdd && 
+				isRemoved && !containsEdgeReversedPostRemove
+			);
+			
+			assertTrue(result);
+		}
+	}
+	
+	@Test
+	public void removeEdgesMustNotRemoveReverseEdgeOnDirectedGraph(){
+		// graph is clean on start
+		
+		N node1 = createNode();
+		N node2 = createNode();
+		
+		graph.addNode(node1);
+		graph.addNode(node2);
+		
+		E edge12 = createEdge(node1, node2);
+		
+		boolean isAdded = graph.addEdge(edge12);
+		
+		E edge12Reversed = edge12.reverse();
+		boolean containsEdgeReversedPostAdd = graph.containsEdge(edge12Reversed);
+		
+		boolean isRemoved = graph.removeEdge(edge12);
+		
+		boolean containsEdgeReversedPostRemove = graph.containsEdge(edge12Reversed);
+		boolean isDirected = graph.isDirected();
+		if(isDirected){
+			boolean result = (
+				isAdded && !containsEdgeReversedPostAdd && 
+				isRemoved && !containsEdgeReversedPostRemove
+			);
+			
+			assertTrue(result);
+		}
 	}
 }
