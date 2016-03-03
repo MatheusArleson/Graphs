@@ -146,7 +146,10 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		
 		Set<E> allEdges = getAllEdges(sourceNode, targetNode);
 		for (E graphEdge : allEdges) {
-			if(graphEdge.equals(edge)){
+			N graphEdgeSource = graphEdge.getSource();
+			N graphEdgeTarget = graphEdge.getTarget();
+			
+			if(graphEdgeSource.equals(sourceNode) && graphEdgeTarget.equals(targetNode)){
 				return true;
 			}
 		}

@@ -17,6 +17,13 @@ public abstract class AdjacencyMatrixGraph<N extends AbstractNode, E extends Edg
 		boolean loopsAllowed, boolean multipleEdgesAllowed
 	) {
 		super(isDirected, isWeighted, loopsAllowed, multipleEdgesAllowed);
+		
+		try {
+			this.graphMatrix = new DefaultSquareObjectIndexedMatrix<N, Integer>();
+		} catch (Exception e) {
+			//FIXME TODO put in external string
+			throw new RuntimeException("Error creation internal matrix.");
+		}
 	}
 	
 	//------------------------------------------
@@ -34,30 +41,30 @@ public abstract class AdjacencyMatrixGraph<N extends AbstractNode, E extends Edg
 		return true;
 	}
 	
-	@Override
-	public boolean removeAllNodes() {
-		boolean isAllRemoved = super.removeAllNodes();
-		if(!isAllRemoved){
-			return false;
-		}
-		
-		graphMatrix.clear();
-		return true;
-	}
-	
-	@Override
-	public boolean removeAllNodes(Set<N> nodesSet) throws NullPointerException {
-		boolean removedNodes = super.removeAllNodes(nodesSet);
-		if(!removedNodes){
-			return false;
-		}
-		
-		for (N node : nodesSet) {
-			graphMatrix.removeColumAndRow(node);
-		}
-		
-		return true;
-	}
+//	@Override
+//	public boolean removeAllNodes() {
+//		boolean isAllRemoved = super.removeAllNodes();
+//		if(!isAllRemoved){
+//			return false;
+//		}
+//		
+//		graphMatrix.clear();
+//		return true;
+//	}
+//	
+//	@Override
+//	public boolean removeAllNodes(Set<N> nodesSet) throws NullPointerException {
+//		boolean removedNodes = super.removeAllNodes(nodesSet);
+//		if(!removedNodes){
+//			return false;
+//		}
+//		
+//		for (N node : nodesSet) {
+//			graphMatrix.removeColumAndRow(node);
+//		}
+//		
+//		return true;
+//	}
 	
 	@Override
 	public boolean removeNode(N node) throws NullPointerException {
@@ -83,9 +90,9 @@ public abstract class AdjacencyMatrixGraph<N extends AbstractNode, E extends Edg
 		Util.checkIllegalNode(this, sourceNode, targetNode);
 		
 		Integer matrixElement = graphMatrix.get(sourceNode, targetNode);
-		boolean isPresent = graphMatrix.checkEmpty(matrixElement);
+		boolean isNotPresent = graphMatrix.checkEmpty(matrixElement);
 		
-		return isPresent;
+		return !isNotPresent;
 	}
 	
 	@Override
@@ -97,9 +104,9 @@ public abstract class AdjacencyMatrixGraph<N extends AbstractNode, E extends Edg
 		}
 		
 		Integer matrixElement = graphMatrix.get(sourceNode, targetNode);
-		boolean isPresent = graphMatrix.checkEmpty(matrixElement);
+		boolean isNotPresent = graphMatrix.checkEmpty(matrixElement);
 		
-		return isPresent;
+		return !isNotPresent;
 	}
 
 	@Override
@@ -121,45 +128,45 @@ public abstract class AdjacencyMatrixGraph<N extends AbstractNode, E extends Edg
 		return true;
 	}
 	
-	@Override
-	public boolean removeAllEdges(Set<E> edgesSet) throws NullPointerException {
-		boolean edgesRemoved = super.removeAllEdges(edgesSet);
-		if(!edgesRemoved){
-			return false;
-		}
-		
-		for (E edge : edgesSet) {
-			clearMatrixEdgeEntry(edge);
-		}
-		
-		return true;
-	}
-	
-	@Override
-	public Set<E> removeAllEdges(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException {
-		Set<E> edgesSet = super.removeAllEdges(sourceNode, targetNode);
-		
-		if(!edgesSet.isEmpty()){
-			for (E edge : edgesSet) {
-				clearMatrixEdgeEntry(edge);
-			}
-		}
-		
-		return edgesSet;
-	}
-	
-	@Override
-	public Set<E> removeAllEdges(N node) {
-		Set<E> edgesSet = super.removeAllEdges(node);
-		
-		if(!edgesSet.isEmpty()){
-			for (E edge : edgesSet) {
-				clearMatrixEdgeEntry(edge);
-			}
-		}
-		
-		return edgesSet;
-	}
+//	@Override
+//	public boolean removeAllEdges(Set<E> edgesSet) throws NullPointerException {
+//		boolean edgesRemoved = super.removeAllEdges(edgesSet);
+//		if(!edgesRemoved){
+//			return false;
+//		}
+//		
+//		for (E edge : edgesSet) {
+//			clearMatrixEdgeEntry(edge);
+//		}
+//		
+//		return true;
+//	}
+//	
+//	@Override
+//	public Set<E> removeAllEdges(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException {
+//		Set<E> edgesSet = super.removeAllEdges(sourceNode, targetNode);
+//		
+//		if(!edgesSet.isEmpty()){
+//			for (E edge : edgesSet) {
+//				clearMatrixEdgeEntry(edge);
+//			}
+//		}
+//		
+//		return edgesSet;
+//	}
+//	
+//	@Override
+//	public Set<E> removeAllEdges(N node) {
+//		Set<E> edgesSet = super.removeAllEdges(node);
+//		
+//		if(!edgesSet.isEmpty()){
+//			for (E edge : edgesSet) {
+//				clearMatrixEdgeEntry(edge);
+//			}
+//		}
+//		
+//		return edgesSet;
+//	}
 	
 	public boolean removeEdge(E edge) throws NullPointerException {
 		boolean edgeRemoved = super.removeEdge(edge);
@@ -178,9 +185,9 @@ public abstract class AdjacencyMatrixGraph<N extends AbstractNode, E extends Edg
 		return true;
 	}
 	
-	private void clearMatrixEdgeEntry(E edge){
-		N sourceNode = edge.getSource();
-		N targetNode = edge.getTarget();
-		graphMatrix.set(sourceNode, targetNode, graphMatrix.representsEmpty());
-	}
+//	private void clearMatrixEdgeEntry(E edge){
+//		N sourceNode = edge.getSource();
+//		N targetNode = edge.getTarget();
+//		graphMatrix.set(sourceNode, targetNode, graphMatrix.representsEmpty());
+//	}
 }

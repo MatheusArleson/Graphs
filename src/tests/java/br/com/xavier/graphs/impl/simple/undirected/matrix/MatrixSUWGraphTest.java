@@ -2,12 +2,12 @@ package br.com.xavier.graphs.impl.simple.undirected.matrix;
 
 import java.math.BigDecimal;
 
-import br.com.xavier.graphs.abstractions.simple.directed.SimpleDirectedUnweightedGraphTest;
+import br.com.xavier.graphs.abstractions.simple.directed.matrix.SimpleDirectedUnweightedAdjacencyMatrixGraphTest;
 import br.com.xavier.graphs.impl.edges.DefaultWeightedEdge;
 import br.com.xavier.graphs.impl.nodes.NumberedNode;
 import br.com.xavier.graphs.impl.nodes.NumberedNodesFactory;
 
-public class MatrixSUWGraphTest extends SimpleDirectedUnweightedGraphTest<NumberedNode, DefaultWeightedEdge<NumberedNode>> {
+public class MatrixSUWGraphTest extends SimpleDirectedUnweightedAdjacencyMatrixGraphTest<NumberedNode, DefaultWeightedEdge<NumberedNode>> {
 
 	private NumberedNodesFactory nodeFactory;
 	

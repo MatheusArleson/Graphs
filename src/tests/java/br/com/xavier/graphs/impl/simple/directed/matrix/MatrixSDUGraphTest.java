@@ -1,11 +1,11 @@
 package br.com.xavier.graphs.impl.simple.directed.matrix;
 
-import br.com.xavier.graphs.abstractions.simple.directed.SimpleDirectedUnweightedGraphTest;
+import br.com.xavier.graphs.abstractions.simple.directed.matrix.SimpleDirectedUnweightedAdjacencyMatrixGraphTest;
 import br.com.xavier.graphs.impl.edges.DefaultUnweightedEdge;
 import br.com.xavier.graphs.impl.nodes.NumberedNode;
 import br.com.xavier.graphs.impl.nodes.NumberedNodesFactory;
 
-public class MatrixSDUGraphTest extends SimpleDirectedUnweightedGraphTest<NumberedNode, DefaultUnweightedEdge<NumberedNode>> {
+public class MatrixSDUGraphTest extends SimpleDirectedUnweightedAdjacencyMatrixGraphTest<NumberedNode, DefaultUnweightedEdge<NumberedNode>> {
 
 	private NumberedNodesFactory nodeFactory;
 	

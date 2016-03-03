@@ -112,6 +112,8 @@ public abstract class AbstractGraphTest<N extends AbstractNode, E extends Abstra
 		boolean isWeighted = getAsAbstractGraphInstance().isWeighted();
 		if(!isWeighted){
 			getAsAbstractGraphInstance().addEdge(edge12);
+		} else {
+			throw new IllegalEdgeException();
 		}
 	}
 	
