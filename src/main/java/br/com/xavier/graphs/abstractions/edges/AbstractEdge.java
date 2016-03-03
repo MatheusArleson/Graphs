@@ -75,7 +75,4 @@ public abstract class AbstractEdge<N extends AbstractNode> implements Edge<N>, S
 	
 	//XXX OVERRIDE METHODS
 	
-	public abstract AbstractEdge<N> reverse();
-	
-	
 }
