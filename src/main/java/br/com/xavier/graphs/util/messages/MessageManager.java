@@ -12,7 +12,7 @@ import br.com.xavier.graphs.util.messages.enums.DefaultMessagesKey;
  */
 public class MessageManager {
 	
-	private static final String MESSAGES_FILE_NAME = "messages";
+	private static final String MESSAGES_FILE_NAME = "graphs_messages";
 	private static final ResourceBundle MESSAGE_BUNDLE = ResourceBundle.getBundle(MESSAGES_FILE_NAME);
 	
 	//XXX METHODS
