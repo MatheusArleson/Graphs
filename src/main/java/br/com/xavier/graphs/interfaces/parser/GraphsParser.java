@@ -6,6 +6,6 @@ import br.com.xavier.graphs.interfaces.edges.Edge;
 
 public interface GraphsParser<N extends AbstractNode, E extends Edge<N>> {
 	
-	public String parse(AbstractGraph<N, E> graph, String graphWidgetVar);
+	public String parse(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar);
 	
 }

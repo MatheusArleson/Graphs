@@ -189,4 +189,5 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		
 		return isRemoved;
 	}
+
 }

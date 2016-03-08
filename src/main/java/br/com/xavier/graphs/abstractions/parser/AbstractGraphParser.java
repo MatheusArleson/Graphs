@@ -17,7 +17,7 @@ public abstract class AbstractGraphParser<N extends AbstractNode, E extends Edge
 	
 	//XXX INTERFACE METHODS
 	@Override
-	public String parse(AbstractGraph<N, E> graph, String graphWidgetVar) {
+	public String parse(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar) {
 		NullValidator.checkNullParameter(graph, graphWidgetVar);
 		
 		if(graphWidgetVar.isEmpty()){
@@ -26,19 +26,25 @@ public abstract class AbstractGraphParser<N extends AbstractNode, E extends Edge
 		
 		StringBuffer sb = new StringBuffer();
 		
-		String newGraph = createNewGraph(graphWidgetVar);
+		String header = generateHeader(graph, htmlElementContainer, graphWidgetVar);
+		sb.append(header);
+		
+		String newGraph = createNewGraph(graph, htmlElementContainer, graphWidgetVar);
 		sb.append(newGraph);
 		
-		String preConditions = preConditions(graph, graphWidgetVar);
+		String preConditions = preConditions(graph, htmlElementContainer, graphWidgetVar);
 		sb.append(preConditions);
 		
-		String parsed = doParse(graph, graphWidgetVar);
+		String parsed = doParse(graph, htmlElementContainer, graphWidgetVar);
 		sb.append(parsed);
+		
+		String footer = generateFooter(graph, htmlElementContainer, graphWidgetVar);
+		sb.append(footer);
 		
 		return sb.toString();
 	}
-	
-	private String preConditions(AbstractGraph<N, E> graph, String graphWidgetVar) {
+
+	private String preConditions(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar) {
 		StringBuffer sb = new StringBuffer();
 		
 		boolean isDirected = graph.isDirected();
@@ -47,29 +53,29 @@ public abstract class AbstractGraphParser<N extends AbstractNode, E extends Edge
 		boolean isMultipleEdgesAllowed = graph.isMultipleEdgesAllowed();
 		
 		if(isDirected){
-			String onDirectedPreCondition = onDirectedGraph(graph, graphWidgetVar);
+			String onDirectedPreCondition = onDirectedGraph(graph, htmlElementContainer, graphWidgetVar);
 			sb.append(onDirectedPreCondition);
 		}
 		
 		if(isWeighted){
-			String onWeightedPreCondition = onWeightedGraph(graph, graphWidgetVar);
+			String onWeightedPreCondition = onWeightedGraph(graph, htmlElementContainer, graphWidgetVar);
 			sb.append(onWeightedPreCondition);
 		}
 		
 		if(isLoopsAllowed){
-			String onLoopsAllowedPreCondition = onLoopsAllowedGraph(graph, graphWidgetVar);
+			String onLoopsAllowedPreCondition = onLoopsAllowedGraph(graph, htmlElementContainer, graphWidgetVar);
 			sb.append(onLoopsAllowedPreCondition);
 		}
 		
 		if(isMultipleEdgesAllowed){
-			String onMultipleEdgesAllowedPreCondition = onMultipleEdgesAllowedGraph(graph, graphWidgetVar);
+			String onMultipleEdgesAllowedPreCondition = onMultipleEdgesAllowedGraph(graph, htmlElementContainer, graphWidgetVar);
 			sb.append(onMultipleEdgesAllowedPreCondition);
 		}
 		
 		return sb.toString();
 	}
 
-	private String doParse(AbstractGraph<N, E> graph, String graphWidgetVar) {
+	private String doParse(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar) {
 		StringBuffer sb = new StringBuffer();
 		
 		//Discover all nodes 
@@ -79,38 +85,38 @@ public abstract class AbstractGraphParser<N extends AbstractNode, E extends Edge
 		}
 		
 		//Add all nodes part
-		String addAllNodesPart = generateAddAllNodesPart(graphNodesSet, graphWidgetVar);
+		String addAllNodesPart = generateAddAllNodesPart(graphNodesSet, htmlElementContainer, graphWidgetVar);
 		sb.append(addAllNodesPart);
 		
 		//Discover all edges
-		Set<E> graphEdgesSet = graph.getAllEdges();
+		Set<E> graphEdgesSet = graph.getDistinctEdges();
 		if(graphEdgesSet.isEmpty()){
 			return sb.toString();
 		}
 		
 		//Add all edges part
-		String addAllEdgesPart = generateAddAllEdgesPart(graphEdgesSet, graphWidgetVar, graph.isDirected(), graph.isWeighted());
+		String addAllEdgesPart = generateAddAllEdgesPart(graphEdgesSet, htmlElementContainer, graphWidgetVar, graph.isDirected(), graph.isWeighted());
 		sb.append(addAllEdgesPart);
 		
 		return sb.toString();
 	}
 	
-	private String generateAddAllNodesPart(Set<N> graphNodesSet, String graphWidgetVar){
+	private String generateAddAllNodesPart(Set<N> graphNodesSet, String htmlElementContainer, String graphWidgetVar){
 		StringBuffer sb = new StringBuffer();
 		
 		for (N node : graphNodesSet) {
-			String addNodeStr = generateAddNodeStr(node, graphWidgetVar);
+			String addNodeStr = generateAddNodeStr(node, htmlElementContainer, graphWidgetVar);
 			sb.append(addNodeStr);
 		}
 		
 		return sb.toString();
 	}
 	
-	private String generateAddAllEdgesPart(Set<E> graphEdgesSet, String graphWidgetVar, boolean isGraphDirected, boolean isGraphWeighted){
+	private String generateAddAllEdgesPart(Set<E> graphEdgesSet, String htmlElementContainer, String graphWidgetVar, boolean isGraphDirected, boolean isGraphWeighted){
 		StringBuffer sb = new StringBuffer();
 		
 		for (E edge : graphEdgesSet) {
-			String addEdgeStr = generateAddEdgeStr(edge, graphWidgetVar, isGraphDirected, isGraphWeighted);
+			String addEdgeStr = generateAddEdgeStr(edge, htmlElementContainer, graphWidgetVar, isGraphDirected, isGraphWeighted);
 			sb.append(addEdgeStr);
 		}
 		
@@ -118,12 +124,16 @@ public abstract class AbstractGraphParser<N extends AbstractNode, E extends Edge
 	}
 	
 	//XXX ABSTRACT METHODS
-	protected abstract String createNewGraph(String graphWidgetVar);
-	protected abstract String onDirectedGraph(AbstractGraph<N, E> graph, String graphWidgetVar);
-	protected abstract String onWeightedGraph(AbstractGraph<N, E> graph, String graphWidgetVar);
-	protected abstract String onLoopsAllowedGraph(AbstractGraph<N, E> graph, String graphWidgetVar);
-	protected abstract String onMultipleEdgesAllowedGraph(AbstractGraph<N, E> graph, String graphWidgetVar);
+	protected abstract String createNewGraph(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar);
+	protected abstract String onDirectedGraph(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar);
+	protected abstract String onWeightedGraph(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar);
+	protected abstract String onLoopsAllowedGraph(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar);
+	protected abstract String onMultipleEdgesAllowedGraph(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar);
 
-	protected abstract String generateAddNodeStr(N node, String graphWidgetVar);
-	protected abstract String generateAddEdgeStr(E edge, String graphWidgetVar, boolean isGraphDirected, boolean isGraphWeighted);
+	protected abstract String generateAddNodeStr(N node, String htmlElementContainer, String graphWidgetVar);
+	protected abstract String generateAddEdgeStr(E edge, String htmlElementContainer, String graphWidgetVar, boolean isGraphDirected, boolean isGraphWeighted);
+	
+	protected abstract String generateHeader(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar);
+	protected abstract String generateFooter(AbstractGraph<N, E> graph, String htmlElementContainer, String graphWidgetVar);
+	
 }

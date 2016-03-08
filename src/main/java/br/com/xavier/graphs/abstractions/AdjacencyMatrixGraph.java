@@ -1,7 +1,5 @@
 package br.com.xavier.graphs.abstractions;
 
-import java.util.Set;
-
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.edges.Edge;

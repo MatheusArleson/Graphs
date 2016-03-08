@@ -162,7 +162,7 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 		return false;
 	}
 	
-	//XXX PROTECTED METHODS
+	//XXX METHODS
 	public boolean isEdgeAllowed(E edge){
 		Util.checkNullParameter(edge);
 		
@@ -189,6 +189,43 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 		} 
 		
 		return true;
+	}
+	
+	//TODO FIXME make it better... its ugly now... O.o
+	public Set<E> getDistinctEdges(){
+		Set<E> distinctEdgesSet = new LinkedHashSet<E>();
+		if(isDirected()){
+			distinctEdgesSet.addAll(getAllEdges());
+		} else {
+			for (E edge : getAllEdges()) {
+				N source = edge.getSource();
+				N target = edge.getTarget();
+				
+				if(distinctEdgesSet.isEmpty()){
+					distinctEdgesSet.add(edge);
+					continue;
+				}
+				
+				boolean found = false;
+				for (E distinctEdge : distinctEdgesSet) {
+					N distinctSource = distinctEdge.getSource();
+					N distinctTarget = distinctEdge.getTarget();
+					
+					boolean isSourceTarget = source.equals(distinctTarget);
+					boolean isTargetSource = target.equals(distinctSource);
+					
+					if(isSourceTarget && isTargetSource){
+						found = true;
+						break;
+					} 
+				}
+				
+				if(!found){
+					distinctEdgesSet.add(edge);
+				}
+			}
+		}
+		return distinctEdgesSet;
 	}
 	
 	//XXX GETTERS
