@@ -54,7 +54,7 @@ public abstract class AbstractGraphTest<N extends AbstractNode, E extends Abstra
 		
 		boolean isWeighted = graph.isWeighted();
 		if(!isWeighted){
-			E edge = (E) new DefaultWeightedEdge<N>(node1, node2, BigDecimal.ZERO);
+			E edge = (E) new DefaultWeightedEdge<N, BigDecimal>(node1, node2, BigDecimal.ZERO);
 			graph.isEdgeAllowed(edge);
 		} else {
 			throw new IllegalEdgeException();
@@ -73,7 +73,7 @@ public abstract class AbstractGraphTest<N extends AbstractNode, E extends Abstra
 		
 		boolean isWeighted = graph.isWeighted();
 		if(isWeighted){
-			E edge = (E) new DefaultWeightedEdge<N>(node1, node2, BigDecimal.ZERO);
+			E edge = (E) new DefaultWeightedEdge<N, BigDecimal>(node1, node2, BigDecimal.ZERO);
 			graph.isEdgeAllowed(edge);
 		}
 	}
@@ -107,7 +107,7 @@ public abstract class AbstractGraphTest<N extends AbstractNode, E extends Abstra
 		getAsAbstractGraphInstance().addNode(node1);
 		getAsAbstractGraphInstance().addNode(node2);
 		
-		E edge12 = (E) new DefaultWeightedEdge<N>(node1, node2, BigDecimal.ZERO);
+		E edge12 = (E) new DefaultWeightedEdge<N, BigDecimal>(node1, node2, BigDecimal.ZERO);
 		
 		boolean isWeighted = getAsAbstractGraphInstance().isWeighted();
 		if(!isWeighted){
@@ -127,7 +127,7 @@ public abstract class AbstractGraphTest<N extends AbstractNode, E extends Abstra
 		getAsAbstractGraphInstance().addNode(node1);
 		getAsAbstractGraphInstance().addNode(node2);
 		
-		E edge12 = (E) new DefaultWeightedEdge<N>(node1, node2, BigDecimal.ZERO);
+		E edge12 = (E) new DefaultWeightedEdge<N, BigDecimal>(node1, node2, BigDecimal.ZERO);
 		
 		boolean isWeighted = getAsAbstractGraphInstance().isWeighted();
 		if(isWeighted){

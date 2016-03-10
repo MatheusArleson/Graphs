@@ -1,19 +1,17 @@
 package br.com.xavier.graphs.abstractions.edges;
 
-import java.math.BigDecimal;
-
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.interfaces.edges.WeightedEdge;
 import br.com.xavier.graphs.util.messages.Util;
 
-public abstract class AbstractWeightedEdge<N extends AbstractNode> extends AbstractEdge<N> implements WeightedEdge<N> {
+public abstract class AbstractWeightedEdge<N extends AbstractNode, T> extends AbstractEdge<N> implements WeightedEdge<N,T> {
 
 	private static final long serialVersionUID = -3427314770841219944L;
 	
-	private BigDecimal weight;
+	private T weight;
 	
 	//XXX CONSTRUCTOR
-	public AbstractWeightedEdge(N source, N target, BigDecimal weight) {
+	public AbstractWeightedEdge(N source, N target, T weight) {
 		super(source, target);
 		setWeight(weight);
 	}
@@ -51,17 +49,17 @@ public abstract class AbstractWeightedEdge<N extends AbstractNode> extends Abstr
 	
 	@Override
 	public String toString() {
-		return "[" + getSource().getLabel() + ", " + getTarget().getLabel() + " : " + weight + "]";
+		return "[" + getSource().getLabel() + ", " + getTarget().getLabel() + " : " + weight.toString() + "]";
 	}
 	
 	//XXX GETTERS/SETTERS
 	@Override
-	public BigDecimal getWeight() {
+	public T getWeight() {
 		return weight;
 	}
 
 	@Override
-	public void setWeight(BigDecimal weight) {
+	public void setWeight(T weight) {
 		Util.checkNullParameter(weight);
 		
 		this.weight = weight; 
