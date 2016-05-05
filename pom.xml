@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>br.com.xavier</groupId>
   <artifactId>Graphs</artifactId>
-  <version>1.3.0</version>
+  <version>1.5.0</version>
   <name>Graphs</name>
   <description>A Java Graph Library</description>
   
