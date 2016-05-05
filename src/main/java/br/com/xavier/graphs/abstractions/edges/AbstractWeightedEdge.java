@@ -4,7 +4,9 @@ import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.interfaces.edges.WeightedEdge;
 import br.com.xavier.graphs.util.messages.Util;
 
-public abstract class AbstractWeightedEdge<N extends AbstractNode, T> extends AbstractEdge<N> implements WeightedEdge<N,T> {
+public abstract class AbstractWeightedEdge<N extends AbstractNode, T extends Comparable<T>> 
+				extends AbstractEdge<N> 
+				implements WeightedEdge<N,T>, Comparable<AbstractWeightedEdge<N, T>> {
 
 	private static final long serialVersionUID = -3427314770841219944L;
 	
@@ -50,6 +52,15 @@ public abstract class AbstractWeightedEdge<N extends AbstractNode, T> extends Ab
 	@Override
 	public String toString() {
 		return "[" + getSource().getLabel() + ", " + getTarget().getLabel() + " : " + weight.toString() + "]";
+	}
+	
+	@Override
+	public int compareTo(AbstractWeightedEdge<N, T> otherEdge) {
+		if(otherEdge == null){
+			return -1;
+		}
+		
+		return weight.compareTo(otherEdge.getWeight());
 	}
 	
 	//XXX GETTERS/SETTERS

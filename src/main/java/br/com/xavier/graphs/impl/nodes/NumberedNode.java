@@ -3,7 +3,7 @@ package br.com.xavier.graphs.impl.nodes;
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.util.messages.MessageManager;
 
-public class NumberedNode extends AbstractNode {
+public class NumberedNode extends AbstractNode implements Comparable<NumberedNode> {
 	
 	private static final String NODE_LABEL_BASE_STR = "node.numbered.label.base";
 	private int nodeNumber;
@@ -44,4 +44,17 @@ public class NumberedNode extends AbstractNode {
 		return String.format(MessageManager.getMessage(NODE_LABEL_BASE_STR), nodeNumber);
 	}
 
+	
+	@Override
+	public int compareTo(NumberedNode other) {
+		if(other == null){
+			return -1;
+		}
+		
+		if(nodeNumber == other.nodeNumber){
+			return 0;
+		} else {
+			return nodeNumber < other.nodeNumber ? -1 : 1 ;
+		}
+	}
 }

@@ -2,7 +2,7 @@ package br.com.xavier.graphs.interfaces.edges;
 
 import br.com.xavier.graphs.interfaces.nodes.Node;
 
-public interface WeightedEdge<N extends Node, T> extends Edge<N> {
+public interface WeightedEdge<N extends Node, T extends Comparable<T>> extends Edge<N> {
 	
 	/**
 	 * Returns the weight assigned to a given Edge. </br> 

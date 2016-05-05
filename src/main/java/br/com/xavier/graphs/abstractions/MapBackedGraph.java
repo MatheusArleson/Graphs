@@ -33,8 +33,43 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		this.graphMap = new LinkedHashMap<N, Set<E>>();
 	}
 	
+	//XXX OVERRIDE METHODS
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((graphMap == null) ? 0 : graphMap.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		MapBackedGraph other = (MapBackedGraph) obj;
+		if (graphMap == null) {
+			if (other.graphMap != null) {
+				return false;
+			}
+		} else if (!graphMap.equals(other.graphMap)) {
+			return false;
+		}
+		return true;
+	}
+	
 	//XXX OVERRIDE NODES METHODS
 	
+
+
+
 	@Override
 	public Set<N> getAllNodes() {
 		return graphMap.keySet();
@@ -189,5 +224,10 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 		
 		return isRemoved;
 	}
-
+	
+	//XXX GETTERS
+	@Override
+	public boolean isEmpty() {
+		return graphMap != null && graphMap.isEmpty();
+	}
 }

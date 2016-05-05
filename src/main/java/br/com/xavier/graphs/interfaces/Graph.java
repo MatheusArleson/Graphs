@@ -25,8 +25,33 @@ import br.com.xavier.graphs.interfaces.nodes.Node;
 public abstract interface Graph<N extends Node, E extends Edge<N>> {
 	
 	//------------------------------------------
-	// 			GRAPH PROPERTIES METODS
+	// 			GRAPH METHODS
 	//------------------------------------------
+	
+	/**
+	 * Merge this {@link Graph} instance with another one. </br>
+	 * </br>
+	 * After this call this {@link Graph} will contain all {@link Node} and {@link Edge} 
+	 * of the other {@link Graph} passed as parameter. </br> 
+	 * </br>
+	 * When merging, this method will call {@link #addNode(Node)} and {@link #addEdge(Edge)} methods. </br> 
+	 * </br>
+	 * 
+	 * @param otherGraph - {@link Graph} to be merged with this instance
+	 * @return a merged {@link Graph} 
+	 */
+	public void merge(Graph<N,E> otherGraph);
+	
+	//------------------------------------------
+	// 			GRAPH PROPERTIES METHODS
+	//------------------------------------------
+	
+	/**
+	 * Returns true if the Graph is empty;
+	 * 
+	 * @return true if the the Graph is empty; false otherwise;
+	 */
+	public boolean isEmpty();
 	
 	/**
 	 * Returns true if the Edges of the Graph are directed;
@@ -58,9 +83,8 @@ public abstract interface Graph<N extends Node, E extends Edge<N>> {
 	 */
 	public boolean isMultipleEdgesAllowed();
 	
-	
 	//------------------------------------------
-	// 			NODES METODS
+	// 			NODES METHODS
 	//------------------------------------------
 	
 	//XXX LIST NODES METHODS
@@ -160,7 +184,7 @@ public abstract interface Graph<N extends Node, E extends Edge<N>> {
 	public abstract int degreeOf(N node) throws IllegalNodeException, NullPointerException;
 	
 	//------------------------------------------
-	// 			EDGES METODS
+	// 			EDGES METHODS
 	//------------------------------------------
 	
 	//XXX LIST EDGES METHODS
@@ -204,6 +228,45 @@ public abstract interface Graph<N extends Node, E extends Edge<N>> {
 	 * @throws NullPointerException if any Node passed is null.
 	 */
 	public abstract Set<E> getAllEdges(N sourceNode, N targetNode) throws IllegalNodeException, NullPointerException;	
+	
+	//XXX LIST DISTINCT EDGES METHODS
+	
+	/**
+	 * Returns a set of distinct Edges contained in this Graph. </br>
+	 * </br>
+	 * Case the Graph is undirected, the edges source and target are compared and the reverse edges are not added to the result set. </br>
+	 * Case the Graph is directed, the edges of each node are added to the result set. </br>
+	 * </br>
+	 * The set is backed by the Graph, so changes to the Graph are reflected in the set. </br>
+	 * If the Graph is modified while an iteration over the set is in progress, the results of the iteration are undefined.</br>
+	 * </br>
+	 * The Graph implementation may maintain a particular set ordering (e.g. via LinkedHashSet) for deterministic iteration, but this is not required. </br>
+	 * It is the responsibility of callers who rely on this behavior to only use graph implementations which support it.</br>
+	 * </br>
+	 * FIXME TESTE ME! </br>
+	 * 
+	 * @return {@link Set} - a set of the distinct Edges contained in this Node.
+	 */
+	public abstract Set<E> getDistinctEdges();
+	
+	/**
+	 * Returns a set of distinct Edges contained in this Node. </br>
+	 * </br>
+	 * Case the Graph is undirected, the edges source and target are compared and the reverse edges of the node are not added to the result set. </br>
+	 * Case the Graph is directed, the edges of the node are added to the result set. </br>
+	 * </br>
+	 * The set is backed by the Graph, so changes to the Graph are reflected in the set. </br>
+	 * If the Graph is modified while an iteration over the set is in progress, the results of the iteration are undefined.</br>
+	 * </br>
+	 * The Graph implementation may maintain a particular set ordering (e.g. via LinkedHashSet) for deterministic iteration, but this is not required. </br>
+	 * It is the responsibility of callers who rely on this behavior to only use graph implementations which support it.</br>
+	 * </br>
+	 * FIXME TESTE ME! </br>
+	 * 
+	 * @param node - Node of interest.
+	 * @return {@link Set} - a set of the distinct Edges contained in this Node.
+	 */
+	public abstract Set<E> getDistinctEdges(N node);
 	
 	//XXX CONTAINS EDGES METHODS
 	

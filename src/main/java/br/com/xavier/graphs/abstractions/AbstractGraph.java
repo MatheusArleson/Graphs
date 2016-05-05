@@ -48,6 +48,65 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 		this.multipleEdgesAllowed = multipleEdgesAllowed;
 	}
 	
+	//XXX OVERRIDE METHODS
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (isDirected ? 1231 : 1237);
+		result = prime * result + (isWeighted ? 1231 : 1237);
+		result = prime * result + (loopsAllowed ? 1231 : 1237);
+		result = prime * result + (multipleEdgesAllowed ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		AbstractGraph other = (AbstractGraph) obj;
+		if (isDirected != other.isDirected) {
+			return false;
+		}
+		if (isWeighted != other.isWeighted) {
+			return false;
+		}
+		if (loopsAllowed != other.loopsAllowed) {
+			return false;
+		}
+		if (multipleEdgesAllowed != other.multipleEdgesAllowed) {
+			return false;
+		}
+		return true;
+	}
+	
+	//XXX GRAPH METHODS
+	
+	@Override
+	public void merge(Graph<N, E> otherGraph) {
+		Util.checkNullParameter(otherGraph);
+		
+		if(otherGraph.isEmpty()){
+			return;
+		}
+		
+		for (N node : otherGraph.getAllNodes()) {
+			this.addNode(node);
+		}
+		
+		for (E edge : otherGraph.getAllEdges()) {
+			this.addEdge(edge);
+		}
+	}
+	
 	//XXX OVERRIDE NODES METHODS
 	
 	@Override
@@ -162,6 +221,64 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 		return false;
 	}
 	
+	@Override
+	public Set<E> getDistinctEdges(){
+		Set<E> distinctEdgesSet = new LinkedHashSet<E>();
+		for (N node : getAllNodes()) {
+			getDistinctEdges(node, distinctEdgesSet);
+		}
+		return distinctEdgesSet;
+	}
+	
+	@Override
+	public Set<E> getDistinctEdges(N node) {
+		Set<E> distinctEdgesSet = new LinkedHashSet<E>();
+		getDistinctEdges(node, distinctEdgesSet);
+		return distinctEdgesSet;
+	}
+	
+	private void getDistinctEdges(N node, Set<E> reentrantDistinctEdgesSet){
+		if(isDirected()){
+			getDistinctDirectedEdges(node, reentrantDistinctEdgesSet);
+		} else {
+			getDistinctUndirectedEdges(node, reentrantDistinctEdgesSet);
+		}
+	}
+
+	private void getDistinctDirectedEdges(N node, Set<E> distinctEdgesSet) {
+		distinctEdgesSet.addAll(getAllEdges(node));
+	}
+	
+	private void getDistinctUndirectedEdges(N node, Set<E> distinctEdgesSet) {
+		for (E edge : getAllEdges(node)) {
+			N source = edge.getSource();
+			N target = edge.getTarget();
+
+			if (distinctEdgesSet.isEmpty()) {
+				distinctEdgesSet.add(edge);
+				continue;
+			}
+
+			boolean found = false;
+			for (E distinctEdge : distinctEdgesSet) {
+				N distinctSource = distinctEdge.getSource();
+				N distinctTarget = distinctEdge.getTarget();
+
+				boolean isSourceTarget = source.equals(distinctTarget);
+				boolean isTargetSource = target.equals(distinctSource);
+
+				if (isSourceTarget && isTargetSource) {
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				distinctEdgesSet.add(edge);
+			}
+		}
+	}
+	
 	//XXX METHODS
 	public boolean isEdgeAllowed(E edge){
 		Util.checkNullParameter(edge);
@@ -189,43 +306,6 @@ public abstract class AbstractGraph<N extends AbstractNode, E extends Edge<N>> i
 		} 
 		
 		return true;
-	}
-	
-	//TODO FIXME make it better... its ugly now... O.o
-	public Set<E> getDistinctEdges(){
-		Set<E> distinctEdgesSet = new LinkedHashSet<E>();
-		if(isDirected()){
-			distinctEdgesSet.addAll(getAllEdges());
-		} else {
-			for (E edge : getAllEdges()) {
-				N source = edge.getSource();
-				N target = edge.getTarget();
-				
-				if(distinctEdgesSet.isEmpty()){
-					distinctEdgesSet.add(edge);
-					continue;
-				}
-				
-				boolean found = false;
-				for (E distinctEdge : distinctEdgesSet) {
-					N distinctSource = distinctEdge.getSource();
-					N distinctTarget = distinctEdge.getTarget();
-					
-					boolean isSourceTarget = source.equals(distinctTarget);
-					boolean isTargetSource = target.equals(distinctSource);
-					
-					if(isSourceTarget && isTargetSource){
-						found = true;
-						break;
-					} 
-				}
-				
-				if(!found){
-					distinctEdgesSet.add(edge);
-				}
-			}
-		}
-		return distinctEdgesSet;
 	}
 	
 	//XXX GETTERS

@@ -43,6 +43,12 @@
 		<scope>compile</scope>
   	</dependency>
   	
+<!--   	<dependency> -->
+<!-- 	  	<groupId>br.com.xavier</groupId> -->
+<!-- 		<artifactId>GraphsCytoscapeParser</artifactId> -->
+<!-- 		<version>1.2.0</version> -->
+<!--   	</dependency> -->
+  	
   	<dependency>
 		<groupId>junit</groupId>
 		<artifactId>junit</artifactId>
