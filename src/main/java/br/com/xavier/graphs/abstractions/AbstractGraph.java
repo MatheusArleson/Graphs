@@ -11,7 +11,7 @@ import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.Graph;
 import br.com.xavier.graphs.interfaces.edges.Edge;
 import br.com.xavier.graphs.interfaces.edges.WeightedEdge;
-import br.com.xavier.graphs.util.messages.Util;
+import br.com.xavier.graphs.util.Util;
 
 /**
  * A skeletal implementation of the Graph interface, to minimize the effort required to implement Graph interfaces. </br>

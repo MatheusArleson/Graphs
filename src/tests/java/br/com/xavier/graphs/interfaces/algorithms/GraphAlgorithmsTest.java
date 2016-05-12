@@ -2,7 +2,7 @@ package br.com.xavier.graphs.interfaces.algorithms;
 
 import org.junit.Test;
 
-import br.com.xavier.graphs.impl.algorithms.GraphAlgorithmsImpl;
+import br.com.xavier.graphs.impl.algorithms.GraphAlgorithms;
 import br.com.xavier.graphs.impl.edges.DefaultWeightedEdge;
 import br.com.xavier.graphs.impl.nodes.NumberedNode;
 import br.com.xavier.graphs.impl.nodes.NumberedNodesFactory;
@@ -76,7 +76,7 @@ public class GraphAlgorithmsTest {
 		
 		System.out.println("#> END OF GRAPH CONSTRUCTION ");
 		
-		GraphAlgorithms ga = new GraphAlgorithmsImpl();
+		IGraphAlgorithms ga = new GraphAlgorithms();
 		
 //		System.out.println("#> BFS > ");
 //		List<NodeInfo> bfsNode1 = ga.BFS(graph, node1);

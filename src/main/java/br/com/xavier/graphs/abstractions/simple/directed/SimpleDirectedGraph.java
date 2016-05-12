@@ -7,7 +7,7 @@ import br.com.xavier.graphs.abstractions.simple.SimpleGraph;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.DirectedGraph;
 import br.com.xavier.graphs.interfaces.edges.Edge;
-import br.com.xavier.graphs.util.messages.Util;
+import br.com.xavier.graphs.util.Util;
 
 //FIXME TERMINAR IMPLEMETACAO
 public abstract class SimpleDirectedGraph<N extends AbstractNode, E extends Edge<N>> extends SimpleGraph<N,E> implements DirectedGraph<N,E> {

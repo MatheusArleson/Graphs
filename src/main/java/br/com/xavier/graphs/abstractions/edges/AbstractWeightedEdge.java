@@ -2,7 +2,7 @@ package br.com.xavier.graphs.abstractions.edges;
 
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.interfaces.edges.WeightedEdge;
-import br.com.xavier.graphs.util.messages.Util;
+import br.com.xavier.graphs.util.Util;
 
 public abstract class AbstractWeightedEdge<N extends AbstractNode, T extends Comparable<T>> 
 				extends AbstractEdge<N> 

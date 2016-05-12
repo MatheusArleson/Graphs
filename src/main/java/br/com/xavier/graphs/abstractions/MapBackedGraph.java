@@ -8,7 +8,7 @@ import java.util.Set;
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.edges.Edge;
-import br.com.xavier.graphs.util.messages.Util;
+import br.com.xavier.graphs.util.Util;
 
 public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> extends AbstractGraph<N,E> {
 	
@@ -66,9 +66,6 @@ public abstract class MapBackedGraph<N extends AbstractNode, E extends Edge<N>> 
 	}
 	
 	//XXX OVERRIDE NODES METHODS
-	
-
-
 
 	@Override
 	public Set<N> getAllNodes() {

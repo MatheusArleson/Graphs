@@ -5,7 +5,7 @@ import br.com.xavier.graphs.abstractions.simple.SimpleAdjacencyMatrixGraph;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.UndirectedGraph;
 import br.com.xavier.graphs.interfaces.edges.Edge;
-import br.com.xavier.graphs.util.messages.Util;
+import br.com.xavier.graphs.util.Util;
 
 public abstract class SimpleUndirectedAdjacencyMatrixGraph<N extends AbstractNode, E extends Edge<N>> 
 				extends SimpleAdjacencyMatrixGraph<N,E> 

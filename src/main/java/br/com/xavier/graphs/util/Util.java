@@ -1,9 +1,10 @@
-package br.com.xavier.graphs.util.messages;
+package br.com.xavier.graphs.util;
 
 import br.com.xavier.graphs.exception.IllegalEdgeException;
 import br.com.xavier.graphs.exception.IllegalNodeException;
 import br.com.xavier.graphs.interfaces.Graph;
 import br.com.xavier.graphs.interfaces.nodes.Node;
+import br.com.xavier.graphs.util.messages.MessageManager;
 import br.com.xavier.graphs.util.messages.enums.DefaultMessagesKey;
 
 public class Util {
@@ -24,6 +25,11 @@ public class Util {
 
 	private static void handleNullParameter() {
 		throw new NullPointerException(MessageManager.getDefaultMessage(DefaultMessagesKey.PARAMETER_NULL));
+	}
+	
+	public static void handleIllegalParameter(Object illegalParameter) {
+		String message = MessageManager.getDefaultMessage(DefaultMessagesKey.PARAMETER_ILLEGAL).concat(illegalParameter.toString());
+		throw new IllegalArgumentException(message);
 	}
 	
 	@SafeVarargs

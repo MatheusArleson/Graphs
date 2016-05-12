@@ -13,7 +13,8 @@ public enum DefaultMessagesKey {
 	MESSAGE_KEY_NOT_FOUND("message.notfound"),
 	PARAMETER_NULL("parameter.null"),
 	ILLEGAL_NODE("node.illegal"),
-	ILLEGAL_EDGE("edge.illegal.type");
+	ILLEGAL_EDGE("edge.illegal.type"), 
+	PARAMETER_ILLEGAL("parameter.illegal");
 	
 	//XXX ENUM PROPERTIES
 	private final String key;

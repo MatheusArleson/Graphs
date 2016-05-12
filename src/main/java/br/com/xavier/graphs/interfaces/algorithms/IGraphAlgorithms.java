@@ -3,7 +3,9 @@ package br.com.xavier.graphs.interfaces.algorithms;
 import java.util.List;
 
 import br.com.xavier.graphs.abstractions.AbstractGraph;
+import br.com.xavier.graphs.abstractions.edges.AbstractEdge;
 import br.com.xavier.graphs.abstractions.edges.AbstractWeightedEdge;
+import br.com.xavier.graphs.abstractions.nodes.AbstractColoredNode;
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.exception.IllegalGraphException;
 import br.com.xavier.graphs.exception.IllegalNodeException;
@@ -12,7 +14,7 @@ import br.com.xavier.graphs.interfaces.Graph;
 import br.com.xavier.graphs.interfaces.edges.Edge;
 import br.com.xavier.graphs.interfaces.nodes.Node;
 
-public interface GraphAlgorithms {
+public interface IGraphAlgorithms {
 	
 	
 	/**
@@ -70,6 +72,19 @@ public interface GraphAlgorithms {
 	 * @param graph - {@link Graph} instance to check
 	 * @return true if it is connected; false otherwise.
 	 */
-	public <N extends Node, E extends Edge<N>> boolean isGraphConnected(Graph<N, E> graph);
+	public <N extends Node, E extends Edge<N>> boolean checkGraphConnectionsByBFS(Graph<N, E> graph);
 	
+	/**
+	 * 
+	 * Method to check if a {@link Graph} is connected or not. </br>
+	 * </br>
+	 * It will perform an {@link #DFS(Graph, Node)} on the first node returned by {@link Graph#getAllNodes()} iterator. </br>
+	 * Then check if each node of the {@link Graph} is present in the transversal.
+	 * 
+	 * @param graph - {@link Graph} instance to check
+	 * @return true if it is connected; false otherwise.
+	 */
+	public <N extends Node, E extends Edge<N>> boolean checkGraphConnectionsByDFS(Graph<N, E> graph);
+	
+	public <CN extends AbstractColoredNode, E extends AbstractEdge<CN>> void applyColor(Graph<CN,E> graph);
 }
