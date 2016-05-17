@@ -7,7 +7,9 @@ import br.com.xavier.graphs.interfaces.UndirectedGraph;
 import br.com.xavier.graphs.interfaces.edges.Edge;
 import br.com.xavier.graphs.util.Util;
 
-public abstract class SimpleUndirectedGraph<N extends AbstractNode, E extends Edge<N>> extends SimpleGraph<N,E> implements UndirectedGraph<N,E> {
+public abstract class SimpleUndirectedGraph<N extends AbstractNode, E extends Edge<N>> 
+				extends SimpleGraph<N,E> 
+				implements UndirectedGraph<N,E> {
 
 	private static final boolean IS_DIRECTED = false;
 	

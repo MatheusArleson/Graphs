@@ -49,10 +49,14 @@ public abstract class AbstractColoredNode extends AbstractNode implements Colore
 	}
 	
 	@Override
+	public String toString() {
+		return "AbstractColoredNode [nodeColor=" + nodeColor + "]";
+	}
+
+	@Override
 	public Color getColor() {
 		return nodeColor;
 	}
-
 
 	@Override
 	public void setColor(Color color) {

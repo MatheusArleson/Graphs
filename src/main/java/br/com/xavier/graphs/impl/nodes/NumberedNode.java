@@ -44,7 +44,6 @@ public class NumberedNode extends AbstractNode implements Comparable<NumberedNod
 		return String.format(MessageManager.getMessage(NODE_LABEL_BASE_STR), nodeNumber);
 	}
 
-	
 	@Override
 	public int compareTo(NumberedNode other) {
 		if(other == null){

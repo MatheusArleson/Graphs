@@ -12,12 +12,4 @@ public abstract class MapBackedGraphTest<N extends AbstractNode, E extends Abstr
 	}
 	
 	//XXX TEST METHODS
-	
-	
-	
-	
-	
-	
-	
-	//REMOVE EDGE SOURCE TARGET -> CHECK ON UNDIRECTED EDGES IF THEY ARE REMOVED IN PAIRS
 }

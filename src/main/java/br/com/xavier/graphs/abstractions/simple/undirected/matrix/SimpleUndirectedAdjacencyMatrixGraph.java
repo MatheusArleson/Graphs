@@ -1,5 +1,7 @@
 package br.com.xavier.graphs.abstractions.simple.undirected.matrix;
 
+import java.util.Set;
+
 import br.com.xavier.graphs.abstractions.nodes.AbstractNode;
 import br.com.xavier.graphs.abstractions.simple.SimpleAdjacencyMatrixGraph;
 import br.com.xavier.graphs.exception.IllegalNodeException;
@@ -22,7 +24,17 @@ public abstract class SimpleUndirectedAdjacencyMatrixGraph<N extends AbstractNod
 		Util.checkNullParameter(node);
 		Util.checkIllegalNode(this, node);
 		
-		return 0;
+		int degree = 0;
+		
+		Set<N> allNodesSet = getAllNodes();
+		for (N currentNode : allNodesSet) {
+			boolean existsEdge = existsEdge(node, currentNode);
+			if(existsEdge){
+				degree++;
+			}
+		}
+		
+		return degree;
 	}
 
 }

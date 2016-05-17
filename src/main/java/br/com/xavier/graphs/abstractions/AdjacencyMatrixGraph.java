@@ -6,7 +6,8 @@ import br.com.xavier.graphs.interfaces.edges.Edge;
 import br.com.xavier.graphs.util.Util;
 import br.com.xavier.matrix.impl.indexed.DefaultSquareObjectIndexedMatrix;
 
-public abstract class AdjacencyMatrixGraph<N extends AbstractNode, E extends Edge<N>> extends MapBackedGraph<N,E> {
+public abstract class AdjacencyMatrixGraph<N extends AbstractNode, E extends Edge<N>> 
+				extends MapBackedGraph<N,E> {
 	
 	private DefaultSquareObjectIndexedMatrix<N, Integer> graphMatrix;
 	
