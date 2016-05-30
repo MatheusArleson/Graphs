@@ -30,29 +30,29 @@ public class ColorAlgorithm {
 		
 		Room r1 = new Room("SALA1", 0, 0, 10, 20);
 		Room r2 = new Room("SALA2", 0, 20, 10, 20);
-		Room r3 = new Room("SALA3", 0, 40, 10, 20);
-		Room r4 = new Room("SALA4", 0, 60, 10, 20);
-		Room r5 = new Room("SALA5", 0, 80, 10, 20);
+//		Room r3 = new Room("SALA3", 0, 40, 10, 20);
+//		Room r4 = new Room("SALA4", 0, 60, 10, 20);
+//		Room r5 = new Room("SALA5", 0, 80, 10, 20);
 		
 		graph.addNode(r1);
 		graph.addNode(r2);
-		graph.addNode(r3);
-		graph.addNode(r4);
-		graph.addNode(r5);
+//		graph.addNode(r3);
+//		graph.addNode(r4);
+//		graph.addNode(r5);
 		
 		DefaultUnweightedEdge<Room> edge12 = new DefaultUnweightedEdge<Room>(r1, r2);
-		DefaultUnweightedEdge<Room> edge13 = new DefaultUnweightedEdge<Room>(r1, r3);
-		DefaultUnweightedEdge<Room> edge23 = new DefaultUnweightedEdge<Room>(r2, r3);
-		DefaultUnweightedEdge<Room> edge34 = new DefaultUnweightedEdge<Room>(r3, r4);
-		DefaultUnweightedEdge<Room> edge35 = new DefaultUnweightedEdge<Room>(r3, r5);
-		DefaultUnweightedEdge<Room> edge45 = new DefaultUnweightedEdge<Room>(r4, r5);
+//		DefaultUnweightedEdge<Room> edge13 = new DefaultUnweightedEdge<Room>(r1, r3);
+//		DefaultUnweightedEdge<Room> edge23 = new DefaultUnweightedEdge<Room>(r2, r3);
+//		DefaultUnweightedEdge<Room> edge34 = new DefaultUnweightedEdge<Room>(r3, r4);
+//		DefaultUnweightedEdge<Room> edge35 = new DefaultUnweightedEdge<Room>(r3, r5);
+//		DefaultUnweightedEdge<Room> edge45 = new DefaultUnweightedEdge<Room>(r4, r5);
 		
 		graph.addEdge(edge12);
-		graph.addEdge(edge13);
-		graph.addEdge(edge23);
-		graph.addEdge(edge34);
-		graph.addEdge(edge35);
-		graph.addEdge(edge45);
+//		graph.addEdge(edge13);
+//		graph.addEdge(edge23);
+//		graph.addEdge(edge34);
+//		graph.addEdge(edge35);
+//		graph.addEdge(edge45);
 		
 		ColorAlgorithm ca = new ColorAlgorithm();
 		ca.applyColor(graph);

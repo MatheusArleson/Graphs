@@ -33,7 +33,7 @@ public class Util {
 	}
 	
 	@SafeVarargs
-	public static void  checkIllegalNode(Graph graph, Node... nodes){
+	public static void checkIllegalNode(Graph graph, Node... nodes){
 		if(graph == null){
 			handleNullParameter();
 		}
