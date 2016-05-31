@@ -82,6 +82,9 @@ public class ColorAlgorithm {
 		}
 		
 		Set<Color> colorSet = ColorFactory.getPredefinedColorSet(4);
+		colorSet.remove(Color.BLACK);
+		colorSet.remove(Color.WHITE);
+		
 		Iterator<Color> colorIterator = colorSet.iterator();
 		
 		Set<CN> uncoloredNodesSet = new LinkedHashSet<>(graph.getAllNodes());
