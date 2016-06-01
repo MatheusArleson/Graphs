@@ -19,6 +19,13 @@ public final class ColorFactory {
 	//XXX CONSTRUCTOR
 	private ColorFactory(){	}
 	
+	public static void main(String[] args) {
+		Set<Color> colors = getPredefinedColorSet(4, true);
+		for (Color color : colors) {
+			System.out.println(color);
+		}
+	}
+	
 	//XXX METHODS
 	public static Color generateRandomColor(){
 		float r = random.nextFloat();
@@ -74,14 +81,15 @@ public final class ColorFactory {
 		return true;
 	}
 	
-	public static Set<Color> getPredefinedColorSet(int size){
+	public static Set<Color> getPredefinedColorSet(int size, boolean avoidBlackWhiteGray){
 		Set<Color> colorSet  = new LinkedHashSet<>();
-		List<Color> predefinedColors = new ArrayList<>(getPredefinedColorsSet());
+		List<Color> predefinedColors = new ArrayList<>(getPredefinedColorsSet(avoidBlackWhiteGray));
 		
 		for (int i = 0; i < size;) {
 			int randomInt = Math.abs(random.nextInt());
 			int index = randomInt % size;
-			boolean added = colorSet.add(predefinedColors.get(index));
+			Color color = predefinedColors.get(index);
+			boolean added = colorSet.add(color);
 			if(added){
 				i++;
 			}
@@ -90,13 +98,30 @@ public final class ColorFactory {
 		return colorSet;
 	}
 	
-	private static Set<Color> getPredefinedColorsSet(){
+	private static Set<Color> getPredefinedColorsSet(boolean avoidBlackWhiteGray){
 		Set<Color> colorSet  = new LinkedHashSet<>();
 		Field[] fields = Color.class.getDeclaredFields();
 		for (Field field : fields) {
 			if (field.getType().equals(Color.class) && Modifier.isStatic(field.getModifiers())) {
 				try{
-					colorSet.add((Color) field.get(null));
+					Color color = (Color) field.get(null);
+					
+					if(avoidBlackWhiteGray){
+						boolean toAvoid = (
+							color.equals(Color.BLACK) || color.equals(Color.black) || 
+							color.equals(Color.WHITE) || color.equals(Color.white) || 
+							color.equals(Color.GRAY)  || color.equals(Color.gray)  ||
+							color.equals(Color.MAGENTA)  || color.equals(Color.magenta) ||
+							color.equals(Color.PINK)  || color.equals(Color.pink)
+						);
+						
+						if(toAvoid){
+							continue;
+						}
+					}
+					
+					colorSet.add(color);
+					
 				} catch(IllegalAccessException e){					
 				} 
 			}
